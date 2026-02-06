@@ -16,6 +16,7 @@
         self.homeModules.git
         self.homeModules.direnv
         self.homeModules.stylix
+        self.homeModules.shells
       ];
     };
 }

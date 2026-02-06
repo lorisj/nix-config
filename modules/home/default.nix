@@ -14,6 +14,7 @@
         self.homeModules.vscode
         self.homeModules.cursor
         self.homeModules.git
+        self.homeModules.direnv
         self.homeModules.stylix
       ];
     };

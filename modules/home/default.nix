@@ -13,6 +13,7 @@
         inputs.nix-colors.homeManagerModules.default
         self.homeModules.vscode
         self.homeModules.cursor
+        self.homeModules.nixvim
         self.homeModules.git
         self.homeModules.direnv
         self.homeModules.stylix

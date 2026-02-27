@@ -4,11 +4,11 @@ let
   level3 = types.unspecified;
   level2 = types.either level3 (types.lazyAttrsOf level3);
   level1 = types.either level2 (types.lazyAttrsOf level2);
-  nixvimModulesType = types.lazyAttrsOf level1;
+  darwinModulesType = types.lazyAttrsOf level1;
 in
 {
-  options.flake.modules.nixvim = mkOption {
-    type = nixvimModulesType;
+  options.flake.darwinModules = mkOption {
+    type = darwinModulesType;
     default = { };
   };
 }

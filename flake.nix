@@ -27,7 +27,6 @@
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
-        ./flake-darwin-modules.nix
         inputs.home-manager.flakeModules.home-manager
       ]
       ++ (inputs.nix-helpers.lib.find-all-files-by-name ./hosts "configuration.nix")

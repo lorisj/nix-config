@@ -2,6 +2,7 @@
   flake,
   self,
   inputs,
+  withSystem,
   ...
 }:
 let
@@ -52,6 +53,8 @@ in
       ]
       ++ [
         self.darwinModules.theme.stylix
+        self.darwinModules.test.test
       ];
+
     };
 }

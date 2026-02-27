@@ -18,8 +18,6 @@ let
         "flakes"
       ];
 
-      # Allow unfree packages
-      nixpkgs.config.allowUnfree = true;
     };
 in
 {

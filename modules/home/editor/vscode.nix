@@ -1,4 +1,4 @@
-{ flake, pkgs, ... }:
+{ flake, ... }:
 {
   flake.homeModules.vscode =
     { ... }:

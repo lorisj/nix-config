@@ -2,6 +2,7 @@
   flake,
   self,
   inputs,
+  withSystem,
   ...
 }:
 {
@@ -14,6 +15,14 @@
         system.stateVersion = 4;
       }
       self.darwinModules.default
+
+      ({ config, ... }: {
+        # Use the configured pkgs from perSystem
+        nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system (
+          { pkgs, ... }: # perSystem module arguments
+          pkgs
+        );
+      })
     ];
   };
 }

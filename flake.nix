@@ -21,6 +21,8 @@
 
     nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-25.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+
+    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
   };
 
   outputs =
@@ -29,10 +31,12 @@
       imports = [
         ./flake-darwin-modules.nix
         inputs.home-manager.flakeModules.home-manager
+        inputs.pkgs-by-name-for-flake-parts.flakeModule
       ]
       ++ (inputs.nix-helpers.lib.find-all-files-by-name ./hosts "configuration.nix")
       ++ (inputs.nix-helpers.lib.find-nix-files ./modules)
       ++ (inputs.nix-helpers.lib.find-nix-files ./users);
+
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -49,9 +53,19 @@
           ...
         }:
         {
-          # Per-system attributes can be defined here. The self' and inputs'
-          # module parameters provide easy access to attributes of the same
-          # system.
+          _module.args.pkgs = import inputs.nixpkgs {
+            inherit system;
+            overlays = [
+              (final: prev: {
+                local = config.packages;
+              })
+            ];
+            config = {
+
+              allowUnfree = true;
+             };
+          };
+          pkgsDirectory = ./packages;
           # TODO: replace specialArgs with this overlay, currently doesn't work for some reason
           #_module.args.pkgs = import inputs.nixpkgs {
           #  inherit system;

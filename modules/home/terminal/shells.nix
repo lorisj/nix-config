@@ -1,4 +1,5 @@
-{ flake, ... }: {
+{ flake, ... }:
+{
   flake.homeModules.shells =
     { ... }:
     {

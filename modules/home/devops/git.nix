@@ -5,7 +5,7 @@
 }:
 {
   flake.homeModules.git =
-    { config, lib, ... }: 
+    { config, lib, ... }:
     {
       options.gitConfig = lib.mkOption {
         type = lib.types.submodule {

@@ -1,14 +1,21 @@
 { lib, ... }:
 let
   inherit (lib) mkOption types;
-  level3 = types.unspecified;
-  level2 = types.either level3 (types.lazyAttrsOf level3);
-  level1 = types.either level2 (types.lazyAttrsOf level2);
-  nixvimModulesType = types.lazyAttrsOf level1;
+  # Same pattern as darwin/options.nix: nested lazyAttrsOf so multiple modules can set e.g. base.plugins.* and they merge.
+  nixvimModuleType =
+    let
+      moduleOrAttrs =
+        depth:
+        if depth == 0 then
+          types.raw
+        else
+          types.either (types.lazyAttrsOf (moduleOrAttrs (depth - 1))) types.raw;
+    in
+    moduleOrAttrs 3;
 in
 {
   options.flake.modules.nixvim = mkOption {
-    type = nixvimModulesType;
+    type = types.lazyAttrsOf nixvimModuleType;
     default = { };
   };
 }

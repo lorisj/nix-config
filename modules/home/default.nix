@@ -20,6 +20,8 @@
         self.homeModules.shells
         self.homeModules.claude-code
         self.homeModules.eza
+        self.homeModules.kitty
+        self.homeModules.starship
       ];
     };
 }

@@ -19,6 +19,7 @@
         self.homeModules.stylix
         self.homeModules.shells
         self.homeModules.claude-code
+        self.homeModules.eza
       ];
     };
 }

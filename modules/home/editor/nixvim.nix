@@ -58,7 +58,10 @@ in
       nixvimExe = lib.getExe nixvim;
     in
     {
-      home.packages = [ nixvim ];
+      home.packages = [ 
+        nixvim
+        pkgs.nerd-fonts.fira-code
+       ];
       home.sessionVariables.EDITOR = nixvimExe;
       home.shellAliases = {
         vi = nixvimExe;

@@ -1,7 +1,5 @@
 {
   flake.modules.nixvim.base = {
-    # viAlias = true;
-    # vimAlias = true;
     plugins = {
       # Lazy loading
       lz-n.enable = true;
@@ -11,6 +9,9 @@
       loaded_netrw = false;
       loaded_netrwPlugin = false;
     };
+    plugins.mini-icons.enable = true;
+
+    plugins.web-devicons.enable = true;
     opts = {
       updatetime = 100; # faster completion
       swapfile = false;

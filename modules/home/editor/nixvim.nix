@@ -54,8 +54,15 @@ in
         module = nixvimModule nixvimBase paletteModule;
       };
     in
+    let
+      nixvimExe = lib.getExe nixvim;
+    in
     {
       home.packages = [ nixvim ];
-      home.sessionVariables.EDITOR = lib.getExe nixvim;
+      home.sessionVariables.EDITOR = nixvimExe;
+      home.shellAliases = {
+        vi = nixvimExe;
+        vim = nixvimExe;
+      };
     };
 }

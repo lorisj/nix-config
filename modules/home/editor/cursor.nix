@@ -3,8 +3,11 @@
   flake.homeModules.cursor =
     { pkgs, ... }:
     {
-      home.packages = [
+
+     home.packages = [
         pkgs.code-cursor
-      ];
+        pkgs.sl
+    ];
+ 
     };
 }

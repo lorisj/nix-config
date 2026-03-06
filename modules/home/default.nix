@@ -18,6 +18,7 @@
         self.homeModules.direnv
         self.homeModules.stylix
         self.homeModules.shells
+        self.homeModules.claude-code
       ];
     };
 }

@@ -2,9 +2,9 @@
   flake.modules.nixvim.base.plugins.barbar = {
     enable = true;
     keymaps = {
-      next.key = "<TAB>";
-      previous.key = "<S-TAB>";
-      close.key = "<C-w>";
+      next.key = "<leader>k";
+      previous.key = "<leader>j";
+      close.key = "<leader>w>";
     };
   };
 }

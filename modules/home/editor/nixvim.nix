@@ -47,7 +47,12 @@ in
       nixvimModule =
         base: palette:
         { ... }:
-        { config = lib.mkMerge [ base palette ]; };
+        {
+          config = lib.mkMerge [
+            base
+            palette
+          ];
+        };
 
       nixvim = inputs.nixvim.legacyPackages.${pkgs.stdenv.hostPlatform.system}.makeNixvimWithModule {
         inherit pkgs;
@@ -63,6 +68,7 @@ in
       home.packages = [
         nixvim
         pkgs.nerd-fonts.fira-code
+        pkgs.nixfmt
       ];
       home.sessionVariables.EDITOR = nixvimExe;
       home.shellAliases = {

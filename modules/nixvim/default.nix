@@ -2,7 +2,7 @@
   flake.modules.nixvim.base = {
     plugins = {
       # Lazy loading
-      lz-n.enable = true;
+      #lz-n.enable = true;
     };
     # Disable netrw to prevent flash on startup
     globals = {

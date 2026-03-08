@@ -1,4 +1,4 @@
-{ flake, inputs, ... }:
+{ inputs, ... }:
 {
   flake.darwinModules.theme.stylix =
     { ... }:

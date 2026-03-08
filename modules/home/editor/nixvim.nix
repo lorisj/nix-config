@@ -51,6 +51,7 @@ in
           config = lib.mkMerge [
             base
             palette
+            { extraPackages = [ pkgs.ripgrep ]; }
           ];
         };
 

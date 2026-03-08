@@ -8,8 +8,7 @@
         "<leader>b" = "buffers";
         "<leader>fh" = "help_tags";
 
-        "<C-p>" = "git_files";
-        "<leader>p" = "old_files";
+        "<leader>p" = "git_files";
       };
 
       settings.defaults = {
@@ -24,20 +23,18 @@
       };
 
     };
-    keymaps = [
-      {
-        mode = "n";
-        key = "<C-t>";
-        action.__raw = ''
-          function()
-              require('telescope.builtin').live_grep({
-                  default_text="TODO",
-                  initial_mode="normal"
-              })
-          end
-        '';
-      }
-    ];
+    
+    userCommands.Todo = {
+      command.__raw = ''
+        function()
+          require('telescope.builtin').live_grep({
+            default_text = "TODO",
+            initial_mode = "normal"
+          })
+        end
+      '';
+      desc = "Search for TODO in project";
+    };
   };
 }
 

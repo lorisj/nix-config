@@ -26,6 +26,8 @@ in
             inherit inputs;
           };
 
+          system.primaryUser = builtins.head users;
+
           # users
           users.users = builtins.listToAttrs (
             builtins.map (userName: {
@@ -52,6 +54,7 @@ in
       ]
       ++ [
         self.darwinModules.theme.stylix
+        self.darwinModules.display.swiftbar
       ];
     };
 }

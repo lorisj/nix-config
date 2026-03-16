@@ -1,0 +1,19 @@
+{ inputs, ... }:
+{
+
+  flake.modules.nixvim.base = {
+    plugins.flash = {
+      enable = true;
+    };
+
+    keymaps = [
+      {
+        key = "<leader>fl";
+        mode = [ "n" ];
+        action = inputs.nixvim.lib.nixvim.mkRaw ''function() require("flash").jump() end'';
+        options.desc = "Flash";
+      }
+    ];
+
+  };
+}

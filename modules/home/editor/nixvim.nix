@@ -51,7 +51,12 @@ in
           config = lib.mkMerge [
             base
             palette
-            { extraPackages = [ pkgs.ripgrep ]; }
+            {
+              extraPackages = [
+                pkgs.ripgrep
+                pkgs.claude-code-acp
+              ];
+            }
           ];
         };
 

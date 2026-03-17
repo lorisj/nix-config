@@ -14,7 +14,7 @@ function getToken() {
     const env = fs.readFileSync("/etc/environment", "utf-8");
     const match = env.match(/CALTRAIN_TOKEN=(.*)/);
     if (match) return match[1].trim();
-  } catch {}
+  } catch { }
   return null;
 }
 
@@ -47,7 +47,7 @@ function readCache() {
     const raw = fs.readFileSync(CACHE_PATH, "utf-8");
     const cache = JSON.parse(raw);
     if (Date.now() - cache.ts < CACHE_MAX_AGE_MS) return cache.data;
-  } catch {}
+  } catch { }
   return null;
 }
 
@@ -56,12 +56,12 @@ function writeCache(data) {
 }
 
 const SVC = {
-  Express:           { dot: "🔴", short: "Exp" },
-  Limited:           { dot: "🔵", short: "Ltd" },
+  Express: { dot: "🔴", short: "Exp" },
+  Limited: { dot: "🔵", short: "Ltd" },
   "Limited Weekday": { dot: "🔵", short: "Ltd" },
-  "Local Weekday":   { dot: "⚪", short: "Lcl" },
-  "Local Weekend":   { dot: "⚪", short: "Lcl" },
-  Local:             { dot: "⚪", short: "Lcl" },
+  "Local Weekday": { dot: "⚪", short: "Lcl" },
+  "Local Weekend": { dot: "⚪", short: "Lcl" },
+  Local: { dot: "⚪", short: "Lcl" },
 };
 
 function svcInfo(line) {
@@ -87,7 +87,7 @@ function fmtClock(iso) {
 function delayMins(aimed, expected) {
   if (!aimed || !expected) return 0;
   const diff = (new Date(expected) - new Date(aimed)) / 60000;
-  return Math.max(0, Math.round(diff));
+  return Math.max(0, Math.floor(diff));
 }
 
 async function main() {

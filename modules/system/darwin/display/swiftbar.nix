@@ -1,13 +1,25 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.darwinModules.display.swiftbar =
     { pkgs, ... }:
     let
-      # if this is not done, then test.sh will not have exe priv in nix store.
+      refreshInterval = "5s";
+
+      caltrainPlugin = pkgs.replaceVarsWith {
+        src = ./plugins/caltrain.js;
+        isExecutable = true;
+        replacements = {
+          node = "${pkgs.nodejs}/bin/node";
+        };
+      };
+
       pluginDir = pkgs.runCommand "swiftbar-plugins" { } ''
         mkdir -p $out
-        cp ${./plugins/test.sh} $out/test.1s.sh
-        chmod +x $out/test.1s.sh
+        cat > $out/caltrain.${refreshInterval}.sh <<WRAPPER
+#!/bin/sh
+exec ${caltrainPlugin}
+WRAPPER
+        chmod +x $out/caltrain.${refreshInterval}.sh
       '';
     in
     {
@@ -16,6 +28,15 @@
       ];
       system.defaults.CustomUserPreferences."com.ameba.SwiftBar" = {
         PluginDirectory = "${pluginDir}";
+        # if this is not set, swiftbar will display "Session Restored ..."
+        Shell = "zsh";
+      };
+      launchd.user.agents.swiftbar = {
+        serviceConfig = {
+          ProgramArguments = [ "${pkgs.swiftbar}/bin/SwiftBar" ];
+          KeepAlive = true;
+          RunAtLoad = true;
+        };
       };
     };
 }

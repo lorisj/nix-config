@@ -69,7 +69,7 @@ function svcInfo(line) {
 }
 
 function relativeTime(iso) {
-  const diff = Math.round((new Date(iso) - Date.now()) / 60000);
+  const diff = Math.floor((new Date(iso) - Date.now()) / 60000);
   if (diff <= 0) return "now";
   if (diff === 1) return "1m";
   return `${diff}m`;

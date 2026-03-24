@@ -22,9 +22,11 @@
       config = {
         programs.git = {
           enable = true;
-          userName = config.gitConfig.userName;
-          userEmail = config.gitConfig.userEmail;
-          extraConfig.init.defaultBranch = "main";
+          settings = {
+            user.name = config.gitConfig.userName;
+            user.email = config.gitConfig.userEmail;
+            init.defaultBranch = "main";
+          };
         };
       };
     };

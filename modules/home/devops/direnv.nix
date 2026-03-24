@@ -5,7 +5,12 @@
 }:
 {
   flake.homeModules.direnv =
-    { config, lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       programs.direnv = {
         enable = true;
@@ -13,7 +18,7 @@
         enableZshIntegration = true;
         package = pkgs.direnv.overrideAttrs (old: {
           env = old.env // {
-            CGO_ENABLED = "1";
+            #CGO_ENABLED = "1";
           };
         });
       };

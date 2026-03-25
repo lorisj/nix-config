@@ -21,37 +21,37 @@
       }
       {
         mode = "n";
-        key = "<leader>af";
+        key = "<leader>ccf";
         action = "<cmd>ClaudeCodeFocus<cr>";
         options.desc = "Focus Claude";
       }
       {
         mode = "n";
-        key = "<leader>ar";
+        key = "<leader>ccr";
         action = "<cmd>ClaudeCode --resume<cr>";
         options.desc = "Resume Claude";
       }
       {
         mode = "n";
-        key = "<leader>aC";
+        key = "<leader>ccc";
         action = "<cmd>ClaudeCode --continue<cr>";
         options.desc = "Continue Claude";
       }
       {
         mode = "v";
-        key = "<leader>as";
+        key = "<leader>ccs";
         action = "<cmd>ClaudeCodeSend<cr>";
         options.desc = "Send to Claude";
       }
       {
         mode = "n";
-        key = "<leader>aa";
+        key = "<leader>a";
         action = "<cmd>ClaudeCodeDiffAccept<cr>";
         options.desc = "Accept diff";
       }
       {
         mode = "n";
-        key = "<leader>ad";
+        key = "<leader>r";
         action = "<cmd>ClaudeCodeDiffDeny<cr>";
         options.desc = "Deny diff";
       }

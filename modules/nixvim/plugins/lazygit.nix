@@ -7,7 +7,7 @@
         keymaps = [
             {
                 mode = "n";
-                key = "<leader>lg";
+                key = "<leader>git";
                 action = ":LazyGit<CR>";
                 options.desc = "LazyGit";
             }

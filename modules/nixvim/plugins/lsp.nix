@@ -14,6 +14,10 @@
         update_in_insert = false,
         severity_sort = true,
       })
+      -- show hover information in border
+      vim.keymap.set("n", "K", function()
+        vim.lsp.buf.hover({ border = "rounded" })
+      end, { buffer = bufnr, desc = "show hover information", silent = true })
     '';
 
     servers = {
@@ -21,7 +25,7 @@
         enable = true;
         autostart = true;
       };
-      #ts_ls.enable = true;
+      ts_ls.enable = true;
       cssls.enable = true;
       tailwindcss.enable = true;
       html.enable = true;
@@ -63,10 +67,6 @@
         gr = {
           action = "references";
           desc = "goto references";
-        };
-        K = {
-          action = "hover";
-          desc = "show hover information";
         };
         "<leader>rn" = {
           action = "rename";

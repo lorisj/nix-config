@@ -1,14 +1,17 @@
+{ ... }:
 {
-  flake.modules.nixvim.base = {
+  flake.modules.nixvim.base = { pkgs, ... }:{
+    extraPackages = with pkgs; [ ripgrep fd ];
+
     plugins.telescope = {
       enable = true;
       keymaps = {
-        "<leader>ff" = "find_files";
-        "<leader>fg" = "live_grep";
+        "<leader>lg" = "live_grep";
         "<leader>b" = "buffers";
         "<leader>fh" = "help_tags";
 
-        "<leader>p" = "git_files";
+        "<leader>gf" = "git_files";
+        "<leader>af" = "find_files"; # all files
       };
 
       settings.defaults = {

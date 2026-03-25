@@ -7,8 +7,13 @@ let
   );
 in
 {
+  # options.flake.modules.nixvim = mkOption {
+  #   type = types.lazyAttrsOf nixvimModuleType;
+  #   default = { };
+  # };
   options.flake.modules.nixvim = mkOption {
-    type = types.lazyAttrsOf nixvimModuleType;
+    type = types.lazyAttrsOf types.deferredModule;
     default = { };
   };
+
 }

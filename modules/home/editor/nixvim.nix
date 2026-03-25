@@ -43,26 +43,14 @@ in
         };
       };
 
-      # makeNixvimWithModule expects a single module, not a "merge" value.
-      nixvimModule =
-        base: palette:
-        { ... }:
-        {
-          config = lib.mkMerge [
-            base
-            palette
-            {
-              extraPackages = [
-                #pkgs.ripgrep
-                #pkgs.claude-code-acp
-              ];
-            }
-          ];
-        };
-
       nixvim = inputs.nixvim.legacyPackages.${pkgs.stdenv.hostPlatform.system}.makeNixvimWithModule {
         inherit pkgs;
-        module = nixvimModule nixvimBase paletteModule;
+        module = {
+          imports = [
+            nixvimBase
+            paletteModule
+          ];
+        };
       };
     in
     let
@@ -75,6 +63,7 @@ in
         nixvim
         pkgs.nerd-fonts.fira-code
         pkgs.nixfmt
+
       ];
       home.sessionVariables.EDITOR = nixvimExe;
       home.shellAliases = {

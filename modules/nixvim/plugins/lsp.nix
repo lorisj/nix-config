@@ -72,7 +72,7 @@
           action = "rename";
           desc = "rename symbol";
         };
-        "<leader>a" = {
+        "<leader>j" = {
           action = "code_action";
           desc = "code actions";
         };

@@ -9,7 +9,13 @@
     keymaps = [
       {
         mode = "n";
-        key = "<leader>ac";
+        key = "<M-.>";
+        action = "<cmd>ClaudeCode<cr>";
+        options.desc = "Toggle Claude";
+      }
+      {
+        mode = "t";
+        key = "<M-.>";
         action = "<cmd>ClaudeCode<cr>";
         options.desc = "Toggle Claude";
       }

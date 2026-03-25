@@ -53,8 +53,8 @@ in
             palette
             {
               extraPackages = [
-                pkgs.ripgrep
-                pkgs.claude-code-acp
+                #pkgs.ripgrep
+                #pkgs.claude-code-acp
               ];
             }
           ];

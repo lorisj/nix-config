@@ -23,6 +23,7 @@
       cursorline = true;
       ignorecase = true; # ignore case for search query
       undofile = true;
+      autoread = true;
 
       # tab options
       tabstop = 4;
@@ -30,5 +31,18 @@
       autoindent = true;
       expandtab = true;
     };
+    autoCmd = [
+      {
+        event = [ "FocusGained" "BufEnter" "CursorHold" "CursorHoldI" ];
+        pattern = [ "*" ];
+        command = "if mode() != 'c' | checktime | endif";
+      }
+      # prevents claude from being listed in the buffer list
+      {
+        event = [ "TermOpen" ];
+        pattern = [ "*bin/claude" ];
+        command = "set nobuflisted";
+      }
+    ];
   };
 }

@@ -10,16 +10,22 @@
       '';
       keymaps = [
         {
-          mode = "t";
+          mode = ["n" "t"];
           key = "<tab>c";
           action = "<cmd>ClaudeCode<cr>";
           options.desc = "Toggle Claude Code";
         }
         {
           mode = "v";
-          key = "<leader>cs";
+          key = "<tab>c";
           action = "<cmd>ClaudeCodeSend<cr>";
           options.desc = "Send to Claude";
+        }
+        {
+          mode = "n";
+          key = "<leader>cc";
+          action = "<cmd>ClaudeCodeAdd %<cr>";
+          options.desc = "Add file to Claude Code";
         }
         {
           mode = "n";

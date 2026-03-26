@@ -12,18 +12,18 @@
           "man"
         ];
         keymaps = {
-          "<2-LeftMouse>" = "actions.jump";
-          "<C-j>" = "actions.down_and_scroll";
-          "<C-k>" = "actions.up_and_scroll";
+          "<CR>" = "actions.jump";
+          "j" = "actions.down_and_scroll";
+          "k" = "actions.up_and_scroll";
           "?" = "actions.show_help";
         };
       };
     };
     keymaps = [
       {
-        mode = "n";
+        mode = ["n" "t"];
         key = "<Tab>a";
-        action = ":AerialToggle<CR>";
+        action = "<C-\\><C-n>:AerialToggle<CR>";
       }
     ];
 

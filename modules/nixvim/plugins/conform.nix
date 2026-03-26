@@ -5,12 +5,21 @@
 
       settings = {
         notify_on_error = true;
+
+        formatters_by_ft = {
+          javascript = [ "biome" ];
+          typescript = [ "biome" ];
+          javascriptreact = [ "biome" ];
+          typescriptreact = [ "biome" ];
+          json = [ "biome" ];
+          jsonc = [ "biome" ];
+        };
+
         format_on_save = ''
           function(bufnr)
-              -- disable "format_on_save" lsp_fallback for languages that don't have standard.
               local disable_filetypes = { c = true, cpp = true }
               if disable_filetypes[vim.bo[bufnr].filetype] then 
-                  return nul
+                  return nil
               else
                   return {
                       timeout_ms = 500,

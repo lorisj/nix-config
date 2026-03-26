@@ -22,7 +22,7 @@
     keymaps = [
       {
         mode = "n";
-        key = "<leader>d";
+        key = "<Tab>a";
         action = ":AerialToggle<CR>";
       }
     ];

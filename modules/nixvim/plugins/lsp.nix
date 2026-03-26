@@ -72,7 +72,7 @@
           action = "rename";
           desc = "rename symbol";
         };
-        "<leader>j" = {
+        "<leader>a" = {
           action = "code_action";
           desc = "code actions";
         };
@@ -82,11 +82,11 @@
           action = "open_float";
           desc = "show diagnostic in float";
         };
-        "[d" = {
+        "[" = {
           action = "goto_prev";
           desc = "previous diagnostic";
         };
-        "]d" = {
+        "]" = {
           action = "goto_next";
           desc = "next diagnostic";
         };

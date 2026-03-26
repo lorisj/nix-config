@@ -4,9 +4,10 @@
     keymaps = [
       {
         mode = "n";
-        key = "<tab>";
+        key = "<tab>b";
         action = ":Neotree action=focus reveal toggle<CR>";
         options.silent = true;
+        options.desc = "Toggle file browser";
       }
     ];
     plugins.neo-tree = {

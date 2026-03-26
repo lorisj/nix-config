@@ -11,15 +11,15 @@
     keymaps = [
       {
         mode = "n";
-        key = "<M-,>";
+        key = "<tab>t";
         action = "<cmd>FloatermToggle<cr>";
-        options.desc = "Toggle floaterm";
+        options.desc = "Toggle terminal";
       }
       {
         mode = "t";
-        key = "<M-,>";
+        key = "<tab>t";
         action = "<cmd>FloatermToggle<cr>";
-        options.desc = "Toggle floaterm";
+        options.desc = "Toggle terminal";
       }
     ];
   };

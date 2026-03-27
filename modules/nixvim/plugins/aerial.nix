@@ -29,6 +29,10 @@
             if vim.bo.filetype == "aerial" then
               vim.cmd("AerialClose")
             else
+              -- always grab symbols from a real code buffer instead of claude code / etc
+              if vim.bo.buftype ~= "" then
+                vim.cmd("wincmd p")
+              end
               vim.cmd("AerialOpen!")
               -- ensure focus lands on the aerial window
               for _, win in ipairs(vim.api.nvim_list_wins()) do

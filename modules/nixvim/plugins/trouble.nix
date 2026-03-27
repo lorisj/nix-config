@@ -16,7 +16,7 @@
     keymaps = [
       {
         mode = "n";
-        key = "<Tab>q";
+        key = "<tab>q";
         # if focused close, else focus/open if needed
         action.__raw = ''
           function()

@@ -3,7 +3,7 @@
   flake.modules.nixvim.base = {
     keymaps = [
       {
-        mode = "n";
+        mode = ["n" "t"];
         key = "<tab>b";
         # if focused close, else focus/open if needed
         action.__raw = ''

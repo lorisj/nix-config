@@ -23,7 +23,25 @@
       {
         mode = ["n" "t"];
         key = "<tab>a";
-        action = "<C-\\><C-n>:AerialToggle<CR>";
+        # if focused close, else focus/open if needed
+        action.__raw = ''
+          function()
+            if vim.bo.filetype == "aerial" then
+              vim.cmd("AerialClose")
+            else
+              vim.cmd("AerialOpen!")
+              -- ensure focus lands on the aerial window
+              for _, win in ipairs(vim.api.nvim_list_wins()) do
+                if vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(win), "filetype") == "aerial" then
+                  vim.api.nvim_set_current_win(win)
+                  break
+                end
+              end
+            end
+          end
+        '';
+        options.silent = true;
+        options.desc = "Toggle aerial";
       }
     ];
 

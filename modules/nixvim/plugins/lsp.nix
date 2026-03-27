@@ -31,6 +31,12 @@
       html.enable = true;
       pyright.enable = true;
       bashls.enable = true;
+      rust_analyzer = {
+        enable = true;
+        # these should be installed by project (in devshell)
+        installCargo = false;
+        installRustc = false;
+      };
       hls.enable = true;
       hls.installGhc = true;
       # leanls is handled by lean.nvim plugin, not lspconfig

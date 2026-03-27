@@ -60,14 +60,6 @@
     keymaps = {
       silent = true;
       lspBuf = {
-        gd = {
-          action = "definition";
-          desc = "goto definition";
-        };
-        gr = {
-          action = "references";
-          desc = "goto references";
-        };
         "<leader>rn" = {
           action = "rename";
           desc = "rename symbol";

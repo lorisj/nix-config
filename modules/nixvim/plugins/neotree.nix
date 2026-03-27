@@ -5,7 +5,16 @@
       {
         mode = "n";
         key = "<tab>b";
-        action = ":Neotree action=focus reveal toggle<CR>";
+        # if focused close, else focus/open if needed
+        action.__raw = ''
+          function()
+            if vim.bo.filetype == "neo-tree" then
+              vim.cmd("Neotree close")
+            else
+              vim.cmd("Neotree action=focus reveal")
+            end
+          end
+        '';
         options.silent = true;
         options.desc = "Toggle file browser";
       }

@@ -12,7 +12,8 @@
         {
           mode = ["n" "t"];
           key = "<tab>c";
-          action = "<cmd>ClaudeCode<cr>";
+          # if focused close, else focus/open if needed
+          action = "<cmd>ClaudeCodeFocus<cr>";
           options.desc = "Toggle Claude Code";
         }
         {

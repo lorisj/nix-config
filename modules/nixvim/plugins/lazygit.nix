@@ -6,9 +6,9 @@
         };
         keymaps = [
             {
-                mode = "n";
-                key = "<leader>git";
-                action = ":LazyGit<CR>";
+                mode = ["n" "t"];
+                key = "<Tab>g";
+                action = "<cmd>LazyGit<CR>";
                 options.desc = "LazyGit";
             }
         ];

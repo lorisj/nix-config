@@ -24,7 +24,7 @@
         }
         {
           mode = "n";
-          key = "<leader>cc";
+          key = "<leader>C";
           action = "<cmd>ClaudeCodeAdd %<cr>";
           options.desc = "Add file to Claude Code";
         }

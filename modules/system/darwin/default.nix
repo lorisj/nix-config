@@ -21,11 +21,6 @@ in
             self.homeModules.default
           ];
 
-          home-manager.extraSpecialArgs = {
-            # TODO: figure out a better way to do this
-            inherit inputs;
-          };
-
           system.primaryUser = builtins.head users;
 
           # users

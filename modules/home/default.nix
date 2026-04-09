@@ -20,6 +20,7 @@
         self.homeModules.shells
         self.homeModules.claude-code
         self.homeModules.lazygit
+        self.homeModules.zmk
         self.homeModules.eza
         self.homeModules.kitty
         self.homeModules.starship

@@ -3,8 +3,27 @@
   flake.homeModules.kitty =
     { pkgs, lib, ... }:
     {
+      # Dock / Spotlight / Finder: Launch Services does not pass argv; this file
+      # supplies CLI flags (see kitty --help --start-as).
+      xdg.configFile."kitty/macos-launch-services-cmdline" = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+        text = "--start-as=maximized\n";
+      };
+
       programs.kitty = {
         enable = true;
+
+        # Shell / `nix run` / anything that executes $out/bin/kitty — unlike
+        # macos-launch-services-cmdline, which only applies to GUI launches.
+        package = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
+          pkgs.symlinkJoin {
+            name = "kitty-wrapped";
+            paths = [ pkgs.kitty ];
+            nativeBuildInputs = [ pkgs.makeWrapper ];
+            postBuild = ''
+              wrapProgram $out/bin/kitty --add-flags "--start-as=maximized"
+            '';
+          }
+        );
 
         font = lib.mkForce {
           package = pkgs.fantasque-sans-mono;

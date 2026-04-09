@@ -1,0 +1,15 @@
+diff --git a/zmk/repo.py b/zmk/repo.py
+--- a/zmk/repo.py
++++ b/zmk/repo.py
+@@ -309,9 +309,10 @@
+     @overload
+     def _run_west(self, *args: str, capture_output: bool) -> str | None: ...
+ 
+     def _run_west(self, *args: str, capture_output=False):
+-        command = [sys.executable, "-m", "west", *args]
++        west_cmd = shutil.which("west")
++        command = [west_cmd, *args] if west_cmd else [sys.executable, "-m", "west", *args]
+ 
+         if capture_output:
+             return subprocess.check_output(
+                 command, cwd=self.west_path, text=True, stderr=subprocess.STDOUT

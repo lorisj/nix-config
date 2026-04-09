@@ -17,6 +17,8 @@
           hash = "sha256-vRpzNPW4j6g1N9ZKVBEF6e7Ohwbx/+HrpI4GpyFDVzg=";
         };
 
+        patches = [ ./zmk-west-path.patch ];
+
         nativeBuildInputs = with pyp; [
           setuptools
           setuptools-scm

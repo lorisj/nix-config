@@ -50,6 +50,7 @@ in
       ++ [
         self.darwinModules.theme.stylix
         self.darwinModules.display.swiftbar
+        self.darwinModules.aerospace
       ];
     };
 }

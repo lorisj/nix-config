@@ -3,6 +3,6 @@
   flake.darwinModules.aerospace =
     { ... }:
     {
-      services.aerospace.enable = true;
+      #services.aerospace.enable = true;
     };
 }

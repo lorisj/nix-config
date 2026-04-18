@@ -2,6 +2,7 @@
   flake,
   self,
   inputs,
+  flakeModuleHelpers,
   ...
 }:
 let
@@ -47,10 +48,12 @@ in
         }
         self.darwinModules.shared.default
       ]
-      ++ [
-        self.darwinModules.theme.stylix
-        self.darwinModules.display.swiftbar
-        self.darwinModules.aerospace
-      ];
+      ++ flakeModuleHelpers.sortedNestedFlakeModules {
+        output = "darwinModules";
+        excludedTopLevelNames = [
+          "default"
+          "shared"
+        ];
+      };
     };
 }

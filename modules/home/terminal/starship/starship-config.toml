@@ -35,19 +35,19 @@ $time\
 # and use the os module below
 [username]
 show_always = true
-style_user = "bg:#base0F"
-style_root = "bg:#base09"
+style_user = "bg:#base0F fg:#base07"
+style_root = "bg:#base09 fg:#base07"
 format = '[$user ]($style)'
 disabled = false
 
 # An alternative to the username module which displays a symbol that
 # represents the current operating system
 [os]
-style = "bg:#base0C"
+style = "bg:#base0F"
 disabled = true # Disabled by default
 
 [directory]
-style = "fg:#base0D bg:#base0A"
+style = "fg:#base07 bg:#base0A"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
@@ -69,85 +69,85 @@ truncation_symbol = "…/"
 
 [c]
 symbol = " "
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [cpp]
 symbol = " "
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [nix_shell]
-style = "bg:#base0D"
+style = "bg:#base0D fg:#base07"
 format = '[$symbol(\($name\))]($style)'
 
 [docker_context]
 symbol = " "
 
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol $context ]($style)'
 
 [elixir]
 symbol = " "
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [elm]
 symbol = " "
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [git_branch]
 symbol = ""
-style = "bg:#base0B"
+style = "bg:#base0B fg:#base07"
 format = '[ $symbol $branch ]($style)'
 
 [git_status]
-style = "bg:#base0B"
+style = "bg:#base0B fg:#base07"
 format = '[$all_status$ahead_behind ]($style)'
 
 [golang]
 symbol = " "
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [gradle]
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [haskell]
 symbol = " "
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [java]
 symbol = " "
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [julia]
 symbol = " "
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [nodejs]
 symbol = ""
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [nim]
 symbol = "󰆥 "
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [rust]
 symbol = ""
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [scala]
 symbol = " "
-style = "bg:#base0C"
+style = "bg:#base0C fg:#base07"
 format = '[ $symbol ($version) ]($style)'
 
 [time]

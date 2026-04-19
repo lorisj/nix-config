@@ -1,7 +1,7 @@
 { flake, ... }:
 {
   flake.homeModules.kitty =
-    { pkgs, lib, ... }:
+    { config, pkgs, lib, ... }:
     {
       # Dock / Spotlight / Finder: Launch Services does not pass argv; this file
       # supplies CLI flags (see kitty --help --start-as).
@@ -26,9 +26,9 @@
         );
 
         font = lib.mkForce {
-          package = pkgs.fantasque-sans-mono;
-          name = "Fantasque Sans Mono";
-          size = 14.0;
+          package = pkgs.iosevka;
+          name = "Iosevka";
+          size = 16.0;
         };
 
         shellIntegration.mode = "no-cursor";
@@ -44,6 +44,10 @@
           cursor_blink_interval = 0.5;
           cursor_stop_blinking_after = 15.0;
 
+          cursor_trail = 1;
+          # Palette hex has no leading # (same as nixvim); prepend once to avoid ##
+          cursor_trail_color = "#" + config.colorScheme.palette.base0C;
+          cursor_trail_decay = "0.1 0.2";
 
           remember_window_size = false;
           repaint_delay = 10;

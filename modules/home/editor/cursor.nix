@@ -6,8 +6,6 @@
 
      home.packages = [
         pkgs.code-cursor
-        pkgs.sl
     ];
- 
     };
 }

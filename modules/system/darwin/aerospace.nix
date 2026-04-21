@@ -75,6 +75,11 @@
             "${m}-shift-4" = "move-node-to-workspace 4";
             "${m}-shift-5" = "move-node-to-workspace 5";
             "${m}-tab" = "workspace-back-and-forth";
+            "${m}-enter" = ''exec-and-forget open -a kitty'';
+            # Open or focus Google Chrome
+            
+            
+            "${m}-b" = ''exec-and-forget open -a "Google Chrome"'';
             #"${m}-leftSquareBracket" = "workspace --wrap-around prev";
             #"${m}-rightSquareBracket" = "workspace --wrap-around next";
           };

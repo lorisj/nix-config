@@ -6,7 +6,11 @@
         pkgs.vimPlugins.claudecode-nvim
       ];
       extraConfigLua = ''
-        require('claudecode').setup({})
+        require('claudecode').setup({
+          terminal = {
+            split_width_percentage = 0.5,
+          },
+        })
       '';
       keymaps = [
         {

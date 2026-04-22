@@ -1,7 +1,12 @@
 { flake, ... }:
 {
   flake.homeModules.kitty =
-    { config, pkgs, lib, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     {
       # Dock / Spotlight / Finder: Launch Services does not pass argv; this file
       # supplies CLI flags (see kitty --help --start-as).
@@ -54,7 +59,8 @@
           input_delay = 3;
 
           open_url_with = "default";
-          term = "xterm-kitty";
+          #term = "xterm-kitty";
+          term = "xterm";
 
           window_border_width = 0;
           window_margin_width = 15;

@@ -77,10 +77,10 @@
             # "${m}-tab" = "workspace-back-and-forth";
 
             # TODO: move into option
+            # -na => open new instance if already running
             "${m}-enter" = "exec-and-forget open -na kitty";
-            # Open or focus Google Chrome
 
-            "${m}-b" = ''exec-and-forget open -a "Google Chrome"'';
+            "${m}-b" = ''exec-and-forget open -na "Google Chrome"'';
             #"${m}-leftSquareBracket" = "workspace --wrap-around prev";
             #"${m}-rightSquareBracket" = "workspace --wrap-around next";
           };

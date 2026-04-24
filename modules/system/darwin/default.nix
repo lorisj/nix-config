@@ -46,14 +46,14 @@ in
             }) users
           );
         }
-        self.darwinModules.shared.default
       ]
       ++ flakeModuleHelpers.sortedNestedFlakeModules {
+        output = "sharedModules";
+        excludedTopLevelNames = [ "default" ];
+      }
+      ++ flakeModuleHelpers.sortedNestedFlakeModules {
         output = "darwinModules";
-        excludedTopLevelNames = [
-          "default"
-          "shared"
-        ];
+        excludedTopLevelNames = [ "default" ];
       };
     };
 }

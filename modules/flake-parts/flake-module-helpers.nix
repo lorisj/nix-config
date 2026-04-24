@@ -1,7 +1,16 @@
 # Binds `lib` + `self` once so other flake modules can use `flakeModuleHelpers.*` without importing lib paths or passing `self`.
+# Declares `flake.sharedModules` so many flake-parts files can set distinct paths (e.g. `sharedModules.theme.stylix`) and merge; see
+# `modules/nixosModules.nix` in flake-parts.
 { lib, self, ... }:
 {
-  _module.args.flakeModuleHelpers = {
+  options.flake = {
+    sharedModules = lib.mkOption {
+      type = lib.types.lazyAttrsOf (lib.types.lazyAttrsOf lib.types.deferredModule);
+      default = { };
+    };
+  };
+
+  config._module.args.flakeModuleHelpers = {
     # Direct children of `self.<output>` are modules; use `excludedNames` for aggregators and per-user modules.
     sortedFlatFlakeModules =
       { output, excludedNames }:

@@ -1,12 +1,10 @@
 {
-  flake,
   self,
   inputs,
   ...
 }:
 {
   flake.darwinConfigurations.macbook = inputs.nix-darwin.lib.darwinSystem {
-    specialArgs = { inherit inputs; };
     modules = [
       {
         nixpkgs.hostPlatform = "aarch64-darwin";

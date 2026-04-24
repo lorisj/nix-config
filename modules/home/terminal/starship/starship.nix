@@ -1,4 +1,4 @@
-{ flake, inputs, ... }:
+{ inputs, ... }:
 {
   flake.homeModules.starship =
     { pkgs, lib, config, ... }:

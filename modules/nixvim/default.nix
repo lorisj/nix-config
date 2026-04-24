@@ -1,4 +1,4 @@
-{
+{...} : {
   flake.modules.nixvim.base = {
     plugins = {
       # Lazy loading

@@ -1,4 +1,4 @@
-{ flake, ... }:
+{ ... }:
 {
   flake.homeModules.macos-desktop-wallpaper =
     { config, lib, pkgs, ... }:

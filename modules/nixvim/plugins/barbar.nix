@@ -2,8 +2,8 @@
   flake.modules.nixvim.base.plugins.barbar = {
     enable = true;
     keymaps = {
-      next.key = "K";
-      previous.key = "J";
+      next.key = "<leader>k";
+      previous.key = "<leader>j";
       close = {
         key = "X";
         action = "<Cmd>confirm BufferClose<CR>";

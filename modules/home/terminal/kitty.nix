@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.homeModules.kitty =
+  flake.homeModules.terminal.kitty =
     {
       config,
       pkgs,

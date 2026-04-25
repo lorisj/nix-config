@@ -11,9 +11,10 @@
       home.stateVersion = "24.05";
       imports = [
         inputs.nix-colors.homeManagerModules.default
-      ] ++ flakeModuleHelpers.sortedFlatFlakeModules {
+      ]
+      ++ flakeModuleHelpers.sortedNestedFlakeModules {
         output = "homeModules";
-        excludedNames = [ "default" "loris" ];
+        excludedTopLevelNames = [ "default" "loris" ];
       };
     };
 }

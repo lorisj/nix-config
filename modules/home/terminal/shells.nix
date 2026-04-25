@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.homeModules.shells =
+  flake.homeModules.terminal.shells =
     { ... }:
     {
       programs.bash = {

@@ -1,4 +1,4 @@
-# `flake.{sharedModules,darwinModules,nixvimModules}` share one leaf type: `customFlakeModuleType`.
+# `flake.{sharedModules,darwinModules,nixvimModules,homeModules}` share one leaf type: `customFlakeModuleType`.
 { lib, ... }:
 let
   inherit (lib) types;
@@ -26,6 +26,11 @@ in
   };
 
   options.flake.nixvimModules = lib.mkOption {
+    type = types.lazyAttrsOf customFlakeModuleType;
+    default = { };
+  };
+
+  options.flake.homeModules = lib.mkOption {
     type = types.lazyAttrsOf customFlakeModuleType;
     default = { };
   };

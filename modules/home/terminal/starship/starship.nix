@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.homeModules.starship =
+  flake.homeModules.terminal.starship =
     { pkgs, lib, config, ... }:
     let
   colors = config.colorScheme.palette; # colors.base00, ...

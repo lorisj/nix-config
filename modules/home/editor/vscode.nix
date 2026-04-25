@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.homeModules.vscode =
+  flake.homeModules.editor.vscode =
     { ... }:
     {
       programs.vscode = {

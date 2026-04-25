@@ -48,7 +48,7 @@
       apps.zmk.program = "${self'.packages.zmk}/bin/zmk";
     };
 
-  flake.homeModules.zmk =
+  flake.homeModules.devops.zmk =
     { pkgs, ... }:
     {
       home.packages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.zmk ];

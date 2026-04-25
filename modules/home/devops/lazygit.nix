@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.homeModules.lazygit =
+  flake.homeModules.devops.lazygit =
     { pkgs, ... }:
     {
       programs.lazygit = {

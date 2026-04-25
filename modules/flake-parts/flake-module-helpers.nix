@@ -1,20 +1,8 @@
 # Binds `lib` + `self` once so other flake modules can use `flakeModuleHelpers.*` without importing lib paths or passing `self`.
-# `flake.{sharedModules,darwinModules,nixvimModules}` are declared in `module-system.nix`.
+# `flake.{sharedModules,darwinModules,nixvimModules,homeModules}` are declared in `module-system.nix`.
 { lib, self, ... }:
 {
   config._module.args.flakeModuleHelpers = {
-    # Top-level children of `self.<output>` only (no recursion). Used for `homeModules` aggregation.
-    sortedFlatFlakeModules =
-      { output, excludedNames }:
-      let
-        names = lib.sort lib.lessThan (
-          lib.attrNames (
-            lib.filterAttrs (name: _: ! builtins.elem name excludedNames) self.${output}
-          )
-        );
-      in
-      map (name: self.${output}.${name}) names;
-
     # takes output="darwinModules". Then looks for every "darwinModules.<something>" and collects them into a flattened list.
     sortedNestedFlakeModules =
       { output, excludedTopLevelNames }:

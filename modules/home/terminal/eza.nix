@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.homeModules.eza =
+  flake.homeModules.terminal.eza =
     { ... }:
     let
       shellAliases = {

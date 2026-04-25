@@ -30,7 +30,7 @@
       };
     };
 
-  flake.homeModules.slackatui =
+  flake.homeModules.devops.slackatui =
     { pkgs, ... }:
     {
       home.packages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.slackatui ];

@@ -4,7 +4,7 @@
   ...
 }:
 {
-  flake.homeModules.direnv =
+  flake.homeModules.devops.direnv =
     {
       config,
       lib,

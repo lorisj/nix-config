@@ -1,6 +1,6 @@
 {  ... }:
 {
-  flake.homeModules.cursor =
+  flake.homeModules.editor.cursor =
     { pkgs, ... }:
     {
 

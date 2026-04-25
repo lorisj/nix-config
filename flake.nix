@@ -27,10 +27,7 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [
-        inputs.home-manager.flakeModules.home-manager
-      ]
-      ++ (inputs.nix-helpers.lib.find-all-files-by-name ./hosts "configuration.nix")
+      imports = (inputs.nix-helpers.lib.find-all-files-by-name ./hosts "configuration.nix")
       ++ (inputs.nix-helpers.lib.find-nix-files ./modules)
       ++ (inputs.nix-helpers.lib.find-nix-files ./users);
       systems = [

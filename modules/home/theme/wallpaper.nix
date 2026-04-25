@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.homeModules.wallpaper =
+  flake.homeModules.theme.wallpaper =
     { lib, ... }:
     {
       options.wallpaperPath = lib.mkOption {

@@ -1,7 +1,7 @@
 { ... }:
 {
 
-  flake.homeModules.stylix =
+  flake.homeModules.theme.stylix =
     { config, lib, ... }:
     {
       config = {

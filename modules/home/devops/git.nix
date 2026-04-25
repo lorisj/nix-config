@@ -4,7 +4,7 @@
   ...
 }:
 {
-  flake.homeModules.git =
+  flake.homeModules.devops.git =
     { config, lib, ... }:
     {
       options.gitConfig = lib.mkOption {

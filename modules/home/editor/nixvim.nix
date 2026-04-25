@@ -5,7 +5,7 @@
   ...
 }:
 {
-  flake.homeModules.nixvim =
+  flake.homeModules.editor.nixvim =
     { config, pkgs, ... }:
     let
       # base16 colorscheme expects #color; nix-colors palette has hex without #

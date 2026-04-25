@@ -1,5 +1,5 @@
-{
-  flake.modules.nixvim.base =
+{ ... } : {
+  flake.nixvimModules.plugins.typst =
     { pkgs, ... }:
     {
       plugins.lsp.servers.tinymist.enable = true;

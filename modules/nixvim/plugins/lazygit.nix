@@ -29,7 +29,7 @@ let
   '';
 in
 {
-  flake.modules.nixvim.base = {
+  flake.nixvimModules.plugins.lazygit = { ... }: {
     plugins.lazygit = {
       enable = true;
     };

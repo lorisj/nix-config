@@ -1,6 +1,7 @@
 { ... }:
 {
-  flake.modules.nixvim.base.plugins = {
+  flake.nixvimModules.plugins.completions = { ... }: {
+    plugins = {
     luasnip.enable = true;
     lspkind = {
       enable = true;
@@ -45,4 +46,5 @@
 
   };
 
+  };
 }

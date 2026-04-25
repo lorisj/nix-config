@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
 
-  flake.modules.nixvim.base = {
+  flake.nixvimModules.plugins.flash = { ... }: {
     plugins.flash = {
       enable = true;
     };

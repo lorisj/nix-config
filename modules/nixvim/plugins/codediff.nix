@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.modules.nixvim.base = {
+  flake.nixvimModules.plugins.codediff = { ... }: {
     plugins.gitsigns = {
       enable = true;
       settings = {

@@ -1,5 +1,5 @@
-{
-  flake.modules.nixvim.base =
+{ ... } : {
+  flake.nixvimModules.plugins.claude-code =
     { pkgs, ... }:
     {
       extraPlugins = [

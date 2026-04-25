@@ -1,7 +1,8 @@
 { ... }:
 # { lib, ...}:
 {
-  flake.modules.nixvim.base.plugins.lsp = {
+  flake.nixvimModules.plugins.lsp = { ... }: {
+    plugins.lsp = {
     enable = true;
     inlayHints = true;
 
@@ -90,5 +91,6 @@
         };
       };
     };
+  };
   };
 }

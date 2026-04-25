@@ -1,5 +1,6 @@
+{ ... }:
 {
-  flake.modules.nixvim.base = {
+  flake.nixvimModules.plugins.floaterm = { ... }: {
     plugins.floaterm = {
       enable = true;
       settings = {

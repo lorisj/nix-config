@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.modules.nixvim.base = {
+  flake.nixvimModules.plugins.context = { ... }: {
     plugins.treesitter-context.enable = true;
     keymaps = [
       {

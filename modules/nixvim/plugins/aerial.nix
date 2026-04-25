@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.modules.nixvim.base = {
+  flake.nixvimModules.plugins.aerial = { ... }: {
     plugins.aerial = {
       enable = true;
       settings = {

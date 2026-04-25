@@ -1,8 +1,9 @@
-{...} : {
-
-    flake.modules.nixvim.base.plugins.lualine = {
-enable = true;
-    settings = {
+{ ... }:
+{
+  flake.nixvimModules.plugins.lualine = { ... }: {
+    plugins.lualine = {
+      enable = true;
+      settings = {
       options.globalstatus = true;
 
       # +-------------------------------------------------+
@@ -47,6 +48,6 @@ enable = true;
         ];
       };
     };
-
-    };
+  };
+  };
 }

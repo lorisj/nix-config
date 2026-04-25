@@ -1,6 +1,7 @@
+{ ... }:
 {
 
-  flake.modules.nixvim.base = {
+  flake.nixvimModules.plugins.neotree = { ... }: {
     keymaps = [
       {
         mode = ["n" "t"];

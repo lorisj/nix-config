@@ -1,5 +1,6 @@
-{...} : {
-  flake.modules.nixvim.base = {
+{ ... }:
+{
+  flake.nixvimModules.keymappings = { ... }: {
     globals = {
       mapleader = " ";
       maplocalleader = " ";

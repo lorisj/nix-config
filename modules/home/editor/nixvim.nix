@@ -1,13 +1,9 @@
 {
-  config,
   inputs,
   lib,
+  self,
   ...
 }:
-let
-  # Captured from flake config (outer scope); inner scope only has home-manager config.
-  nixvimBase = config.flake.modules.nixvim.base;
-in
 {
   flake.homeModules.nixvim =
     { config, pkgs, ... }:
@@ -47,7 +43,7 @@ in
         inherit pkgs;
         module = {
           imports = [
-            nixvimBase
+            self.nixvimModules.default
             paletteModule
           ];
         };

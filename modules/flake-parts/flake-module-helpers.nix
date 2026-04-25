@@ -1,17 +1,9 @@
 # Binds `lib` + `self` once so other flake modules can use `flakeModuleHelpers.*` without importing lib paths or passing `self`.
-# Declares `flake.sharedModules` so many flake-parts files can set distinct paths (e.g. `sharedModules.theme.stylix`) and merge; see
-# `modules/nixosModules.nix` in flake-parts.
+# `flake.{sharedModules,darwinModules,nixvimModules}` are declared in `module-system.nix`.
 { lib, self, ... }:
 {
-  options.flake = {
-    sharedModules = lib.mkOption {
-      type = lib.types.lazyAttrsOf (lib.types.lazyAttrsOf lib.types.deferredModule);
-      default = { };
-    };
-  };
-
   config._module.args.flakeModuleHelpers = {
-    # Direct children of `self.<output>` are modules; use `excludedNames` for aggregators and per-user modules.
+    # Top-level children of `self.<output>` only (no recursion). Used for `homeModules` aggregation.
     sortedFlatFlakeModules =
       { output, excludedNames }:
       let

@@ -1,5 +1,7 @@
+{ ... }:
 {
-  flake.modules.nixvim.base.plugins.barbar = {
+  flake.nixvimModules.plugins.barbar = { ... }: {
+    plugins.barbar = {
     enable = true;
     keymaps = {
       next.key = "<leader>k";
@@ -9,5 +11,6 @@
         action = "<Cmd>confirm BufferClose<CR>";
       };
     };
+  };
   };
 }

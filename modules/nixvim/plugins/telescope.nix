@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.modules.nixvim.base = { pkgs, ... }:{
+  flake.nixvimModules.plugins.telescope = { pkgs, ... }: {
     extraPackages = with pkgs; [ ripgrep fd ];
 
     plugins.telescope = {

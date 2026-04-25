@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.modules.nixvim.base = {
+  flake.nixvimModules.plugins.trouble = { ... }: {
     plugins.trouble = {
       enable = true;
       settings = {

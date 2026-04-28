@@ -10,25 +10,12 @@
     {
       # Dock / Spotlight / Finder: Launch Services does not pass argv; this file
       # supplies CLI flags (see kitty --help --start-as).
-      xdg.configFile."kitty/macos-launch-services-cmdline" = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
-        text = "--start-as=maximized\n";
-      };
+      # xdg.configFile."kitty/macos-launch-services-cmdline" = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+      #   text = "--start-as=maximized\n";
+      # };
 
       programs.kitty = {
         enable = true;
-
-        # Shell / `nix run` / anything that executes $out/bin/kitty — unlike
-        # macos-launch-services-cmdline, which only applies to GUI launches.
-        package = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
-          pkgs.symlinkJoin {
-            name = "kitty-wrapped";
-            paths = [ pkgs.kitty ];
-            nativeBuildInputs = [ pkgs.makeWrapper ];
-            postBuild = ''
-              wrapProgram $out/bin/kitty --add-flags "--start-as=maximized"
-            '';
-          }
-        );
 
         font = lib.mkForce {
           package = pkgs.iosevka;
@@ -36,7 +23,7 @@
           size = 16.0;
         };
 
-        shellIntegration.mode = "no-cursor";
+        #shellIntegration.mode = "no-cursor";
 
         settings = {
           italic_font = "auto";
@@ -55,12 +42,21 @@
           cursor_trail_decay = "0.1 0.2";
 
           remember_window_size = false;
-          repaint_delay = 10;
-          input_delay = 3;
 
           open_url_with = "default";
-          #term = "xterm-kitty";
-          term = "xterm";
+
+          # === Trying to fix issues w/ repainting / etc ===
+
+          #term = "xterm";
+          #term = "xterm-256color";
+          term = "xterm-kitty";
+          disable_ligatures = "always";
+          repaint_delay = 8;
+          input_delay = 0;
+          sync_to_monitor = "yes";
+          macos_render_timer = 10;
+
+          # =======
 
           window_border_width = 0;
           window_margin_width = 15;

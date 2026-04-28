@@ -46,6 +46,10 @@
             "3"
             "4"
             "5"
+            "6"
+            "7"
+            "8"
+            "9"
           ];
 
           "key-mapping".preset = "qwerty";
@@ -69,11 +73,19 @@
             "${m}-3" = "workspace 3";
             "${m}-4" = "workspace 4";
             "${m}-5" = "workspace 5";
+            "${m}-6" = "workspace 6";
+            "${m}-7" = "workspace 7";
+            "${m}-8" = "workspace 8";
+            "${m}-9" = "workspace 9";
             "${m}-shift-1" = "move-node-to-workspace 1";
             "${m}-shift-2" = "move-node-to-workspace 2";
             "${m}-shift-3" = "move-node-to-workspace 3";
             "${m}-shift-4" = "move-node-to-workspace 4";
             "${m}-shift-5" = "move-node-to-workspace 5";
+            "${m}-shift-6" = "move-node-to-workspace 6";
+            "${m}-shift-7" = "move-node-to-workspace 7";
+            "${m}-shift-8" = "move-node-to-workspace 8";
+            "${m}-shift-9" = "move-node-to-workspace 9";
             # "${m}-tab" = "workspace-back-and-forth";
 
             # TODO: move into option

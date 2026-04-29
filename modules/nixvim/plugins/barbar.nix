@@ -1,16 +1,18 @@
 { ... }:
 {
   flake.nixvimModules.plugins.barbar = { ... }: {
-    plugins.barbar = {
-    enable = true;
-    keymaps = {
-      next.key = "<leader>k";
-      previous.key = "<leader>j";
-      close = {
-        key = "X";
-        action = "<Cmd>confirm BufferClose<CR>";
+    config = {
+      plugins.barbar = {
+        enable = true;
+        keymaps = {
+          next.key = "<leader>k";
+          previous.key = "<leader>j";
+          close = {
+            key = "X";
+            action = "<Cmd>confirm BufferClose<CR>";
+          };
+        };
       };
     };
-  };
   };
 }

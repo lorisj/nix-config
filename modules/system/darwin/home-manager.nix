@@ -9,20 +9,21 @@ in
       imports = [
         inputs.home-manager.darwinModules.home-manager
       ];
+      config = {
+        system.primaryUser =
+          if userNames == [ ] then
+            throw "flake.userConfig must name at least one user for darwin"
+          else
+            builtins.head userNames;
 
-      system.primaryUser =
-        if userNames == [ ] then
-          throw "flake.userConfig must name at least one user for darwin"
-        else
-          builtins.head userNames;
-
-      users.users = builtins.listToAttrs (
-        builtins.map (userName: {
-          name = userName;
-          value = {
-            home = "/Users/${userName}";
-          };
-        }) userNames
-      );
+        users.users = builtins.listToAttrs (
+          builtins.map (userName: {
+            name = userName;
+            value = {
+              home = "/Users/${userName}";
+            };
+          }) userNames
+        );
+      };
     };
 }

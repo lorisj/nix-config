@@ -6,20 +6,22 @@
       userNames = lib.sort lib.lessThan (lib.attrNames self.userConfig);
     in
     {
-      home-manager.useGlobalPkgs = true;
-      home-manager.sharedModules = [
-        self.homeModules.default
-      ];
+      config = {
+        home-manager.useGlobalPkgs = true;
+        home-manager.sharedModules = [
+          self.homeModules.default
+        ];
 
-      home-manager.users = builtins.listToAttrs (
-        builtins.map (userName: {
-          name = userName;
-          value = {
-            imports = [
-              self.userConfig.${userName}.module
-            ];
-          };
-        }) userNames
-      );
+        home-manager.users = builtins.listToAttrs (
+          builtins.map (userName: {
+            name = userName;
+            value = {
+              imports = [
+                self.userConfig.${userName}.module
+              ];
+            };
+          }) userNames
+        );
+      };
     };
 }

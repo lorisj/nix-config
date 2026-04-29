@@ -1,0 +1,72 @@
+---
+description: Nix config is flake-parts modules; inner modules use explicit config
+globs: "**/*.nix"
+alwaysApply: false
+---
+
+# Nix modules: flake-parts and explicit `config`
+
+## Flake-parts (fp) modules
+
+**Everything** in this repo that defines configuration should be a **flake-parts module**: a Nix file that `flake-parts` imports (e.g. under `modules/`, `users/`, `hosts/`) and that returns an attribute set of `flake`, `perSystem`, `options`, etc. Do not add ad-hoc `.nix` files that are never imported by the flake, or bypass the module system for “one-off” config. New features belong in a new (or existing) fp module that wires into `flake.*` or `perSystem` as the rest of the tree does.
+
+## Inner modules: use `config` for settings
+
+Leaf modules set `flake.{sharedModules,darwinModules,nixosModules,homeModules,nixvimModules}` (and `flake.userConfig.*.module` for Home Manager users). Those use **inner** NixOS-style module functions.
+
+## Rule
+
+In the **inner** module (the function body after `= { ... }:`), only these may appear at the top level next to each other:
+
+- `imports`
+- `options`
+- `meta`
+- `_module` (or other module-system escape hatches)
+
+**All real configuration** (`programs`, `services`, `home`, `environment`, `users`, `nix`, `nixpkgs`, `home-manager`, nixvim `plugins` / `globals` / `keymaps` / `opts`, etc.) must live inside an explicit:
+
+```nix
+config = {
+  # settings here
+};
+```
+
+Use `config = lib.mkMerge [ ... ]` or `config = lib.mkIf cond { ... }` when you need merge or conditionals.
+
+## Examples
+
+```nix
+# Good
+{ ... }:
+{
+  flake.homeModules.example = { ... }: {
+    imports = [ ./other.nix ];
+    config = {
+      programs.git.enable = true;
+    };
+  };
+}
+
+# Bad (shorthand config at top level)
+{ ... }:
+{
+  flake.homeModules.example = { ... }: {
+    imports = [ ./other.nix ];
+    programs.git.enable = true;
+  };
+}
+```
+
+```nix
+# Good (nixvim inner module)
+{ ... }:
+{
+  flake.nixvimModules.plugins.foo = { ... }: {
+    config = {
+      plugins.foobar.enable = true;
+    };
+  };
+}
+```
+
+**Outer** fp modules (only set `flake.*` or `perSystem`, no inner `= { ... }:`) are not “inner” modules. The `config` wrapper rule applies to **inner** submodule bodies (NixOS, Home Manager, nix-darwin, nixvim) that implement options and config.

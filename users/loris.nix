@@ -1,7 +1,6 @@
-{ inputs, flake, ... }:
+{ inputs, ... }:
 {
-
-  flake.homeModules.loris =
+  flake.userConfig.loris.module =
     { ... }:
     {
       gitConfig = {

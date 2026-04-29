@@ -14,7 +14,7 @@
       ]
       ++ flakeModuleHelpers.sortedNestedFlakeModules {
         output = "homeModules";
-        excludedTopLevelNames = [ "default" "loris" ];
+        excludedTopLevelNames = [ "default" ];
       };
     };
 }

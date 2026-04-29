@@ -1,11 +1,6 @@
-{
-  self,
-  inputs,
-  ...
-}:
+{ lib, self, inputs, ... }:
 let
-  # TODO: better way
-  users = [ "loris" ];
+  userNames = lib.sort lib.lessThan (lib.attrNames self.userConfig);
 in
 {
   flake.darwinModules.home-manager =
@@ -15,12 +10,11 @@ in
         inputs.home-manager.darwinModules.home-manager
       ];
 
-      home-manager.useGlobalPkgs = true;
-      home-manager.sharedModules = [
-        self.homeModules.default
-      ];
-
-      system.primaryUser = builtins.head users;
+      system.primaryUser =
+        if userNames == [ ] then
+          throw "flake.userConfig must name at least one user for darwin"
+        else
+          builtins.head userNames;
 
       users.users = builtins.listToAttrs (
         builtins.map (userName: {
@@ -28,18 +22,7 @@ in
           value = {
             home = "/Users/${userName}";
           };
-        }) users
-      );
-
-      home-manager.users = builtins.listToAttrs (
-        builtins.map (userName: {
-          name = userName;
-          value = {
-            imports = [
-              self.homeModules.${userName}
-            ];
-          };
-        }) users
+        }) userNames
       );
     };
 }

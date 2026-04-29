@@ -30,6 +30,7 @@ let
 in
 {
   flake.nixvimModules.plugins.lazygit = { ... }: {
+    config = {
     plugins.lazygit = {
       enable = true;
     };
@@ -41,5 +42,6 @@ in
         options.desc = "LazyGit toggle";
       }
     ];
+    };
   };
 }

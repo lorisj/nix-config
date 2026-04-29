@@ -1,6 +1,7 @@
 { ... }:
 {
   flake.nixvimModules.plugins.telescope = { pkgs, ... }: {
+    config = {
     extraPackages = with pkgs; [ ripgrep fd ];
 
     plugins.telescope = {
@@ -37,6 +38,7 @@
         end
       '';
       desc = "Search for TODO in project";
+    };
     };
   };
 }

@@ -2,6 +2,7 @@
 {
 
   flake.nixvimModules.plugins.neotree = { ... }: {
+    config = {
     keymaps = [
       {
         mode = ["n" "t"];
@@ -31,6 +32,6 @@
       };
 
     };
+    };
   };
-
 }

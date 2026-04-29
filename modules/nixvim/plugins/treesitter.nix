@@ -1,6 +1,7 @@
 { ... }:
 {
   flake.nixvimModules.plugins.treesitter = { ... }: {
+    config = {
     plugins.treesitter = {
       enable = true;
       nixvimInjections = true;
@@ -8,6 +9,7 @@
         #highlight.enable = true;
         indend.enable = true;
       };
+    };
     };
   };
 }

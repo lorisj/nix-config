@@ -1,6 +1,7 @@
 { ... }:
 {
   flake.nixvimModules.plugins.completions = { ... }: {
+    config = {
     plugins = {
     luasnip.enable = true;
     lspkind = {
@@ -46,5 +47,6 @@
 
   };
 
+    };
   };
 }

@@ -1,12 +1,14 @@
 { ... }:
 {
   flake.nixvimModules.plugins.comment = { ... }: {
-    plugins.comment = {
-    enable = true;
-    settings = {
-      opleader.line = "<leader>/";
-      toggler.line = "<leader>/";
+    config = {
+      plugins.comment = {
+        enable = true;
+        settings = {
+          opleader.line = "<leader>/";
+          toggler.line = "<leader>/";
+        };
+      };
     };
-  };
   };
 }

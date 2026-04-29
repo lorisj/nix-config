@@ -1,6 +1,7 @@
 { ... }:
 {
   flake.nixvimModules.plugins.trouble = { ... }: {
+    config = {
     plugins.trouble = {
       enable = true;
       settings = {
@@ -44,5 +45,6 @@
         options = { desc = "goto references (trouble)"; silent = true; };
       }
     ];
+    };
   };
 }

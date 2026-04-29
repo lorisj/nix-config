@@ -1,6 +1,7 @@
 { ... }:
 {
   flake.nixvimModules.plugins.codediff = { ... }: {
+    config = {
     plugins.gitsigns = {
       enable = true;
       settings = {
@@ -28,5 +29,6 @@
         options = { desc = "side-by-side git diff"; silent = true; };
       }
     ];
+    };
   };
 }

@@ -1,7 +1,8 @@
 { ... }:
 {
   flake.nixvimModules.plugins.aerial = { ... }: {
-    plugins.aerial = {
+    config = {
+      plugins.aerial = {
       enable = true;
       settings = {
         attach_mode = "global";
@@ -49,5 +50,6 @@
       }
     ];
 
+    };
   };
 }

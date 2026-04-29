@@ -2,6 +2,7 @@
 {
 
   flake.nixvimModules.plugins.flash = { ... }: {
+    config = {
     plugins.flash = {
       enable = true;
     };
@@ -15,5 +16,6 @@
       }
     ];
 
+    };
   };
 }

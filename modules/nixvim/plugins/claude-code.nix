@@ -3,6 +3,7 @@
   flake.nixvimModules.plugins.claude-code =
     { pkgs, ... }:
     {
+      config = {
       extraPlugins = [
         pkgs.vimPlugins.claudecode-nvim
       ];
@@ -49,5 +50,6 @@
           options.desc = "Deny diff";
         }
       ];
+    };
     };
 }

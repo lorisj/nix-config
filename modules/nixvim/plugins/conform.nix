@@ -1,6 +1,7 @@
 { ... }:
 {
   flake.nixvimModules.plugins.conform = { ... }: {
+    config = {
     plugins.conform-nvim = {
       enable = true;
 
@@ -42,5 +43,6 @@
         '';
       }
     ];
+    };
   };
 }

@@ -1,10 +1,11 @@
 { ... }:
 {
   flake.nixvimModules.plugins.lualine = { ... }: {
-    plugins.lualine = {
-      enable = true;
-      settings = {
-      options.globalstatus = true;
+    config = {
+      plugins.lualine = {
+        enable = true;
+        settings = {
+          options.globalstatus = true;
 
       # +-------------------------------------------------+
       # | A | B | C                             X | Y | Z |
@@ -46,6 +47,7 @@
           "fileformat"
           "filetype"
         ];
+        };
       };
     };
   };

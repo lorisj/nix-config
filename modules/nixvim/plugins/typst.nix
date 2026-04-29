@@ -2,6 +2,7 @@
   flake.nixvimModules.plugins.typst =
     { pkgs, ... }:
     {
+      config = {
       plugins.lsp.servers.tinymist.enable = true;
 
       extraPlugins = [
@@ -25,5 +26,6 @@
           '';
         }
       ];
+    };
     };
 }

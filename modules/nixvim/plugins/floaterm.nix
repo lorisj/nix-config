@@ -1,6 +1,7 @@
 { ... }:
 {
   flake.nixvimModules.plugins.floaterm = { ... }: {
+    config = {
     plugins.floaterm = {
       enable = true;
       settings = {
@@ -23,5 +24,6 @@
         options.desc = "Toggle terminal";
       }
     ];
+    };
   };
 }

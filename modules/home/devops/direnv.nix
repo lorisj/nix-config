@@ -12,11 +12,12 @@
       ...
     }:
     {
-      programs.direnv = {
-        enable = true;
-        enableBashIntegration = true;
-        enableZshIntegration = true;
+      config = {
+        programs.direnv = {
+          enable = true;
+          enableBashIntegration = true;
+          enableZshIntegration = true;
+        };
       };
-
     };
 }

@@ -33,6 +33,8 @@
   flake.homeModules.devops.slackatui =
     { pkgs, ... }:
     {
-      home.packages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.slackatui ];
+      config = {
+        home.packages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.slackatui ];
+      };
     };
 }

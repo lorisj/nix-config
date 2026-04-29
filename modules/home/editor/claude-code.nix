@@ -3,9 +3,11 @@
   flake.homeModules.editor.claude-code =
     { pkgs, ... }:
     {
-      home.packages = [
-        pkgs.claude-code
-      ];
+      config = {
+        home.packages = [
+          pkgs.claude-code
+        ];
+      };
     };
 }
 

@@ -51,6 +51,8 @@
   flake.homeModules.devops.zmk =
     { pkgs, ... }:
     {
-      home.packages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.zmk ];
+      config = {
+        home.packages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.zmk ];
+      };
     };
 }

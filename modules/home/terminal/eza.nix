@@ -9,16 +9,18 @@
 
     in
     {
-      programs.eza = {
-        enable = true;
-      };
+      config = {
+        programs.eza = {
+          enable = true;
+        };
 
-      programs.bash = {
-        inherit shellAliases;
-      };
+        programs.bash = {
+          inherit shellAliases;
+        };
 
-      programs.zsh = {
-        inherit shellAliases;
+        programs.zsh = {
+          inherit shellAliases;
+        };
       };
     };
 

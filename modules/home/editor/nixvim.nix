@@ -53,18 +53,20 @@
       nixvimExe = lib.getExe nixvim;
     in
     {
-      # So Nerd Font from home.packages is installed where macOS/GUI apps see it (e.g. ~/Library/Fonts/HomeManager).
-      fonts.fontconfig.enable = true;
-      home.packages = [
-        nixvim
-        pkgs.nerd-fonts.fira-code
-        pkgs.nixfmt
+      config = {
+        # NOTE: Nerd Font from home.packages is installed where macOS/GUI apps see it (e.g. ~/Library/Fonts/HomeManager).
+        fonts.fontconfig.enable = true;
+        home.packages = [
+          nixvim
+          pkgs.nerd-fonts.fira-code
+          pkgs.nixfmt
 
-      ];
-      home.sessionVariables.EDITOR = nixvimExe;
-      home.shellAliases = {
-        vi = nixvimExe;
-        vim = nixvimExe;
+        ];
+        home.sessionVariables.EDITOR = nixvimExe;
+        home.shellAliases = {
+          vi = nixvimExe;
+          vim = nixvimExe;
+        };
       };
     };
 }

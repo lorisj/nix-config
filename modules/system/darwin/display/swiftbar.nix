@@ -23,19 +23,21 @@ WRAPPER
       '';
     in
     {
-      environment.systemPackages = with pkgs; [
-        swiftbar
-      ];
-      system.defaults.CustomUserPreferences."com.ameba.SwiftBar" = {
-        PluginDirectory = "${pluginDir}";
-        # if this is not set, swiftbar will display "Session Restored ..."
-        Shell = "zsh";
-      };
-      launchd.user.agents.swiftbar = {
-        serviceConfig = {
-          ProgramArguments = [ "${pkgs.swiftbar}/bin/SwiftBar" ];
-          KeepAlive = true;
-          RunAtLoad = true;
+      config = {
+        environment.systemPackages = with pkgs; [
+          swiftbar
+        ];
+        system.defaults.CustomUserPreferences."com.ameba.SwiftBar" = {
+          PluginDirectory = "${pluginDir}";
+          # if this is not set, swiftbar will display "Session Restored ..."
+          Shell = "zsh";
+        };
+        launchd.user.agents.swiftbar = {
+          serviceConfig = {
+            ProgramArguments = [ "${pkgs.swiftbar}/bin/SwiftBar" ];
+            KeepAlive = true;
+            RunAtLoad = true;
+          };
         };
       };
     };

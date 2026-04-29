@@ -51,9 +51,9 @@
           #term = "xterm-256color";
           term = "xterm-kitty";
           disable_ligatures = "always";
-          repaint_delay = 8;
-          input_delay = 0;
-          sync_to_monitor = "yes";
+          repaint_delay = 10;
+          input_delay = 8;
+          sync_to_monitor = "no";
           macos_render_timer = 10;
 
           # =======

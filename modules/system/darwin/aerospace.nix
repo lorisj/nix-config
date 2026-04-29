@@ -20,83 +20,95 @@
         '';
       };
 
-      config.services.aerospace = {
-        enable = true;
-        settings = {
-          # Managed by nix-darwin launchd — must stay empty/false:
-          start-at-login = false;
-          after-login-command = [ ];
+      config = lib.mkMerge [
+        {
+          services.aerospace = {
+            enable = true;
+            settings = {
+              # Managed by nix-darwin launchd — must stay empty/false:
+              start-at-login = false;
+              after-login-command = [ ];
 
-          config-version = 2;
-          accordion-padding = 30;
-          after-startup-command = [ ];
-          default-root-container-layout = "tiles";
-          default-root-container-orientation = "auto";
-          enable-normalization-flatten-containers = true;
-          enable-normalization-opposite-orientation-for-nested-containers = true;
-          exec-on-workspace-change = [ ];
-          on-focus-changed = [ ];
-          on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
-          on-window-detected = [ ];
+              config-version = 2;
+              accordion-padding = 30;
+              after-startup-command = [ ];
+              default-root-container-layout = "tiles";
+              default-root-container-orientation = "auto";
+              enable-normalization-flatten-containers = true;
+              enable-normalization-opposite-orientation-for-nested-containers = true;
+              exec-on-workspace-change = [ ];
+              on-focus-changed = [ ];
+              on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
+              on-window-detected = [ ];
 
-          # Keep empty named workspaces around (matches AeroSpace default-config idea; trimmed list)
-          persistent-workspaces = [
-            "1"
-            "2"
-            "3"
-            "4"
-            "5"
-            "6"
-            "7"
-            "8"
-            "9"
-          ];
+              # Keep empty named workspaces around (matches AeroSpace default-config idea; trimmed list)
+              persistent-workspaces = [
+                "1"
+                "2"
+                "3"
+                "4"
+                "5"
+                "6"
+                "7"
+                "8"
+                "9"
+              ];
 
-          "key-mapping".preset = "qwerty";
+              "key-mapping".preset = "qwerty";
 
-          workspace-to-monitor-force-assignment = { };
+              workspace-to-monitor-force-assignment = { };
 
-          # i3-style: focus, move, workspaces — based on AeroSpace default-config.toml
-          mode.main.binding = {
-            "${m}-j" = "focus left";
-            "${m}-l" = "focus down";
-            "${m}-h" = "focus up";
-            "${m}-k" = "focus right";
-            "${m}-shift-h" = "move up";
-            "${m}-shift-k" = "move right";
-            "${m}-shift-j" = "move left";
-            "${m}-shift-l" = "move right";
-            "${m}-minus" = "resize smart -50";
-            "${m}-equal" = "resize smart +50";
-            "${m}-1" = "workspace 1";
-            "${m}-2" = "workspace 2";
-            "${m}-3" = "workspace 3";
-            "${m}-4" = "workspace 4";
-            "${m}-5" = "workspace 5";
-            "${m}-6" = "workspace 6";
-            "${m}-7" = "workspace 7";
-            "${m}-8" = "workspace 8";
-            "${m}-9" = "workspace 9";
-            "${m}-shift-1" = "move-node-to-workspace 1";
-            "${m}-shift-2" = "move-node-to-workspace 2";
-            "${m}-shift-3" = "move-node-to-workspace 3";
-            "${m}-shift-4" = "move-node-to-workspace 4";
-            "${m}-shift-5" = "move-node-to-workspace 5";
-            "${m}-shift-6" = "move-node-to-workspace 6";
-            "${m}-shift-7" = "move-node-to-workspace 7";
-            "${m}-shift-8" = "move-node-to-workspace 8";
-            "${m}-shift-9" = "move-node-to-workspace 9";
-            # "${m}-tab" = "workspace-back-and-forth";
+              # i3-style: focus, move, workspaces — based on AeroSpace default-config.toml
+              mode.main.binding = {
+                "${m}-j" = "focus left";
+                "${m}-l" = "focus down";
+                "${m}-h" = "focus up";
+                "${m}-k" = "focus right";
+                "${m}-shift-h" = "move up";
+                "${m}-shift-k" = "move right";
+                "${m}-shift-j" = "move left";
+                "${m}-shift-l" = "move right";
+                "${m}-minus" = "resize smart -50";
+                "${m}-equal" = "resize smart +50";
+                "${m}-1" = "workspace 1";
+                "${m}-2" = "workspace 2";
+                "${m}-3" = "workspace 3";
+                "${m}-4" = "workspace 4";
+                "${m}-5" = "workspace 5";
+                "${m}-6" = "workspace 6";
+                "${m}-7" = "workspace 7";
+                "${m}-8" = "workspace 8";
+                "${m}-9" = "workspace 9";
+                "${m}-shift-1" = "move-node-to-workspace 1";
+                "${m}-shift-2" = "move-node-to-workspace 2";
+                "${m}-shift-3" = "move-node-to-workspace 3";
+                "${m}-shift-4" = "move-node-to-workspace 4";
+                "${m}-shift-5" = "move-node-to-workspace 5";
+                "${m}-shift-6" = "move-node-to-workspace 6";
+                "${m}-shift-7" = "move-node-to-workspace 7";
+                "${m}-shift-8" = "move-node-to-workspace 8";
+                "${m}-shift-9" = "move-node-to-workspace 9";
+                # "${m}-tab" = "workspace-back-and-forth";
 
-            # TODO: move into option
-            # -na => open new instance if already running
-            "${m}-enter" = "exec-and-forget open -na kitty";
+                # TODO: move into option
+                # -na => open new instance if already running
+                "${m}-enter" = "exec-and-forget open -na kitty";
 
-            "${m}-b" = ''exec-and-forget open -na "Google Chrome"'';
-            #"${m}-leftSquareBracket" = "workspace --wrap-around prev";
-            #"${m}-rightSquareBracket" = "workspace --wrap-around next";
+                "${m}-b" = ''exec-and-forget open -na "Google Chrome"'';
+                #"${m}-leftSquareBracket" = "workspace --wrap-around prev";
+                #"${m}-rightSquareBracket" = "workspace --wrap-around next";
+              };
+            };
           };
-        };
-      };
+        }
+        (lib.mkIf (m == "cmd") {
+          # Frees ⌘⇧4 for `move-node-to-workspace` (id 30 = "Save picture of selected area" / saveSelectionToFile)
+          system.defaults.CustomUserPreferences."com.apple.symbolichotkeys" = {
+            AppleSymbolicHotKeys = {
+              "30".enabled = false;
+            };
+          };
+        })
+      ];
     };
 }

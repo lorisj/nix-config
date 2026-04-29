@@ -1,4 +1,5 @@
-{ ... } : {
+{ ... }:
+{
   flake.nixvimModules.plugins.claude-code =
     { pkgs, ... }:
     {
@@ -14,7 +15,10 @@
       '';
       keymaps = [
         {
-          mode = ["n" "t"];
+          mode = [
+            "n"
+            "t"
+          ];
           key = "<tab>c";
           # if focused close, else focus/open if needed
           action = "<cmd>ClaudeCodeFocus<cr>";

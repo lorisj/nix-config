@@ -8,7 +8,6 @@
     { ... }:
     {
       imports = [
-        self.darwinModules.home-manager
       ]
       ++ flakeModuleHelpers.sortedNestedFlakeModules {
         output = "sharedModules";
@@ -18,7 +17,6 @@
         output = "darwinModules";
         excludedTopLevelNames = [
           "default"
-          "home-manager"
         ];
       };
     };

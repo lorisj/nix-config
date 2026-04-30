@@ -102,10 +102,13 @@
           };
         }
         (lib.mkIf (m == "cmd") {
-          # Frees ⌘⇧4 for `move-node-to-workspace` (id 30 = "Save picture of selected area" / saveSelectionToFile)
+          # Frees ⌘⇧4 / ⌘⇧5 for `move-node-to-workspace`:
+          # 30 = "Save picture of selected area" (saveSelectionToFile)
+          # 184 = "Screenshot and recording options" (Screenshot & Screen Recording)
           system.defaults.CustomUserPreferences."com.apple.symbolichotkeys" = {
             AppleSymbolicHotKeys = {
               "30".enabled = false;
+              "184".enabled = false;
             };
           };
         })

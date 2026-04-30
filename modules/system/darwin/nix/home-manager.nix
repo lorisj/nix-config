@@ -3,7 +3,7 @@ let
   userNames = lib.sort lib.lessThan (lib.attrNames self.userConfig);
 in
 {
-  flake.darwinModules.home-manager =
+  flake.darwinModules.nix.home-manager =
     { ... }:
     {
       imports = [

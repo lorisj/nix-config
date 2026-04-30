@@ -4,6 +4,32 @@
     { config, ... }:
     let
       m = config.displayModKey;
+      workspaces = [
+        0
+        1
+        2
+        3
+        4
+        5
+        6
+        7
+        8
+        9
+      ];
+      # bindings for switching workspaces
+      persistent-workspace-names = map builtins.toString workspaces;
+      workspace-switch-bindings = lib.listToAttrs (
+        map (w: {
+          name = "${m}-${builtins.toString w}";
+          value = "workspace ${builtins.toString w}";
+        }) workspaces
+      );
+      move-to-workspace-bindings = lib.listToAttrs (
+        map (w: {
+          name = "${m}-shift-${builtins.toString w}";
+          value = "move-node-to-workspace ${builtins.toString w}";
+        }) workspaces
+      );
     in
     {
       options.displayModKey = lib.mkOption {
@@ -42,62 +68,37 @@
               on-window-detected = [ ];
 
               # Keep empty named workspaces around (matches AeroSpace default-config idea; trimmed list)
-              persistent-workspaces = [
-                "1"
-                "2"
-                "3"
-                "4"
-                "5"
-                "6"
-                "7"
-                "8"
-                "9"
-              ];
+              persistent-workspaces = persistent-workspace-names;
 
               "key-mapping".preset = "qwerty";
 
               workspace-to-monitor-force-assignment = { };
 
               # i3-style: focus, move, workspaces — based on AeroSpace default-config.toml
-              mode.main.binding = {
-                "${m}-j" = "focus left";
-                "${m}-l" = "focus down";
-                "${m}-h" = "focus up";
-                "${m}-k" = "focus right";
-                "${m}-shift-h" = "move up";
-                "${m}-shift-k" = "move right";
-                "${m}-shift-j" = "move left";
-                "${m}-shift-l" = "move right";
-                "${m}-minus" = "resize smart -50";
-                "${m}-equal" = "resize smart +50";
-                "${m}-1" = "workspace 1";
-                "${m}-2" = "workspace 2";
-                "${m}-3" = "workspace 3";
-                "${m}-4" = "workspace 4";
-                "${m}-5" = "workspace 5";
-                "${m}-6" = "workspace 6";
-                "${m}-7" = "workspace 7";
-                "${m}-8" = "workspace 8";
-                "${m}-9" = "workspace 9";
-                "${m}-shift-1" = "move-node-to-workspace 1";
-                "${m}-shift-2" = "move-node-to-workspace 2";
-                "${m}-shift-3" = "move-node-to-workspace 3";
-                "${m}-shift-4" = "move-node-to-workspace 4";
-                "${m}-shift-5" = "move-node-to-workspace 5";
-                "${m}-shift-6" = "move-node-to-workspace 6";
-                "${m}-shift-7" = "move-node-to-workspace 7";
-                "${m}-shift-8" = "move-node-to-workspace 8";
-                "${m}-shift-9" = "move-node-to-workspace 9";
-                # "${m}-tab" = "workspace-back-and-forth";
+              mode.main.binding =
+                {
+                  "${m}-j" = "focus left";
+                  "${m}-l" = "focus down";
+                  "${m}-h" = "focus up";
+                  "${m}-k" = "focus right";
+                  "${m}-shift-h" = "move up";
+                  "${m}-shift-k" = "move right";
+                  "${m}-shift-j" = "move left";
+                  "${m}-shift-l" = "move right";
+                  "${m}-minus" = "resize smart -50";
+                  "${m}-equal" = "resize smart +50";
+                  # "${m}-tab" = "workspace-back-and-forth";
 
-                # TODO: move into option
-                # -na => open new instance if already running
-                "${m}-enter" = "exec-and-forget open -na kitty";
+                  # TODO: move into option
+                  # -na => open new instance if already running
+                  "${m}-enter" = "exec-and-forget open -na kitty";
 
-                "${m}-b" = ''exec-and-forget open -na "Google Chrome"'';
-                #"${m}-leftSquareBracket" = "workspace --wrap-around prev";
-                #"${m}-rightSquareBracket" = "workspace --wrap-around next";
-              };
+                  "${m}-b" = ''exec-and-forget open -na "Google Chrome"'';
+                  #"${m}-leftSquareBracket" = "workspace --wrap-around prev";
+                  #"${m}-rightSquareBracket" = "workspace --wrap-around next";
+                }
+                // workspace-switch-bindings
+                // move-to-workspace-bindings;
             };
           };
         }

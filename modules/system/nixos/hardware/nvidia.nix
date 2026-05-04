@@ -1,6 +1,6 @@
 { ... }:
 {
-    flake.nixosModules.display.hyprland = {config, pkgs, lib, ... } : {
+    flake.nixosModules.hardware.nvidia = { config, pkgs, lib, ... }: {
         options = {
             os.hardware.nvidia.enabled = lib.mkEnableOption "nvidia";
         };

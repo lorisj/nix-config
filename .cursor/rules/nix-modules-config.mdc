@@ -12,7 +12,7 @@ alwaysApply: false
 
 ## Inner modules: use `config` for settings
 
-Leaf modules set `flake.{sharedModules,darwinModules,nixosModules,homeModules,nixvimModules}` (and `flake.userConfig.*.module` for Home Manager users). Those use **inner** NixOS-style module functions.
+Leaf modules set `flake.{osModules,sharedModules,darwinModules,homeModules,nixvimModules}` (and `flake.userConfig.*.module` for Home Manager users). Those use **inner** NixOS-style module functions.
 
 ## Rule
 

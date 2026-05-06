@@ -7,8 +7,8 @@
   imports = [ ./hardware-configuration.nix ];
   flake.nixosConfigurations.laptop = inputs.nixpkgs.lib.nixosSystem {
     modules = [
-      self.nixosModules.hardwareConfigurations.laptop
-      self.nixosModules.default
+      self.osModules.hardwareConfigurations.laptop
+      self.osModules.default
     ];
   };
 }

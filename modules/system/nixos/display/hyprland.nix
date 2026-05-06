@@ -1,6 +1,6 @@
 { ... }:
 {
-    flake.nixosModules.display.hyprland = {config, pkgs, lib, ... } : {
+    flake.osModules.display.hyprland = {config, pkgs, lib, ... } : {
         options = {
             os.display.hyprland.enabled = lib.mkEnableOption "hyprland";
             os.display.hyprland.displayScaling = lib.mkOption {

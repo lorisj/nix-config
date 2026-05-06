@@ -1,5 +1,5 @@
 # Binds `lib` + `self` once so other flake modules can use `flakeModuleHelpers.*` without importing lib paths or passing `self`.
-# `flake.{sharedModules,darwinModules,nixvimModules,homeModules}` are declared in `module-system.nix`.
+# `flake.{osModules,sharedModules,darwinModules,nixvimModules,homeModules}` are declared in `module-system.nix`.
 { lib, self, ... }:
 {
   config._module.args.flakeModuleHelpers = {

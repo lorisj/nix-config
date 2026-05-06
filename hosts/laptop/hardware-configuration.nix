@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.nixosModules.hardwareConfigurations.laptop =
+  flake.osModules.hardwareConfigurations.laptop =
     { config, lib, modulesPath, ... }:
     {
       imports = [

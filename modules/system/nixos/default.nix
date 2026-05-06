@@ -3,12 +3,12 @@
   ...
 }:
 {
-  flake.nixosModules.default =
+  flake.osModules.default =
     { ... }:
     {
       imports = [ ]
       ++ flakeModuleHelpers.sortedNestedFlakeModules {
-        output = "nixosModules";
+        output = "osModules";
         excludedTopLevelNames = [
           "default"
           "hardwareConfigurations"

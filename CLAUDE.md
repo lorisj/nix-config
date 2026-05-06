@@ -11,7 +11,7 @@ The flake is built with [flake-parts](https://flake.parts/). Nix that defines sy
 
 ## Inner modules: wrap settings in `config`
 
-Leaf parts define `flake.{sharedModules,darwinModules,nixosModules,homeModules,nixvimModules}.*` and `flake.userConfig.<name>.module` (Home Manager user profiles). Those are **inner** NixOS-style submodules.
+Leaf parts define `flake.{osModules,sharedModules,darwinModules,homeModules,nixvimModules}.*` and `flake.userConfig.<name>.module` (Home Manager user profiles). Those are **inner** NixOS-style submodules.
 
 ### Required shape
 

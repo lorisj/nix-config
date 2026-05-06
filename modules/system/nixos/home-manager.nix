@@ -16,6 +16,11 @@ in
             value = {
               isNormalUser = true;
               home = "/home/${userName}";
+              extraGroups = [
+                "docker"
+                "networkmanager"
+                "wheel"
+              ];
             };
           }) userNames
         );

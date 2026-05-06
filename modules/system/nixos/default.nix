@@ -9,7 +9,10 @@
       imports = [ ]
       ++ flakeModuleHelpers.sortedNestedFlakeModules {
         output = "nixosModules";
-        excludedTopLevelNames = [ "default" ];
+        excludedTopLevelNames = [
+          "default"
+          "hardwareConfigurations"
+        ];
       }
       ++ flakeModuleHelpers.sortedNestedFlakeModules {
         output = "sharedModules";

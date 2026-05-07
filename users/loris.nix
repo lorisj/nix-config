@@ -7,7 +7,7 @@
         userName = "lorisj";
         userEmail = "lorisjautakas@gmail.com";
       };
-
+      # sorted in order of preference:
       colorScheme = inputs.nix-colors.colorSchemes.circus;
       #colorScheme = inputs.nix-colors.colorSchemes.danqing;
       #colorScheme = inputs.nix-colors.colorSchemes.flat;

@@ -32,7 +32,7 @@
       # Claude Code ~/.claude/themes/<id>.json — keys from upstream theme shape, values from base16 roles.
       ccThemeId = "nix-base16";
       ccThemeColors = {
-        autoAccept = rgb "base09";
+        autoAccept = rgb "base0A";
         bashBorder = rgb "base02";
         claude = rgb "base0C";
         claudeShimmer = rgb "base0C";

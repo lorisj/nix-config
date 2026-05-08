@@ -30,7 +30,7 @@
             bold_font = "auto";
             bold_italic_font = "auto";
             # force bc stylix will try to overwrite this
-            background_opacity = lib.mkForce 0.82;
+            background_opacity = lib.mkForce 0.78;
 
             cursor_shape = "block";
             cursor_blink_interval = 0.5;
@@ -66,6 +66,6 @@
             macos_traditional_fullscreen = true;
           };
         };
+      };
     };
-  };
 }

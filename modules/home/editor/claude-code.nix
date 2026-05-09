@@ -39,7 +39,7 @@
         clawd_body = rgb "base0C";
         claudeBlue_FOR_SYSTEM_SPINNER = rgb "base0D";
         claudeBlueShimmer_FOR_SYSTEM_SPINNER = rgb "base07";
-        permission = rgb "base0C";
+        permission = rgb "base0D";
         permissionShimmer = rgb "base07";
         planMode = rgb "base0E";
         ide = rgb "base05";
@@ -115,35 +115,62 @@
       dirFmt = fmtSeg "base07" "base0A";
       gitFmt = fmtSeg "base07" "base0B";
       modelFmt = fmtSeg "base07" "base0C";
+      # Same as starship `[nix_shell]` (`style = "bg:#base0D fg:#base07"`).
+      ctxFmt = fmtSeg "base07" "base0D";
+      # High context usage: same red role as base16 `base08` (e.g. starship errors).
+      ctxWarnFmt = fmtSeg "base07" "base08";
       timeFmt = fmtSeg "base0E" "base02";
 
       statusLineScript = pkgs.writeShellScript "claude-code-status-line" ''
         set -euo pipefail
-        # stdin: Claude Code status JSON (same shape as Claude sends).
+        # stdin: Claude Code status JSON. One space between each colored block (left-aligned).
 
         input=$(cat)
         dir=$(echo "$input" | jq -r '.workspace.current_dir')
-        dir_short=$(basename "$dir")
+        if git -C "$dir" rev-parse --git-dir >/dev/null 2>&1; then
+          repo=$(basename "$(git -C "$dir" rev-parse --show-toplevel 2>/dev/null)")
+        else
+          repo=$(basename "$dir")
+        fi
+
         git_branch=$(
-          cd "$dir" && git -c core.useBuiltinFSMonitor=false rev-parse --abbrev-ref HEAD 2>/dev/null || true
+          git -C "$dir" -c core.useBuiltinFSMonitor=false rev-parse --abbrev-ref HEAD 2>/dev/null || true
         )
         git_status=$(
-          cd "$dir" && git -c core.useBuiltinFSMonitor=false status --porcelain 2>/dev/null | wc -l | tr -d ' '
+          git -C "$dir" -c core.useBuiltinFSMonitor=false status --porcelain 2>/dev/null | wc -l | tr -d ' '
         )
         time=$(date +%R)
         model=$(echo "$input" | jq -r '.model.display_name')
+        used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
+        remaining_pct=$(echo "$input" | jq -r '.context_window.remaining_percentage // empty')
 
-        seg1=$(printf '${dirFmt}' "$dir_short")
-        seg2=""
+        ginfo=""
         if [ -n "$git_branch" ]; then
           ginfo="$git_branch"
           [ "$git_status" -gt 0 ] && ginfo="$ginfo +$git_status"
-          seg2=$(printf '${gitFmt}' "$ginfo")
         fi
-        seg3=$(printf '${modelFmt}' "$model")
-        seg4=$(printf '${timeFmt}' "⏰ $time")
 
-        echo "''${seg1}''${seg2}''${seg3}''${seg4}"
+        chunks=()
+        chunks+=("$(printf '${dirFmt}' "$repo")")
+        if [ -n "$ginfo" ]; then
+          chunks+=("$(printf '${gitFmt}' "$ginfo")")
+        fi
+        chunks+=("$(printf '${modelFmt}' "$model")")
+        if [ -n "$used_pct" ]; then
+          ctx_warn=0
+          awk "BEGIN{exit !($used_pct+0 > 90)}" >/dev/null 2>&1 && ctx_warn=1
+          if [ -n "$remaining_pct" ]; then
+            awk "BEGIN{exit !($remaining_pct+0 < 10)}" >/dev/null 2>&1 && ctx_warn=1
+          fi
+          if [ "$ctx_warn" -eq 1 ]; then
+            chunks+=("$(printf '${ctxWarnFmt}' "⚠️ $used_pct%")")
+          else
+            chunks+=("$(printf '${ctxFmt}' "$used_pct%")")
+          fi
+        fi
+        chunks+=("$(printf '${timeFmt}' "⏰ $time")")
+
+        ( IFS=' '; printf '%s\n' "''${chunks[*]}")
       '';
     in
     {

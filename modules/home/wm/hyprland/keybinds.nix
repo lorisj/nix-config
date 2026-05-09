@@ -20,10 +20,7 @@
     {
       config = lib.mkIf (pkgs.stdenv.hostPlatform.isLinux && config.wm.hyprland.enable) {
         home.packages =
-          (with pkgs; [
-            hyprlock
-            hyprshot
-          ])
+          (with pkgs; [ hyprlock ])
           ++ lib.optionals config.wm.hyprland.laptopKeybinds [ pkgs.brightnessctl ];
 
         wayland.windowManager.hyprland.settings = {

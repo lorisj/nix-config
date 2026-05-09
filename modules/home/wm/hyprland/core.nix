@@ -53,9 +53,6 @@
             monitor = [
               ",preferred,auto,${builtins.toString config.wm.hyprland.displayScaling}"
             ];
-            exec-once = [
-              "${pkgs.waybar}/bin/waybar"
-            ];
           };
           plugins = [
             pkgs.hyprlandPlugins.hy3

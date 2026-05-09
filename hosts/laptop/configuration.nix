@@ -32,8 +32,8 @@
         system.stateVersion = "25.11";
 
         os.display.hyprland.enabled = true;
-        #nixos.display.hyprland.displayScaling = 2;
-        #nixos.display.hyprland.laptopKeybinds = true;
+        # os.display.hyprland.displayScaling = 2;
+        os.display.hyprland.laptopKeybinds = true;
 
       }
     ];

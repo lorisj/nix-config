@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.homeModules.wm.hyprland =
+  flake.homeModules.wm.hyprland.core =
     { pkgs, lib, osConfig, config, ... }:
     {
       options.wm.hyprland.enable = lib.mkOption {
@@ -25,6 +25,18 @@
           "displayScaling"
         ] 1 osConfig;
         description = "Mirrors NixOS `os.display.hyprland.displayScaling` from `osConfig`.";
+      };
+
+      options.wm.hyprland.laptopKeybinds = lib.mkOption {
+        type = lib.types.bool;
+        readOnly = true;
+        default = lib.attrByPath [
+          "os"
+          "display"
+          "hyprland"
+          "laptopKeybinds"
+        ] false osConfig;
+        description = "Mirrors NixOS `os.display.hyprland.laptopKeybinds` from `osConfig`.";
       };
 
       config = lib.mkIf (pkgs.stdenv.hostPlatform.isLinux && config.wm.hyprland.enable) {

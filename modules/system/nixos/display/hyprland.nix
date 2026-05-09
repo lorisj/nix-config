@@ -8,6 +8,11 @@
                 default = 1;
                 description = "Display scaling factor";
             };
+            os.display.hyprland.laptopKeybinds = lib.mkOption {
+                type = lib.types.bool;
+                default = false;
+                description = "Hyprland bindl for volume, mic, and brightness keys (mirrored into Home Manager).";
+            };
         };
         config = lib.mkIf config.os.display.hyprland.enabled {
             programs.hyprland = {

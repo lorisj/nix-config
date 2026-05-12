@@ -4,9 +4,9 @@
     { config, lib, ... }:
     {
       options = {
-        os.newtwork.firewall.enabled = lib.mkEnableOption "firewall";
+        os.network.firewall.enabled = lib.mkEnableOption "firewall";
       };
-      config = lib.mkIf config.os.nework.firewall.enabled {
+      config = lib.mkIf config.os.network.firewall.enabled {
         networking.firewall = {
           enable = true;
           allowedTCPPorts = [ 3001 ];

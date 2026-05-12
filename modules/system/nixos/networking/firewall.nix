@@ -1,12 +1,12 @@
 { ... }:
 {
-  flake.osModules.network.firewall =
+  flake.osModules.networking.firewall =
     { config, lib, ... }:
     {
       options = {
-        os.network.firewall.enabled = lib.mkEnableOption "firewall";
+        os.networking.firewall.enabled = lib.mkEnableOption "firewall";
       };
-      config = lib.mkIf config.os.network.firewall.enabled {
+      config = lib.mkIf config.os.networking.firewall.enabled {
         networking.firewall = {
           enable = true;
           allowedTCPPorts = [ 3001 ];

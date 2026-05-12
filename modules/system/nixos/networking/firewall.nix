@@ -9,8 +9,10 @@
       config = lib.mkIf config.os.networking.firewall.enabled {
         networking.firewall = {
           enable = true;
-          allowedTCPPorts = [ 3001 ];
-          allowedUDPPorts = [ 3001 ];
+          extraInputRules = ''
+            ip saddr 192.168.50.74 tcp dport 3001 accept
+            tcp dport 3001 drop
+          '';
         };
       };
     };

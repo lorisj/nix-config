@@ -36,6 +36,7 @@
         os.display.hyprland.laptopKeybinds = true;
         os.networking.firewall.enabled = true;
         os.networking.tailscale.enabled = true;
+        os.networking.tailscale.allowedTCPPorts = [ 3001 ];
       }
     ];
   };

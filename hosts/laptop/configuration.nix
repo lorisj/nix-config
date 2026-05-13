@@ -35,7 +35,7 @@
         # os.display.hyprland.displayScaling = 2;
         os.display.hyprland.laptopKeybinds = true;
         os.networking.firewall.enabled = true;
-
+        os.networking.tailscale.enabled = true;
       }
     ];
   };

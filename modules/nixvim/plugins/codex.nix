@@ -78,6 +78,12 @@
                 end
 
                 vim.cmd("CodexToggle")
+                vim.schedule(function()
+                  local buf = vim.api.nvim_get_current_buf()
+                  if vim.bo[buf].buftype == "terminal" or vim.bo[buf].filetype == "codex" then
+                    vim.cmd("startinsert")
+                  end
+                end)
               end
             '';
             options.desc = "Toggle Codex";

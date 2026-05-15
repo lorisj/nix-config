@@ -41,6 +41,9 @@
 
       nixvim = inputs.nixvim.legacyPackages.${pkgs.stdenv.hostPlatform.system}.makeNixvimWithModule {
         inherit pkgs;
+        extraSpecialArgs = {
+          aiAssistant = config.editor.nixvim.aiAssistant;
+        };
         module = {
           imports = [
             self.nixvimModules.default
@@ -53,6 +56,16 @@
       nixvimExe = lib.getExe nixvim;
     in
     {
+      options.editor.nixvim.aiAssistant = lib.mkOption {
+        type = lib.types.enum [
+          "claude-code"
+          "codex"
+          "none"
+        ];
+        default = "claude-code";
+        description = "AI assistant Neovim integration to enable.";
+      };
+
       config = {
         # NOTE: Nerd Font from home.packages is installed where macOS/GUI apps see it (e.g. ~/Library/Fonts/HomeManager).
         fonts.fontconfig.enable = true;

@@ -7,6 +7,7 @@
         userName = "lorisj";
         userEmail = "lorisjautakas@gmail.com";
       };
+      editor.nixvim.aiAssistant = "codex";
       # sorted in order of preference:
       colorScheme = inputs.nix-colors.colorSchemes.circus;
       #colorScheme = inputs.nix-colors.colorSchemes.danqing;

@@ -5,6 +5,9 @@
     {
       packages.nixvim = inputs'.nixvim.legacyPackages.makeNixvimWithModule {
         inherit pkgs;
+        extraSpecialArgs = {
+          aiAssistant = "codex";
+        };
         # Inline aggregate avoids a cycle: `self.nixvimModules.default.*` is not available
         # while `perSystem.packages` is still being resolved for `self`.
         module = {

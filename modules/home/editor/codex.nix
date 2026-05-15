@@ -29,6 +29,10 @@ in
     {
       config = {
         home.packages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.codex ];
+        home.file.".codex/config.toml".text = ''
+          [tui]
+          vim_mode_default = true
+        '';
       };
     };
 }

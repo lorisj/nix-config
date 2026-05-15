@@ -39,10 +39,13 @@
           pattern = [ "*" ];
           command = "if mode() != 'c' | checktime | endif";
         }
-        # prevents claude from being listed in the buffer list
+        # prevents AI assistant terminals from being listed in the buffer list
         {
           event = [ "TermOpen" ];
-          pattern = [ "*bin/claude" ];
+          pattern = [
+            "*bin/claude"
+            "*bin/codex"
+          ];
           command = "set nobuflisted";
         }
       ];

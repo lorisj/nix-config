@@ -57,9 +57,6 @@
               "waybar"
             ];
           };
-          plugins = [
-            pkgs.hyprlandPlugins.hy3
-          ];
         };
       };
     };

@@ -36,7 +36,7 @@
         os.networking.firewall.enabled = true;
         os.networking.tailscale.enabled = true;
         os.networking.tailscale.allowedTCPPorts = [ 3001 ];
-        networking.hostname = "nixos-server";
+        networking.hostName = "nixos-server";
         os.hardware.nvidia.enabled = true;
 
       }

@@ -37,7 +37,7 @@
         os.networking.firewall.enabled = true;
         os.networking.tailscale.enabled = true;
         os.networking.tailscale.allowedTCPPorts = [ 3001 ];
-        networking.hostname = "nixos-laptop";
+        networking.hostName = "nixos-laptop";
       }
     ];
   };

@@ -40,7 +40,7 @@
 
             hardware = {
                 graphics.enable = true;
-                nvidia.modesetting.enable = config.os.display.nvidiaEnabled;
+                nvidia.modesetting.enable = config.os.hardware.nvidia.enabled;
             };
         };
     };

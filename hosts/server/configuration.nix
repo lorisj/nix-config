@@ -35,7 +35,10 @@
         # os.display.hyprland.displayScaling = 2;
         os.networking.firewall.enabled = true;
         os.networking.tailscale.enabled = true;
-        os.networking.tailscale.allowedTCPPorts = [ 3001 ];
+        os.networking.tailscale.allowedTCPPorts = [
+          3001
+          22
+        ];
         networking.hostName = "nixos-server";
         os.hardware.nvidia.enabled = true;
 

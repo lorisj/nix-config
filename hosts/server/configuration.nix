@@ -31,7 +31,7 @@
 
         system.stateVersion = "25.11";
 
-        os.display.hyprland.enabled = true;
+        os.display.hyprland.enabled = false;
         # os.display.hyprland.displayScaling = 2;
         os.networking.firewall.enabled = true;
         os.networking.tailscale.enabled = true;

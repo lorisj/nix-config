@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.homeModules.wm.hyprland.keybinds =
-    { lib, config, pkgs, ... }:
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
     let
       getMTWBind = x: "$mod SHIFT, ${builtins.toString x}, movetoworkspace, ${builtins.toString x}";
       getSWSBind = x: "$mod, ${builtins.toString x}, workspace, ${builtins.toString x}";
@@ -20,27 +25,24 @@
     {
       config = lib.mkIf (pkgs.stdenv.hostPlatform.isLinux && config.wm.hyprland.enable) {
         home.packages =
-          (with pkgs; [ hyprlock ])
-          ++ lib.optionals config.wm.hyprland.laptopKeybinds [ pkgs.brightnessctl ];
+          (with pkgs; [ hyprlock ]) ++ lib.optionals config.wm.hyprland.laptopKeybinds [ pkgs.brightnessctl ];
 
         wayland.windowManager.hyprland.settings = {
-          bind =
-            [
-              "$mod, RETURN, exec, $terminal"
-              "$mod SHIFT, Q, killactive,"
-              "$mod SHIFT, E, exit,"
-              "$mod, M, exec, $fileManager"
-              "$mod, V, togglefloating,"
-              "$mod, R, exec, $menu"
-              "$mod, P, pseudo," # dwindle
-              "$mod, J, togglesplit," # dwindle
-              "$mod, L, exec, bash -c 'hyprlock & sleep 0.2 && systemctl suspend'"
-              "$mod, F, fullscreen"
-              "$mod, B, exec, firefox"
-              "$mod, S, exec, hyprshot -m region -o '$HOME/screenshots'"
-            ]
-            ++ (map getMTWBind workspaceKeys)
-            ++ (map getSWSBind workspaceKeys);
+          bind = [
+            "$mod, RETURN, exec, $terminal"
+            "$mod SHIFT, Q, killactive,"
+            "$mod SHIFT, E, exit,"
+            "$mod, M, exec, $fileManager"
+            "$mod, V, togglefloating,"
+            "$mod, R, exec, $menu"
+            "$mod, P, pseudo," # dwindle
+            "$mod, L, exec, bash -c 'hyprlock & sleep 0.2 && systemctl suspend'"
+            "$mod, F, fullscreen"
+            "$mod, B, exec, firefox"
+            "$mod, S, exec, hyprshot -m region -o '$HOME/screenshots'"
+          ]
+          ++ (map getMTWBind workspaceKeys)
+          ++ (map getSWSBind workspaceKeys);
           bindl =
             if config.wm.hyprland.laptopKeybinds then
               [

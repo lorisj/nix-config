@@ -3,7 +3,12 @@
   # Status-line + Claude Code UI theme use `config.colorScheme.palette` (nix-colors), same idea as starship.
   # Test the script: `nix eval --raw '.#darwinConfigurations.<host>.config.home-manager.users.<user>.programs.claude-code.settings.statusLine.command'` then pipe sample JSON into that path.
   flake.homeModules.editor.claude-code =
-    { config, lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       palette = config.colorScheme.palette;
 
@@ -21,7 +26,8 @@
           b = builtins.bitAnd 255 n;
         };
 
-      rgb = base:
+      rgb =
+        base:
         let
           t = hexToRgb (hexWithHash base);
         in
@@ -181,7 +187,6 @@
         programs.claude-code = {
           enable = true;
           settings = {
-            model = "us.anthropic.claude-sonnet-4-6";
             statusLine = {
               type = "command";
               command = "${statusLineScript}";

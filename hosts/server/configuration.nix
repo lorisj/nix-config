@@ -34,6 +34,7 @@
         os.display.hyprland.enabled = false;
         # os.display.hyprland.displayScaling = 2;
         os.networking.firewall.enabled = true;
+        os.networking.wpaSupplicant.enabled = true;
         os.networking.tailscale.enabled = true;
         os.networking.tailscale.allowedTCPPorts = [
           3001

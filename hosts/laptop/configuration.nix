@@ -35,6 +35,7 @@
         # os.display.hyprland.displayScaling = 2;
         os.display.hyprland.laptopKeybinds = true;
         os.networking.firewall.enabled = true;
+        os.networking.wpaSupplicant.enabled = true;
         os.networking.tailscale.enabled = true;
         os.networking.tailscale.allowedTCPPorts = [ 3001 ];
         networking.hostName = "nixos-laptop";

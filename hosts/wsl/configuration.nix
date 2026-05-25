@@ -19,6 +19,11 @@
         networking.hostName = "nixos-wsl";
         system.stateVersion = "25.11";
         os.hardware.nvidia.enabled = true;
+        os.networking.tailscale.enabled = true;
+        os.networking.tailscale.allowedTCPPorts = [
+          3001
+          22
+        ];
       }
     ];
   };

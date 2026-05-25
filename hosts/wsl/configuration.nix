@@ -9,8 +9,8 @@
     modules = [
       inputs.nixos-wsl.nixosModules.default
       self.osModules.default
+      ./nvidia.nix
       {
-
         wsl = {
           enable = true;
           defaultUser = "loris";

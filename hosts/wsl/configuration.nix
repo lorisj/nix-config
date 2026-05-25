@@ -21,6 +21,7 @@
         os.hardware.nvidia.enabled = true;
         os.networking.tailscale.enabled = true;
         os.networking.tailscale.allowedTCPPorts = [
+          8081
           3001
           22
         ];

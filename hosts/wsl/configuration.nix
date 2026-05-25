@@ -10,9 +10,6 @@
       inputs.nixos-wsl.nixosModules.default
       self.osModules.default
       {
-        home-manager.sharedModules = [
-          inputs.stylix.homeModules.stylix
-        ];
 
         wsl = {
           enable = true;

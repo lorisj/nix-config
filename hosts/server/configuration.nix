@@ -43,7 +43,6 @@
         networking.hostName = "nixos-server";
         os.hardware.nvidia.enabled = true;
         os.networking.ssh.enabled = true;
-
       }
     ];
   };

@@ -14,6 +14,7 @@
         wsl = {
           enable = true;
           defaultUser = "loris";
+          useWindowsDriver = true;
         };
 
         networking.hostName = "nixos-wsl";

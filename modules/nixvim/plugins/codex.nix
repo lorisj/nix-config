@@ -3,11 +3,13 @@
   flake.nixvimModules.plugins.codex =
     {
       aiAssistant ? "claude-code",
+      config,
       lib,
       pkgs,
       ...
     }:
     let
+      navigationPrefix = config.loris.nixvim.navigationPrefix;
       codex-nvim = pkgs.vimUtils.buildVimPlugin {
         name = "codex.nvim";
         src = pkgs.fetchFromGitHub {
@@ -41,9 +43,10 @@
           {
             mode = [
               "n"
+              "i"
               "t"
             ];
-            key = "<tab>c";
+            key = "${navigationPrefix}c";
             action.__raw = ''
               function()
                 local ignored_filetypes = {

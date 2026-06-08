@@ -3,10 +3,14 @@
   flake.nixvimModules.plugins.claude-code =
     {
       aiAssistant ? "claude-code",
+      config,
       lib,
       pkgs,
       ...
     }:
+    let
+      navigationPrefix = config.loris.nixvim.navigationPrefix;
+    in
     {
       config = lib.mkIf (aiAssistant == "claude-code") {
         extraPlugins = [
@@ -23,16 +27,17 @@
           {
             mode = [
               "n"
+              "i"
               "t"
             ];
-            key = "<tab>c";
+            key = "${navigationPrefix}c";
             # if focused close, else focus/open if needed
             action = "<cmd>ClaudeCodeFocus<cr>";
             options.desc = "Toggle Claude Code";
           }
           {
             mode = "v";
-            key = "<tab>c";
+            key = "${navigationPrefix}c";
             action = "<cmd>ClaudeCodeSend<cr>";
             options.desc = "Send to Claude";
           }

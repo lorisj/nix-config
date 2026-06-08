@@ -29,19 +29,28 @@ let
   '';
 in
 {
-  flake.nixvimModules.plugins.lazygit = { ... }: {
-    config = {
-    plugins.lazygit = {
-      enable = true;
+  flake.nixvimModules.plugins.lazygit =
+    { config, ... }:
+    let
+      navigationPrefix = config.loris.nixvim.navigationPrefix;
+    in
+    {
+      config = {
+        plugins.lazygit = {
+          enable = true;
+        };
+        keymaps = [
+          {
+            mode = [
+              "n"
+              "i"
+              "t"
+            ];
+            key = "${navigationPrefix}g";
+            action = toggleLazyGit;
+            options.desc = "LazyGit toggle";
+          }
+        ];
+      };
     };
-    keymaps = [
-      {
-        mode = [ "n" "t" ];
-        key = "<Tab>g";
-        action = toggleLazyGit;
-        options.desc = "LazyGit toggle";
-      }
-    ];
-    };
-  };
 }

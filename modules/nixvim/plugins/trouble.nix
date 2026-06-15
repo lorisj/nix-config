@@ -15,6 +15,7 @@
             keys = {
               j = "next";
               k = "prev";
+              q = false;
               "<cr>" = "jump_close";
             };
           };

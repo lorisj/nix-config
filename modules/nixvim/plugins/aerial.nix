@@ -21,6 +21,7 @@
               "<CR>" = "actions.jump";
               "j" = "actions.down_and_scroll";
               "k" = "actions.up_and_scroll";
+              "q" = false;
               "?" = "actions.show_help";
             };
           };

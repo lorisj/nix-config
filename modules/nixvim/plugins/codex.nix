@@ -49,6 +49,9 @@
             key = "${navigationPrefix}c";
             action.__raw = ''
               function()
+                local codex = require("codex")
+                local codex_state = require("codex.state")
+
                 local ignored_filetypes = {
                   aerial = true,
                   codex = true,
@@ -71,6 +74,31 @@
                   return vim.bo[buf].buftype == "" and not ignored_filetypes[vim.bo[buf].filetype]
                 end
 
+                local function find_codex_window()
+                  if codex_state.win and vim.api.nvim_win_is_valid(codex_state.win) then
+                    return codex_state.win
+                  end
+
+                  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+                    local buf = vim.api.nvim_win_get_buf(win)
+                    if vim.bo[buf].filetype == "codex" then
+                      return win
+                    end
+                  end
+                end
+
+                local current_win = vim.api.nvim_get_current_win()
+                local codex_win = find_codex_window()
+                if codex_win then
+                  if codex_win == current_win then
+                    codex.close()
+                  else
+                    vim.api.nvim_set_current_win(codex_win)
+                    vim.cmd("startinsert")
+                  end
+                  return
+                end
+
                 if not is_editor_window(vim.api.nvim_get_current_win()) then
                   for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
                     if is_editor_window(win) then
@@ -80,7 +108,7 @@
                   end
                 end
 
-                vim.cmd("CodexToggle")
+                codex.open()
                 vim.schedule(function()
                   local buf = vim.api.nvim_get_current_buf()
                   if vim.bo[buf].buftype == "terminal" or vim.bo[buf].filetype == "codex" then

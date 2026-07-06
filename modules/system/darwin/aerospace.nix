@@ -72,33 +72,41 @@
 
               "key-mapping".preset = "qwerty";
 
+              gaps = {
+                inner.horizontal = 15;
+                inner.vertical = 15;
+                outer.left = 30;
+                outer.bottom = 30;
+                outer.right = 30;
+                outer.top = 5;
+              };
+
               workspace-to-monitor-force-assignment = { };
 
               # i3-style: focus, move, workspaces — based on AeroSpace default-config.toml
-              mode.main.binding =
-                {
-                  "${m}-j" = "focus left";
-                  "${m}-l" = "focus down";
-                  "${m}-h" = "focus up";
-                  "${m}-k" = "focus right";
-                  "${m}-shift-h" = "move up";
-                  "${m}-shift-k" = "move right";
-                  "${m}-shift-j" = "move left";
-                  "${m}-shift-l" = "move right";
-                  "${m}-minus" = "resize smart -50";
-                  "${m}-equal" = "resize smart +50";
-                  # "${m}-tab" = "workspace-back-and-forth";
+              mode.main.binding = {
+                "${m}-j" = "focus left";
+                "${m}-l" = "focus down";
+                "${m}-h" = "focus up";
+                "${m}-k" = "focus right";
+                "${m}-shift-h" = "move up";
+                "${m}-shift-k" = "move right";
+                "${m}-shift-j" = "move left";
+                "${m}-shift-l" = "move right";
+                "${m}-minus" = "resize smart -50";
+                "${m}-equal" = "resize smart +50";
+                # "${m}-tab" = "workspace-back-and-forth";
 
-                  # TODO: move into option
-                  # -na => open new instance if already running
-                  "${m}-enter" = "exec-and-forget open -na kitty";
+                # TODO: move into option
+                # -na => open new instance if already running
+                "${m}-enter" = "exec-and-forget open -na kitty";
 
-                  "${m}-b" = ''exec-and-forget open -na "Google Chrome"'';
-                  #"${m}-leftSquareBracket" = "workspace --wrap-around prev";
-                  #"${m}-rightSquareBracket" = "workspace --wrap-around next";
-                }
-                // workspace-switch-bindings
-                // move-to-workspace-bindings;
+                "${m}-b" = ''exec-and-forget open -na "Google Chrome"'';
+                #"${m}-leftSquareBracket" = "workspace --wrap-around prev";
+                #"${m}-rightSquareBracket" = "workspace --wrap-around next";
+              }
+              // workspace-switch-bindings
+              // move-to-workspace-bindings;
             };
           };
         }

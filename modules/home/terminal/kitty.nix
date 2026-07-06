@@ -42,6 +42,7 @@
             cursor_trail_decay = "0.1 0.2";
 
             remember_window_size = false;
+            inactive_text_alpha = 0.55;
 
             open_url_with = "default";
 
@@ -59,7 +60,8 @@
             # =======
 
             window_border_width = 0;
-            window_margin_width = 15;
+            window_margin_width = 10;
+            window_padding_width = 10;
 
             hide_window_decorations = "titlebar-only";
             macos_titlebar_color = "background";

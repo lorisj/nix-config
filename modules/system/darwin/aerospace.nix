@@ -75,9 +75,9 @@
               gaps = {
                 inner.horizontal = 15;
                 inner.vertical = 15;
-                outer.left = 30;
-                outer.bottom = 30;
-                outer.right = 30;
+                outer.left = 20;
+                outer.bottom = 20;
+                outer.right = 20;
                 outer.top = 5;
               };
 

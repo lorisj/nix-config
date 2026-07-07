@@ -38,6 +38,18 @@ in
       config = {
         plugins.lazygit = {
           enable = true;
+          settings = {
+            floating_window_border_chars = [
+              "╭"
+              "━"
+              "╮"
+              "┃"
+              "╯"
+              "━"
+              "╰"
+              "┃"
+            ];
+          };
         };
         keymaps = [
           {

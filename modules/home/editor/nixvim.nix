@@ -37,6 +37,36 @@
           enable = true;
           colorscheme = colors;
         };
+
+        opts.fillchars = {
+          eob = " ";
+          vert = "┃";
+          horiz = "━";
+          horizup = "┻";
+          horizdown = "┳";
+          vertleft = "┫";
+          vertright = "┣";
+          verthoriz = "╋";
+        };
+
+        highlight = {
+          WinSeparator = {
+            fg = colors.base05;
+            bg = colors.base00;
+          };
+          EndOfBuffer = {
+            fg = colors.base00;
+            bg = colors.base00;
+          };
+          FloatBorder = {
+            fg = colors.base05;
+            bg = colors.base00;
+          };
+          FloatermBorder = {
+            fg = colors.base05;
+            bg = colors.base00;
+          };
+        };
       };
 
       nixvim = inputs.nixvim.legacyPackages.${pkgs.stdenv.hostPlatform.system}.makeNixvimWithModule {

@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.darwinModules.aerospace =
+  flake.darwinModules.display.aerospace =
     { config, pkgs, ... }:
     let
       m = config.displayModKey;

@@ -92,9 +92,9 @@
                 inner.horizontal = 15;
                 inner.vertical = 15;
                 outer.left = 20;
-                outer.bottom = 20;
+                outer.bottom = 45;
                 outer.right = 20;
-                outer.top = 40;
+                outer.top = 25;
               };
 
               workspace-to-monitor-force-assignment = { };

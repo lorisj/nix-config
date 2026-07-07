@@ -8,18 +8,18 @@
       textFont = config.home-manager.users.${config.system.primaryUser}.programs.kitty.font.name or "Iosevka";
       alpha = opacity: base: "0x${opacity}${palette.${base}}";
       colors = {
-        surface = alpha "cc" "base01";
+        surface = alpha "99" "base00";
         text = alpha "ff" "base07";
         border = alpha "dd" "base03";
         selected = alpha "ff" "base0D";
         selectedText = alpha "ff" "base00";
         accent = alpha "ff" "base0C";
-        frontApp = "0x00000000";
-        caltrain = "0x00000000";
-        wifi = "0x00000000";
-        volume = "0x00000000";
-        battery = "0x00000000";
-        time = "0x00000000";
+        frontApp = alpha "99" "base00";
+        caltrain = alpha "99" "base00";
+        wifi = alpha "99" "base00";
+        volume = alpha "99" "base00";
+        battery = alpha "99" "base00";
+        time = alpha "99" "base00";
         frontAppBorder = alpha "ff" "base08";
         caltrainBorder = alpha "ff" "base0D";
         wifiBorder = alpha "ff" "base0B";
@@ -326,7 +326,7 @@ pill_item=(
 )
 
 sketchybar --bar \
-  position=top \
+  position=bottom \
   height=34 \
   color=0x00000000 \
   shadow=off \
@@ -424,7 +424,7 @@ sketchybar --set space.0 padding_left=4 \
            --set space.9 padding_right=4
 
 sketchybar --add bracket spaces.pill "''${space_items[@]}" \
-  --set spaces.pill "''${pill_bg[@]}" background.color=0x00000000
+  --set spaces.pill "''${pill_bg[@]}"
 
 for sid in 0 1 2 3 4 5 6 7 8 9; do
   sketchybar --add bracket "space.$sid.highlight" "space.$sid" \

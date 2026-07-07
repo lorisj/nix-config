@@ -17,7 +17,7 @@
             severity_sort = true,
           })
           -- show hover information in border
-          vim.keymap.set("n", "H", function()
+          vim.keymap.set("n", "gh", function()
             vim.lsp.buf.hover({ border = "rounded" })
           end, { buffer = bufnr, desc = "show hover information", silent = true })
         '';

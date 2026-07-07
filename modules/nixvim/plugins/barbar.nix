@@ -5,8 +5,8 @@
       plugins.barbar = {
         enable = true;
         keymaps = {
-          next.key = "<leader>k";
-          previous.key = "<leader>j";
+          next.key = "K";
+          previous.key = "J";
           close = {
             key = "X";
             action = "<Cmd>confirm BufferClose<CR>";

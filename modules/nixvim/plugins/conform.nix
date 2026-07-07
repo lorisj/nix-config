@@ -3,6 +3,7 @@
   flake.nixvimModules.plugins.conform = { pkgs, ... }: {
     config = {
       extraPackages = [
+        pkgs.biome
         pkgs.haskellPackages.cabal-fmt
         pkgs.haskellPackages.fourmolu
       ];

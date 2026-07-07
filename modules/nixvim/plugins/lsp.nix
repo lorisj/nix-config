@@ -31,7 +31,6 @@
           cssls.enable = true;
           tailwindcss.enable = true;
           html.enable = true;
-          jsonls.enable = true;
           pyright.enable = true;
           bashls.enable = true;
           rust_analyzer = {

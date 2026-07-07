@@ -4,6 +4,8 @@
     { config, lib, pkgs, ... }:
     let
       palette = config.home-manager.users.${config.system.primaryUser}.colorScheme.palette;
+      # TODO: generalized option for font
+      textFont = config.home-manager.users.${config.system.primaryUser}.programs.kitty.font.name or "Iosevka";
       alpha = opacity: base: "0x${opacity}${palette.${base}}";
       colors = {
         surface = alpha "cc" "base01";
@@ -53,7 +55,12 @@ if [ -z "$focused" ]; then
 fi
 
 state_file="''${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.state"
+# Snapshot each workspace once so state diffing and rendering reuse the same AeroSpace query results.
+work_dir="''${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.$$"
 state="focused=$focused"
+
+mkdir -p "$work_dir"
+trap 'rm -rf "$work_dir"' EXIT
 
 image_for_app() {
   case "$1" in
@@ -66,13 +73,16 @@ image_for_app() {
 
 for sid in 0 1 2 3 4 5 6 7 8 9; do
   apps=""
+  apps_file="$work_dir/$sid"
+
+  aerospace list-windows --workspace "$sid" 2>/dev/null \
+    | awk -F '|' '{ app=$2; gsub(/^[ \t]+|[ \t]+$/, "", app); if (app != "") print app }' \
+    > "$apps_file"
 
   while IFS= read -r app; do
     [ -z "$app" ] && continue
     apps="$apps,$app"
-  done <<APPS
-$(aerospace list-windows --workspace "$sid" 2>/dev/null | awk -F '|' '{ app=$2; gsub(/^[ \t]+|[ \t]+$/, "", app); if (app != "") print app }')
-APPS
+  done < "$apps_file"
 
   state="$state|$sid:$apps"
 done
@@ -110,9 +120,7 @@ for sid in 0 1 2 3 4 5 6 7 8 9; do
         label.drawing=off
     fi
     slot=$((slot + 1))
-  done <<APPS
-$(aerospace list-windows --workspace "$sid" 2>/dev/null | awk -F '|' '{ app=$2; gsub(/^[ \t]+|[ \t]+$/, "", app); if (app != "") print app }')
-APPS
+  done < "$work_dir/$sid"
 
   while [ "$slot" -le 5 ]; do
     sketchybar --set "space.$sid.app.$slot" drawing=off
@@ -233,6 +241,7 @@ ACCENT_TEXT=@accentText@
 SELECTED=@selected@
 BATTERY_ACCENT=@batteryAccent@
 WIFI_ACCENT=@wifiAccent@
+TEXT_FONT="@textFont@:Bold:14.0"
 
 pill_bg=(
   background.drawing=on
@@ -244,9 +253,9 @@ pill_bg=(
 )
 
 pill_item=(
-  icon.font="SF Pro:Semibold:12.0"
+  icon.font="$TEXT_FONT"
   icon.color=$TEXT
-  label.font="SF Pro:Semibold:12.0"
+  label.font="$TEXT_FONT"
   label.color=$TEXT
   icon.padding_left=8
   icon.padding_right=5
@@ -271,8 +280,8 @@ sketchybar --bar \
 sketchybar --default \
   updates=when_shown \
   drawing=on \
-  icon.font="SF Pro:Semibold:12.0" \
-  label.font="SF Pro:Semibold:12.0" \
+  icon.font="$TEXT_FONT" \
+  label.font="$TEXT_FONT" \
   icon.color=$TEXT \
   label.color=$TEXT \
   icon.padding_left=7 \
@@ -295,7 +304,7 @@ for sid in 0 1 2 3 4 5 6 7 8 9; do
   sketchybar --add item "space.$sid" center \
     --set "space.$sid" icon="$sid" label="" "''${pill_item[@]}" \
       width=20 \
-      icon.font="SF Pro:Semibold:12.0" \
+      icon.font="$TEXT_FONT" \
       icon.padding_left=7 \
       icon.padding_right=4 \
       label.drawing=off \
@@ -427,7 +436,8 @@ EOF
           --replace "@timeBorder@" "${colors.timeBorder}" \
           --replace "@accentText@" "${colors.accentText}" \
           --replace "@batteryAccent@" "${colors.batteryAccent}" \
-          --replace "@wifiAccent@" "${colors.wifiAccent}"
+          --replace "@wifiAccent@" "${colors.wifiAccent}" \
+          --replace "@textFont@" "${textFont}"
         substituteInPlace $out/plugins/*.sh \
           --replace "@sketchybar@" "${pkgs.sketchybar}" \
           --replace "@aerospace@" "${pkgs.aerospace}" \
@@ -444,6 +454,7 @@ EOF
           sketchybar
           nerd-fonts.symbols-only
         ];
+        fonts.packages = [ pkgs.iosevka ];
 
         system.defaults.NSGlobalDomain._HIHideMenuBar = true;
 

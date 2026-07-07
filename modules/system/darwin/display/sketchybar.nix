@@ -15,11 +15,15 @@
         selectedText = alpha "ff" "base00";
         accent = alpha "ff" "base0C";
         frontApp = "0x00000000";
+        caltrain = "0x00000000";
         wifi = "0x00000000";
+        volume = "0x00000000";
         battery = "0x00000000";
         time = "0x00000000";
         frontAppBorder = alpha "ff" "base08";
+        caltrainBorder = alpha "ff" "base0D";
         wifiBorder = alpha "ff" "base0B";
+        volumeBorder = alpha "ff" "base0C";
         batteryBorder = alpha "ff" "base0A";
         timeBorder = alpha "ff" "base0E";
         accentText = alpha "ff" "base07";
@@ -27,6 +31,13 @@
         wifiAccent = alpha "ff" "base0B";
       };
       iconDir = ../../../../.assets/sketchybar-icons;
+      caltrainPlugin = pkgs.replaceVarsWith {
+        src = ./plugins/caltrain.js;
+        isExecutable = true;
+        replacements = {
+          node = "${pkgs.nodejs}/bin/node";
+        };
+      };
       configDir = pkgs.runCommand "sketchybar-pill-config" { } ''
         mkdir -p $out/plugins
 
@@ -42,6 +53,23 @@ else
 fi
 
 sketchybar --set front_app label="$app"
+EOF
+
+        cat > $out/plugins/caltrain.sh <<'EOF'
+#!/bin/sh
+PATH="@sketchybar@/bin:/usr/bin:/bin"
+export PATH
+
+output="$(CALTRAIN_OUTPUT=sketchybar @caltrainPlugin@ 2>/dev/null)"
+icon="''${output%%|*}"
+label="''${output#*|}"
+
+if [ -z "$output" ] || [ "$icon" = "$output" ]; then
+  icon="󰔫"
+  label="Error"
+fi
+
+sketchybar --set caltrain icon="$icon" label="$label"
 EOF
 
         cat > $out/plugins/spaces.sh <<'EOF'
@@ -208,6 +236,34 @@ else
 fi
 EOF
 
+        cat > $out/plugins/volume.sh <<'EOF'
+#!/bin/sh
+PATH="@sketchybar@/bin:/usr/bin:/bin"
+export PATH
+
+volume="$INFO"
+muted="$(osascript -e 'output muted of (get volume settings)' 2>/dev/null)"
+
+if [ -z "$volume" ]; then
+  volume="$(osascript -e 'output volume of (get volume settings)' 2>/dev/null)"
+fi
+
+case "$volume" in
+  ""|*[!0-9]*) volume=0 ;;
+esac
+
+icon="󰕾"
+if [ "$muted" = "true" ] || [ "$volume" -eq 0 ]; then
+  icon="󰖁"
+elif [ "$volume" -lt 35 ]; then
+  icon="󰕿"
+elif [ "$volume" -lt 70 ]; then
+  icon="󰖀"
+fi
+
+sketchybar --set volume icon="$icon" label="$volume%"
+EOF
+
         cat > $out/plugins/clock.sh <<'EOF'
 #!/bin/sh
 PATH="@sketchybar@/bin:/usr/bin:/bin"
@@ -230,11 +286,15 @@ TEXT=@text@
 BORDER=@border@
 ACCENT=@accent@
 FRONT_APP=@frontApp@
+CALTRAIN=@caltrain@
 WIFI=@wifi@
+VOLUME=@volume@
 BATTERY=@battery@
 TIME=@time@
 FRONT_APP_BORDER=@frontAppBorder@
+CALTRAIN_BORDER=@caltrainBorder@
 WIFI_BORDER=@wifiBorder@
+VOLUME_BORDER=@volumeBorder@
 BATTERY_BORDER=@batteryBorder@
 TIME_BORDER=@timeBorder@
 ACCENT_TEXT=@accentText@
@@ -298,6 +358,19 @@ sketchybar --add item front_app left \
   --subscribe front_app front_app_switched \
   --add bracket front_app.pill front_app \
   --set front_app.pill "''${pill_bg[@]}" background.color=$FRONT_APP background.border_color=$FRONT_APP_BORDER
+
+sketchybar --add item lhs.gap.front_caltrain left \
+  --set lhs.gap.front_caltrain icon.drawing=off label.drawing=off width=4 \
+    padding_left=0 padding_right=0
+
+sketchybar --add item caltrain left \
+  --set caltrain icon="󰔫" label="--" "''${pill_item[@]}" \
+    icon.font="Symbols Nerd Font:Regular:14.0" \
+    icon.color=$ACCENT_TEXT \
+    label.color=$ACCENT_TEXT \
+    script="$PLUGIN_DIR/caltrain.sh" update_freq=10 \
+  --add bracket caltrain.pill caltrain \
+  --set caltrain.pill "''${pill_bg[@]}" background.color=$CALTRAIN background.border_color=$CALTRAIN_BORDER
 
 space_items=()
 for sid in 0 1 2 3 4 5 6 7 8 9; do
@@ -378,8 +451,22 @@ sketchybar --add item wifi right \
   --add bracket wifi.pill wifi \
   --set wifi.pill "''${pill_bg[@]}" background.color=$WIFI background.border_color=$WIFI_BORDER
 
-sketchybar --add item rhs.gap.wifi_battery right \
-  --set rhs.gap.wifi_battery icon.drawing=off label.drawing=off width=4 \
+sketchybar --add item rhs.gap.wifi_volume right \
+  --set rhs.gap.wifi_volume icon.drawing=off label.drawing=off width=4 \
+    padding_left=0 padding_right=0
+
+sketchybar --add item volume right \
+  --set volume icon="󰕾" label="--%" "''${pill_item[@]}" \
+    icon.font="Symbols Nerd Font:Regular:14.0" \
+    icon.color=$ACCENT_TEXT \
+    label.color=$ACCENT_TEXT \
+    script="$PLUGIN_DIR/volume.sh" \
+  --subscribe volume volume_change \
+  --add bracket volume.pill volume \
+  --set volume.pill "''${pill_bg[@]}" background.color=$VOLUME background.border_color=$VOLUME_BORDER
+
+sketchybar --add item rhs.gap.volume_battery right \
+  --set rhs.gap.volume_battery icon.drawing=off label.drawing=off width=4 \
     padding_left=0 padding_right=0
 
 sketchybar --add item battery right \
@@ -400,7 +487,7 @@ sketchybar --add item date right \
     label.color=$ACCENT_TEXT \
     label.padding_left=12 \
     label.padding_right=10 \
-    script="$PLUGIN_DIR/clock.sh" update_freq=30 \
+    script="$PLUGIN_DIR/clock.sh" update_freq=5 \
   --add item clock right \
   --set clock icon.drawing=off label="11:22 AM" "''${pill_item[@]}" \
     label.color=$ACCENT_TEXT \
@@ -427,11 +514,15 @@ EOF
           --replace "@selectedText@" "${colors.selectedText}" \
           --replace "@accent@" "${colors.accent}" \
           --replace "@frontApp@" "${colors.frontApp}" \
+          --replace "@caltrain@" "${colors.caltrain}" \
           --replace "@wifi@" "${colors.wifi}" \
+          --replace "@volume@" "${colors.volume}" \
           --replace "@battery@" "${colors.battery}" \
           --replace "@time@" "${colors.time}" \
           --replace "@frontAppBorder@" "${colors.frontAppBorder}" \
+          --replace "@caltrainBorder@" "${colors.caltrainBorder}" \
           --replace "@wifiBorder@" "${colors.wifiBorder}" \
+          --replace "@volumeBorder@" "${colors.volumeBorder}" \
           --replace "@batteryBorder@" "${colors.batteryBorder}" \
           --replace "@timeBorder@" "${colors.timeBorder}" \
           --replace "@accentText@" "${colors.accentText}" \
@@ -441,6 +532,7 @@ EOF
         substituteInPlace $out/plugins/*.sh \
           --replace "@sketchybar@" "${pkgs.sketchybar}" \
           --replace "@aerospace@" "${pkgs.aerospace}" \
+          --replace "@caltrainPlugin@" "${caltrainPlugin}" \
           --replace "@iconDir@" "${iconDir}" \
           --replace "@text@" "${colors.text}" \
           --replace "@selected@" "${colors.selected}" \

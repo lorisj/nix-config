@@ -7,6 +7,16 @@ const fs = require("fs");
 const STOP_CODE = "70022";
 const CACHE_PATH = "/tmp/caltrain-swiftbar-cache.json";
 const CACHE_MAX_AGE_MS = 2 * 60 * 1000;
+const OUTPUT = process.env.CALTRAIN_OUTPUT || "swiftbar";
+const TRAIN_ICON = "󰔫";
+
+function printStatus(text) {
+  if (OUTPUT === "sketchybar") {
+    console.log(`${TRAIN_ICON}|${text}`);
+  } else {
+    console.log(`🚂 ${text}`);
+  }
+}
 
 function getToken() {
   if (process.env.CALTRAIN_TOKEN) return process.env.CALTRAIN_TOKEN;
@@ -92,7 +102,7 @@ function delayMins(aimed, expected) {
 
 async function main() {
   if (!API_KEY) {
-    console.log("🚂 No Token");
+    printStatus("No Token");
     return;
   }
 
@@ -102,7 +112,7 @@ async function main() {
       data = await fetch511();
       writeCache(data);
     } catch {
-      console.log("🚂 Error");
+      printStatus("Error");
       return;
     }
   }
@@ -111,7 +121,7 @@ async function main() {
     data?.ServiceDelivery?.StopMonitoringDelivery?.MonitoredStopVisit || [];
 
   if (!visits.length) {
-    console.log("🚂 No trains");
+    printStatus("No trains");
     return;
   }
 
@@ -134,7 +144,7 @@ async function main() {
     );
 
   if (!trains.length) {
-    console.log("🚂 No trains");
+    printStatus("No trains");
     return;
   }
 
@@ -155,6 +165,10 @@ async function main() {
 
   let header = fmtHeader(rows[0]);
   if (rows[1]) header += `  ${fmtHeader(rows[1])}`;
+  if (OUTPUT === "sketchybar") {
+    console.log(`${TRAIN_ICON}|${header}`);
+    return;
+  }
   console.log(header);
   console.log("---");
   rows.forEach((r) => {

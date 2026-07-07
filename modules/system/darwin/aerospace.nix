@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   flake.darwinModules.aerospace =
-    { config, ... }:
+    { config, pkgs, ... }:
     let
       m = config.displayModKey;
       workspaces = [
@@ -16,6 +16,16 @@
         8
         9
       ];
+      refreshSketchybar = "exec-and-forget ${pkgs.sketchybar}/bin/sketchybar --trigger aerospace_workspace_change";
+      withRefresh =
+        command:
+        if builtins.isList command then
+          command ++ [ refreshSketchybar ]
+        else
+          [
+            command
+            refreshSketchybar
+          ];
       # bindings for switching workspaces
       persistent-workspace-names = map builtins.toString workspaces;
       workspace-switch-bindings = lib.listToAttrs (
@@ -27,9 +37,15 @@
       move-to-workspace-bindings = lib.listToAttrs (
         map (w: {
           name = "${m}-shift-${builtins.toString w}";
-          value = "move-node-to-workspace ${builtins.toString w}";
+          value = withRefresh "move-node-to-workspace ${builtins.toString w}";
         }) workspaces
       );
+      refresh-bindings = {
+        "${m}-shift-h" = withRefresh "move up";
+        "${m}-shift-k" = withRefresh "move right";
+        "${m}-shift-j" = withRefresh "move left";
+        "${m}-shift-l" = withRefresh "move right";
+      };
     in
     {
       options.displayModKey = lib.mkOption {
@@ -78,7 +94,7 @@
                 outer.left = 20;
                 outer.bottom = 20;
                 outer.right = 20;
-                outer.top = 5;
+                outer.top = 40;
               };
 
               workspace-to-monitor-force-assignment = { };
@@ -89,10 +105,6 @@
                 "${m}-l" = "focus down";
                 "${m}-h" = "focus up";
                 "${m}-k" = "focus right";
-                "${m}-shift-h" = "move up";
-                "${m}-shift-k" = "move right";
-                "${m}-shift-j" = "move left";
-                "${m}-shift-l" = "move right";
                 "${m}-minus" = "resize smart -50";
                 "${m}-equal" = "resize smart +50";
                 # "${m}-tab" = "workspace-back-and-forth";
@@ -105,6 +117,7 @@
                 #"${m}-leftSquareBracket" = "workspace --wrap-around prev";
                 #"${m}-rightSquareBracket" = "workspace --wrap-around next";
               }
+              // refresh-bindings
               // workspace-switch-bindings
               // move-to-workspace-bindings;
             };

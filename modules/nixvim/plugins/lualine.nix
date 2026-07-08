@@ -13,7 +13,9 @@ let
   base16Fallbacks = {
     base00 = "#1d2021";
     base02 = "#3c3836";
+    base06 = "#ebdbb2";
     base07 = "#fbf1c7";
+    base08 = "#fb4934";
     base0A = "#fabd2f";
     base0B = "#b8bb26";
     base0C = "#8ec07c";
@@ -55,6 +57,61 @@ let
   };
   directoryBubble = starshipBubble { bg = "base0A"; };
   gitBubble = starshipBubble { bg = "base0B"; };
+  diffBubble = starshipBubble {
+    bg = "base07";
+    fg = "base00";
+  };
+  gitDiff = {
+    __unkeyed-1.__raw = ''
+      function()
+        local diff = vim.b.gitsigns_status_dict
+        if not diff then
+          return ""
+        end
+
+        local added = diff.added or 0
+        local changed = diff.changed or 0
+        local removed = diff.removed or 0
+
+        if added == 0 and changed == 0 and removed == 0 then
+          return ""
+        end
+
+        local ok, base16 = pcall(require, "base16-colorscheme")
+        local colors = ok and base16.colors or {}
+        local bg = colors.base07 or "${base16Fallbacks.base07}"
+
+        vim.api.nvim_set_hl(0, "LualineDiffAdded", {
+          fg = colors.base0B or "${base16Fallbacks.base0B}",
+          bg = bg,
+          bold = true,
+        })
+        vim.api.nvim_set_hl(0, "LualineDiffChanged", {
+          fg = colors.base0A or "${base16Fallbacks.base0A}",
+          bg = bg,
+          bold = true,
+        })
+        vim.api.nvim_set_hl(0, "LualineDiffRemoved", {
+          fg = colors.base08 or "${base16Fallbacks.base08}",
+          bg = bg,
+          bold = true,
+        })
+
+        local parts = {}
+        if added > 0 then
+          table.insert(parts, "%#LualineDiffAdded#+" .. added)
+        end
+        if changed > 0 then
+          table.insert(parts, "%#LualineDiffChanged#~" .. changed)
+        end
+        if removed > 0 then
+          table.insert(parts, "%#LualineDiffRemoved#-" .. removed)
+        end
+
+        return table.concat(parts, " ")
+      end
+    '';
+  };
   languageBubble = starshipBubble { bg = "base0C"; };
   contextBubble = starshipBubble { bg = "base0D"; };
   timeBubble = starshipBubble {
@@ -269,7 +326,7 @@ in
             lualine_c = [
               (prettyFilename // directoryBubble)
               spacer
-              ({ __unkeyed-1 = "diff"; } // gitBubble)
+              (gitDiff // diffBubble)
             ];
 
             lualine_x = [

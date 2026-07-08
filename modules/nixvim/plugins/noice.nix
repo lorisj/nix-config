@@ -10,10 +10,28 @@
           settings = {
             cmdline = {
               enabled = true;
+              format = {
+                search_down = {
+                  kind = "search";
+                  pattern = "^/";
+                  icon = "";
+                  lang = "regex";
+                };
+                search_up = {
+                  kind = "search";
+                  pattern = "^%?";
+                  icon = "";
+                  lang = "regex";
+                };
+              };
             };
             popupmenu = {
               enabled = true;
               backend = "nui";
+            };
+            views.cmdline_popup.position = {
+              row = "90%";
+              col = "50%";
             };
             lsp.override = {
               "vim.lsp.util.convert_input_to_markdown_lines" = true;

@@ -83,6 +83,7 @@ if [ -z "$focused" ]; then
 fi
 
 state_file="''${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.state"
+focus_file="''${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.focus"
 # Snapshot each workspace once so state diffing and rendering reuse the same AeroSpace query results.
 work_dir="''${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.$$"
 state="focused=$focused"
@@ -99,6 +100,119 @@ image_for_app() {
   esac
 }
 
+space_has_cached_apps() {
+  [ -r "$state_file" ] || return 1
+  case "$(cat "$state_file")" in
+    *"|$1:,"*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+cached_focused_space() {
+  [ -r "$state_file" ] || return 1
+  cached_state="$(cat "$state_file")"
+  cached_state="''${cached_state%%|*}"
+  cached_state="''${cached_state#focused=}"
+  [ -n "$cached_state" ] || return 1
+  printf '%s\n' "$cached_state"
+}
+
+update_cached_focus() {
+  sid="$1"
+  if [ -r "$state_file" ]; then
+    cached_state="$(cat "$state_file")"
+    case "$cached_state" in
+      focused=*\|*) printf 'focused=%s|%s\n' "$sid" "''${cached_state#*|}" > "$state_file" ;;
+    esac
+  fi
+}
+
+record_requested_focus() {
+  sid="$1"
+  printf '%s\n' "$sid" > "$focus_file"
+  update_cached_focus "$sid"
+}
+
+latest_requested_focus() {
+  [ -r "$focus_file" ] || return 1
+  cat "$focus_file"
+}
+
+set_unfocused_space_fast() {
+  sid="$1"
+
+  if space_has_cached_apps "$sid"; then
+    sketchybar --set "space.$sid" \
+      drawing=on \
+      icon="$sid" \
+      label.drawing=off \
+      icon.padding_left=7 \
+      icon.padding_right=4 \
+      background.drawing=off \
+      icon.color=@text@ \
+      label.color=@text@ \
+      --set "space.$sid.highlight" drawing=off \
+      --set "space.$sid.pad.right" drawing=on \
+      --set "space.$sid.gap" drawing=on
+  else
+    sketchybar --set "space.$sid" drawing=off \
+      --set "space.$sid.highlight" drawing=off \
+      --set "space.$sid.pad.right" drawing=off \
+      --set "space.$sid.gap" drawing=off
+  fi
+
+  for active_slot in 1 2 3 4 5; do
+    sketchybar --set "space.$sid.app.$active_slot" \
+      background.drawing=off \
+      icon.color=@text@
+  done
+}
+
+set_focused_space_fast() {
+  sid="$1"
+
+  sketchybar --set "space.$sid" \
+    drawing=on \
+    icon="$sid" \
+    label.drawing=off \
+    icon.padding_left=7 \
+    icon.padding_right=4 \
+    background.drawing=off \
+    icon.color=@selectedText@ \
+    label.color=@selectedText@ \
+    --set "space.$sid.highlight" drawing=on \
+    --set "space.$sid.pad.right" drawing=on \
+    --set "space.$sid.gap" drawing=on
+
+  for active_slot in 1 2 3 4 5; do
+    sketchybar --set "space.$sid.app.$active_slot" \
+      background.drawing=off \
+      icon.color=@selectedText@
+  done
+}
+
+if [ -n "$FOCUSED_WORKSPACE" ]; then
+  record_requested_focus "$FOCUSED_WORKSPACE"
+  if [ "$(latest_requested_focus)" != "$FOCUSED_WORKSPACE" ]; then
+    exit 0
+  fi
+  sketchybar --set space.0.highlight drawing=off \
+             --set space.1.highlight drawing=off \
+             --set space.2.highlight drawing=off \
+             --set space.3.highlight drawing=off \
+             --set space.4.highlight drawing=off \
+             --set space.5.highlight drawing=off \
+             --set space.6.highlight drawing=off \
+             --set space.7.highlight drawing=off \
+             --set space.8.highlight drawing=off \
+             --set space.9.highlight drawing=off
+  if [ -n "$PREV_WORKSPACE" ] && [ "$PREV_WORKSPACE" != "$FOCUSED_WORKSPACE" ]; then
+    set_unfocused_space_fast "$PREV_WORKSPACE"
+  fi
+  set_focused_space_fast "$FOCUSED_WORKSPACE"
+  exit 0
+fi
+
 for sid in 0 1 2 3 4 5 6 7 8 9; do
   apps=""
   apps_file="$work_dir/$sid"
@@ -114,6 +228,21 @@ for sid in 0 1 2 3 4 5 6 7 8 9; do
 
   state="$state|$sid:$apps"
 done
+
+latest_focused="$(aerospace list-workspaces --focused 2>/dev/null)"
+if [ -n "$latest_focused" ] && [ "$latest_focused" != "$focused" ]; then
+  exit 0
+fi
+
+requested_focused="$(latest_requested_focus)"
+if [ -n "$requested_focused" ] && [ "$requested_focused" != "$focused" ]; then
+  exit 0
+fi
+
+cached_focused="$(cached_focused_space)"
+if [ -n "$cached_focused" ] && [ "$cached_focused" != "$focused" ]; then
+  exit 0
+fi
 
 if [ -r "$state_file" ] && [ "$(cat "$state_file")" = "$state" ]; then
   exit 0
@@ -554,10 +683,6 @@ EOF
           "${pkgs.bash}/bin/bash"
           "-c"
           "${pkgs.sketchybar}/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE"
-        ];
-
-        services.aerospace.settings.on-focus-changed = lib.mkAfter [
-          "exec-and-forget ${pkgs.sketchybar}/bin/sketchybar --trigger aerospace_workspace_change"
         ];
 
         services.aerospace.settings.on-window-detected = lib.mkAfter [

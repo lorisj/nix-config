@@ -69,13 +69,13 @@ const SVC = {
   Express: { dot: "🔴", short: "Exp" },
   Limited: { dot: "🔵", short: "Ltd" },
   "Limited Weekday": { dot: "🔵", short: "Ltd" },
-  "Local Weekday": { dot: "⚪", short: "Lcl" },
-  "Local Weekend": { dot: "⚪", short: "Lcl" },
-  Local: { dot: "⚪", short: "Lcl" },
+  "Local Weekday": { dot: "⚪️", short: "Lcl" },
+  "Local Weekend": { dot: "⚪️", short: "Lcl" },
+  Local: { dot: "⚪️", short: "Lcl" },
 };
 
 function svcInfo(line) {
-  return SVC[line] || { dot: "⚪", short: line };
+  return SVC[line] || { dot: "⚪️", short: line };
 }
 
 function relativeTime(iso) {

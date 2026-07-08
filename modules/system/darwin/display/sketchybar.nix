@@ -1,4 +1,4 @@
-{ ... }:
+{ self, ... }:
 {
   flake.darwinModules.display.sketchybar =
     { config, lib, pkgs, ... }:
@@ -30,7 +30,7 @@
         batteryAccent = alpha "ff" "base0A";
         wifiAccent = alpha "ff" "base0B";
       };
-      iconDir = ../../../../.assets/sketchybar-icons;
+      iconDir = self.assetPaths.programIcons;
       caltrainPlugin = pkgs.replaceVarsWith {
         src = ./plugins/caltrain.js;
         isExecutable = true;
@@ -69,7 +69,7 @@ if [ -z "$output" ] || [ "$icon" = "$output" ]; then
   label="Error"
 fi
 
-sketchybar --set caltrain icon="$icon" label="$label"
+sketchybar --set caltrain icon.drawing=off label="$label"
 EOF
 
         cat > $out/plugins/spaces.sh <<'EOF'
@@ -494,9 +494,13 @@ sketchybar --add item lhs.gap.front_caltrain left \
 
 sketchybar --add item caltrain left \
   --set caltrain icon="󰔫" label="--" "''${pill_item[@]}" \
+    icon.drawing=off \
     icon.font="Symbols Nerd Font:Regular:14.0" \
     icon.color=$ACCENT_TEXT \
     label.color=$ACCENT_TEXT \
+    label.padding_left=12 \
+    label.padding_right=12 \
+    label.y_offset=1 \
     script="$PLUGIN_DIR/caltrain.sh" update_freq=10 \
   --add bracket caltrain.pill caltrain \
   --set caltrain.pill "''${pill_bg[@]}" background.color=$CALTRAIN background.border_color=$CALTRAIN_BORDER

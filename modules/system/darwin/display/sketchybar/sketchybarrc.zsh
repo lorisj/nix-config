@@ -108,6 +108,7 @@ for sid in 0 1 2 3 4 5 6 7 8 9; do
       icon.font="$TEXT_FONT" \
       icon.padding_left=7 \
       icon.padding_right=4 \
+      drawing=off \
       label.drawing=off \
       padding_left=0 \
       padding_right=0 \
@@ -168,7 +169,7 @@ done
 
 sketchybar --add event aerospace_workspace_change
 sketchybar --add item spaces.listener center \
-  --set spaces.listener drawing=off updates=on script="$PLUGIN_DIR/spaces.sh" \
+  --set spaces.listener drawing=off updates=on update_freq=3 script="$PLUGIN_DIR/spaces.sh" \
   --subscribe spaces.listener aerospace_workspace_change
 
 sketchybar --add item wifi right \

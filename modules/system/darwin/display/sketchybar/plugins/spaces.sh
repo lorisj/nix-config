@@ -11,7 +11,6 @@ state_file="${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.state"
 focus_file="${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.focus"
 # Snapshot each workspace once so state diffing and rendering reuse the same AeroSpace query results.
 work_dir="${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.$$"
-state="focused=$focused"
 
 mkdir -p "$work_dir"
 trap 'rm -rf "$work_dir"' EXIT
@@ -23,6 +22,19 @@ image_for_app() {
     "kitty") printf "@iconDir@/kitty.png" ;;
     *) return 1 ;;
   esac
+}
+
+hide_all_spaces() {
+  for sid in 0 1 2 3 4 5 6 7 8 9; do
+    sketchybar --set "space.$sid" drawing=off \
+      --set "space.$sid.highlight" drawing=off \
+      --set "space.$sid.pad.right" drawing=off \
+      --set "space.$sid.gap" drawing=off
+
+    for slot in 1 2 3 4 5; do
+      sketchybar --set "space.$sid.app.$slot" drawing=off
+    done
+  done
 }
 
 space_has_cached_apps() {
@@ -62,6 +74,17 @@ latest_requested_focus() {
   [ -r "$focus_file" ] || return 1
   cat "$focus_file"
 }
+
+if [ -z "$focused" ]; then
+  focused="$(cached_focused_space)"
+fi
+
+if [ -z "$focused" ]; then
+  hide_all_spaces
+  exit 0
+fi
+
+state="focused=$focused"
 
 set_unfocused_space_fast() {
   sid="$1"
@@ -143,7 +166,7 @@ for sid in 0 1 2 3 4 5 6 7 8 9; do
   apps_file="$work_dir/$sid"
 
   aerospace list-windows --workspace "$sid" 2>/dev/null \
-    | awk -F '|' '{ app=$2; gsub(/^[ \t]+|[ \t]+$/, "", app); if (app != "") print app }' \
+    | awk -F '|' '{ app=$2; gsub(/^[ \t]+|[ \t]+$/, "", app); if (app != "" && !seen[app]++) print app }' \
     > "$apps_file"
 
   while IFS= read -r app; do

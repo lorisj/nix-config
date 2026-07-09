@@ -113,6 +113,10 @@
           }
         ];
 
+        services.aerospace.settings.on-focus-changed = lib.mkAfter [
+          "exec-and-forget ${pkgs.sketchybar}/bin/sketchybar --trigger aerospace_workspace_change"
+        ];
+
         launchd.user.agents.sketchybar = {
           serviceConfig = {
             ProgramArguments = [

@@ -165,8 +165,14 @@ for sid in 0 1 2 3 4 5 6 7 8 9; do
   apps=""
   apps_file="$work_dir/$sid"
 
-  aerospace list-windows --workspace "$sid" 2>/dev/null \
-    | awk -F '|' '{ app=$2; gsub(/^[ \t]+|[ \t]+$/, "", app); if (app != "" && !seen[app]++) print app }' \
+  aerospace list-windows --workspace "$sid" --format '%{window-id}|%{app-name}' 2>/dev/null \
+    | awk -F '|' '{
+        window_id=$1
+        app=$2
+        gsub(/^[ \t]+|[ \t]+$/, "", window_id)
+        gsub(/^[ \t]+|[ \t]+$/, "", app)
+        if (window_id != "" && app != "" && !seen[window_id]++) print app
+      }' \
     > "$apps_file"
 
   while IFS= read -r app; do

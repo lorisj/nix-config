@@ -9,11 +9,41 @@ fi
 
 state_file="${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.state"
 focus_file="${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.focus"
+lock_dir="${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.lock"
 # Snapshot each workspace once so state diffing and rendering reuse the same AeroSpace query results.
 work_dir="${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.$$"
 
 mkdir -p "$work_dir"
-trap 'rm -rf "$work_dir"' EXIT
+locked=0
+
+cleanup() {
+  if [ "$locked" -eq 1 ]; then
+    rm -rf "$lock_dir"
+  fi
+  rm -rf "$work_dir"
+}
+
+trap cleanup EXIT
+
+acquire_render_lock() {
+  while ! mkdir "$lock_dir" 2>/dev/null; do
+    if [ -r "$lock_dir/pid" ]; then
+      lock_pid="$(cat "$lock_dir/pid")"
+      case "$lock_pid" in
+        "" | *[!0-9]* ) ;;
+        * )
+          if ! kill -0 "$lock_pid" 2>/dev/null; then
+            rm -rf "$lock_dir"
+            continue
+          fi
+          ;;
+      esac
+    fi
+    sleep 0.02
+  done
+  printf '%s\n' "$$" > "$lock_dir/pid"
+  locked=1
+}
 
 image_for_app() {
   case "$1" in
@@ -144,6 +174,10 @@ if [ -n "$FOCUSED_WORKSPACE" ]; then
   if [ "$(latest_requested_focus)" != "$FOCUSED_WORKSPACE" ]; then
     exit 0
   fi
+  acquire_render_lock
+  if [ "$(latest_requested_focus)" != "$FOCUSED_WORKSPACE" ]; then
+    exit 0
+  fi
   sketchybar --set space.0.highlight drawing=off \
              --set space.1.highlight drawing=off \
              --set space.2.highlight drawing=off \
@@ -182,6 +216,23 @@ for sid in 0 1 2 3 4 5 6 7 8 9; do
 
   state="$state|$sid:$apps"
 done
+
+latest_focused="$(aerospace list-workspaces --focused 2>/dev/null)"
+if [ -n "$latest_focused" ] && [ "$latest_focused" != "$focused" ]; then
+  exit 0
+fi
+
+requested_focused="$(latest_requested_focus)"
+if [ -n "$requested_focused" ] && [ "$requested_focused" != "$focused" ]; then
+  exit 0
+fi
+
+cached_focused="$(cached_focused_space)"
+if [ -n "$cached_focused" ] && [ "$cached_focused" != "$focused" ]; then
+  exit 0
+fi
+
+acquire_render_lock
 
 latest_focused="$(aerospace list-workspaces --focused 2>/dev/null)"
 if [ -n "$latest_focused" ] && [ "$latest_focused" != "$focused" ]; then

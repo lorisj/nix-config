@@ -28,18 +28,7 @@
             autostart = true;
           };
           ts_ls.enable = true;
-          cssls = {
-            enable = true;
-            package = pkgs.runCommand "vscode-langservers-extracted-cssls-cjs-fix" { } ''
-              cp -R ${pkgs.vscode-langservers-extracted}/. $out
-              chmod -R u+w $out
-              substituteInPlace $out/bin/vscode-css-language-server \
-                --replace-fail "${pkgs.vscode-langservers-extracted}/lib/node_modules/vscode-langservers-extracted/bin/vscode-css-language-server" \
-                  "$out/lib/node_modules/vscode-langservers-extracted/bin/vscode-css-language-server"
-              substituteInPlace $out/lib/node_modules/vscode-langservers-extracted/lib/css-language-server/node/cssServerMain.js \
-                --replace-fail "import.meta.url" "__filename"
-            '';
-          };
+          cssls.enable = true;
           tailwindcss.enable = true;
           html.enable = true;
           pyright.enable = true;

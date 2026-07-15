@@ -6,7 +6,7 @@
       ezaPkg = config.programs.eza.package;
       # Bash tolerates this; zsh often breaks path completion on multi-word aliases like ls='eza --icons'.
       bashShellAliases = {
-        ls = "eza --icons";
+        ls = "eza --icons=auto";
       };
     in
     {
@@ -26,7 +26,7 @@
             lib.mkOrder 1210 ''
               unalias ls 2>/dev/null
               unset -f ls 2>/dev/null
-              ls() { command eza --icons "$@"; }
+              ls() { command eza --icons=auto "$@"; }
               # Map `ls` onto eza's completion service (`cmd=service`). The reverse (`eza=ls`)
               # would attach _ls to eza and still break paths.
               compdef ls=eza

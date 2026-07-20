@@ -196,6 +196,12 @@ sketchybar --add item spaces.listener center \
   --set spaces.listener drawing=off updates=on update_freq=3 script="$PLUGIN_DIR/spaces.sh" \
   --subscribe spaces.listener aerospace_workspace_change
 
+# Recreate the bar after macOS wakes. The SketchyBar process can remain alive
+# across sleep while its windows fail to return, so KeepAlive alone is not enough.
+sketchybar --add item wake.listener left \
+  --set wake.listener drawing=off script="sketchybar --reload" \
+  --subscribe wake.listener system_woke
+
 sketchybar --add item wifi right \
   --set wifi icon="󰖩" label.drawing=off "${pill_item[@]}" \
     icon.font="Symbols Nerd Font:Regular:14.0" \

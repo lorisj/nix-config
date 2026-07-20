@@ -4,6 +4,9 @@ PATH="@sketchybar@/bin:@aerospace@/bin:/usr/bin:/bin"
 export PATH
 
 PLUGIN_DIR="@pluginDir@"
+POWERLINE_FONT="@powerlineFont@"
+
+sketchybar --load-font "$POWERLINE_FONT"
 
 SURFACE=@surface@
 TEXT=@text@
@@ -30,10 +33,33 @@ TEXT_FONT="@textFont@:Bold:14.0"
 pill_bg=(
   background.drawing=on
   background.color=$SURFACE
-  background.border_color=$BORDER
-  background.border_width=2
-  background.corner_radius=9
+  background.border_width=0
+  background.corner_radius=0
   background.height=34
+)
+
+powerline_right=(
+  icon=""
+  icon.font="Symbols Nerd Font:Regular:34.0"
+  icon.padding_left=-1
+  icon.padding_right=0
+  label.drawing=off
+  background.drawing=off
+  padding_left=0
+  padding_right=0
+  width=22
+)
+
+powerline_left=(
+  icon=""
+  icon.font="Symbols Nerd Font:Regular:34.0"
+  icon.padding_left=0
+  icon.padding_right=-1
+  label.drawing=off
+  background.drawing=off
+  padding_left=0
+  padding_right=0
+  width=22
 )
 
 pill_item=(
@@ -51,7 +77,7 @@ pill_item=(
 
 sketchybar --bar \
   position=bottom \
-  height=34 \
+  height=38 \
   color=0x00000000 \
   shadow=off \
   padding_left=6 \
@@ -81,10 +107,12 @@ sketchybar --add item front_app left \
     script="$PLUGIN_DIR/front_app.sh" \
   --subscribe front_app front_app_switched \
   --add bracket front_app.pill front_app \
-  --set front_app.pill "${pill_bg[@]}" background.color=$FRONT_APP background.border_color=$FRONT_APP_BORDER
+  --set front_app.pill "${pill_bg[@]}" background.color=$FRONT_APP \
+  --add item front_app.tail left \
+  --set front_app.tail "${powerline_right[@]}" icon.color=$FRONT_APP
 
 sketchybar --add item lhs.gap.front_caltrain left \
-  --set lhs.gap.front_caltrain icon.drawing=off label.drawing=off width=4 \
+  --set lhs.gap.front_caltrain icon.drawing=off label.drawing=off width=2 \
     padding_left=0 padding_right=0
 
 sketchybar --add item caltrain left \
@@ -98,7 +126,9 @@ sketchybar --add item caltrain left \
     label.y_offset=1 \
     script="$PLUGIN_DIR/caltrain.sh" update_freq=10 \
   --add bracket caltrain.pill caltrain \
-  --set caltrain.pill "${pill_bg[@]}" background.color=$CALTRAIN background.border_color=$CALTRAIN_BORDER
+  --set caltrain.pill "${pill_bg[@]}" background.color=$CALTRAIN \
+  --add item caltrain.tail left \
+  --set caltrain.tail "${powerline_right[@]}" icon.color=$CALTRAIN
 
 space_items=()
 for sid in 0 1 2 3 4 5 6 7 8 9; do
@@ -106,6 +136,7 @@ for sid in 0 1 2 3 4 5 6 7 8 9; do
     --set "space.$sid" icon="$sid" label="" "${pill_item[@]}" \
       width=20 \
       icon.font="$TEXT_FONT" \
+      icon.y_offset=0 \
       icon.padding_left=7 \
       icon.padding_right=4 \
       drawing=off \
@@ -122,6 +153,7 @@ for sid in 0 1 2 3 4 5 6 7 8 9; do
         width=17 \
         icon.font="Symbols Nerd Font:Regular:13.0" \
         icon.color=$TEXT \
+        icon.y_offset=0 \
         icon.padding_left=0 \
         icon.padding_right=0 \
         padding_left=0 \
@@ -153,7 +185,12 @@ sketchybar --set space.0 padding_left=4 \
            --set space.9 padding_right=4
 
 sketchybar --add bracket spaces.pill "${space_items[@]}" \
-  --set spaces.pill "${pill_bg[@]}"
+  --set spaces.pill "${pill_bg[@]}" \
+    background.color=$SURFACE \
+    background.border_color=$BORDER \
+    background.border_width=1 \
+    background.corner_radius=6 \
+    background.y_offset=0
 
 for sid in 0 1 2 3 4 5 6 7 8 9; do
   sketchybar --add bracket "space.$sid.highlight" "space.$sid" \
@@ -162,9 +199,10 @@ for sid in 0 1 2 3 4 5 6 7 8 9; do
       drawing=off \
       background.drawing=on \
       background.color=$SELECTED \
-      background.height=28 \
-      background.corner_radius=6 \
-      background.border_width=0
+      background.height=30 \
+      background.corner_radius=4 \
+      background.border_width=0 \
+      background.y_offset=0
 done
 
 sketchybar --add event aerospace_workspace_change
@@ -178,11 +216,9 @@ sketchybar --add item wifi right \
     icon.color=$ACCENT_TEXT \
     script="$PLUGIN_DIR/wifi.sh" update_freq=20 \
   --add bracket wifi.pill wifi \
-  --set wifi.pill "${pill_bg[@]}" background.color=$WIFI background.border_color=$WIFI_BORDER
-
-sketchybar --add item rhs.gap.wifi_volume right \
-  --set rhs.gap.wifi_volume icon.drawing=off label.drawing=off width=4 \
-    padding_left=0 padding_right=0
+  --set wifi.pill "${pill_bg[@]}" background.color=$WIFI \
+  --add item wifi.tail right \
+  --set wifi.tail "${powerline_left[@]}" icon.color=$WIFI
 
 sketchybar --add item volume right \
   --set volume icon="󰕾" label="--%" "${pill_item[@]}" \
@@ -192,11 +228,10 @@ sketchybar --add item volume right \
     script="$PLUGIN_DIR/volume.sh" \
   --subscribe volume volume_change \
   --add bracket volume.pill volume \
-  --set volume.pill "${pill_bg[@]}" background.color=$VOLUME background.border_color=$VOLUME_BORDER
+  --set volume.pill "${pill_bg[@]}" background.color=$VOLUME
 
-sketchybar --add item rhs.gap.volume_battery right \
-  --set rhs.gap.volume_battery icon.drawing=off label.drawing=off width=4 \
-    padding_left=0 padding_right=0
+sketchybar --add item rhs.gap.wifi_volume right \
+  --set rhs.gap.wifi_volume "${powerline_left[@]}" icon.color=$VOLUME
 
 sketchybar --add item battery right \
   --set battery icon="󰁹" label="--%" "${pill_item[@]}" \
@@ -205,11 +240,10 @@ sketchybar --add item battery right \
     label.color=$ACCENT_TEXT \
     script="$PLUGIN_DIR/battery.sh" update_freq=30 \
   --add bracket battery.pill battery \
-  --set battery.pill "${pill_bg[@]}" background.color=$BATTERY background.border_color=$BATTERY_BORDER
+  --set battery.pill "${pill_bg[@]}" background.color=$BATTERY
 
-sketchybar --add item rhs.gap.battery_time right \
-  --set rhs.gap.battery_time icon.drawing=off label.drawing=off width=4 \
-    padding_left=0 padding_right=0
+sketchybar --add item rhs.gap.volume_battery right \
+  --set rhs.gap.volume_battery "${powerline_left[@]}" icon.color=$BATTERY
 
 sketchybar --add item date right \
   --set date icon.drawing=off label="Tue Jul 7" "${pill_item[@]}" \
@@ -223,7 +257,10 @@ sketchybar --add item date right \
     label.padding_left=10 \
     label.padding_right=12 \
   --add bracket time.pill date clock \
-  --set time.pill "${pill_bg[@]}" background.color=$TIME background.border_color=$TIME_BORDER
+  --set time.pill "${pill_bg[@]}" background.color=$TIME
+
+sketchybar --add item rhs.gap.battery_time right \
+  --set rhs.gap.battery_time "${powerline_left[@]}" icon.color=$TIME
 
 rm -f "${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.state"
 sketchybar --trigger aerospace_workspace_change

@@ -20,12 +20,13 @@
         selected = alpha "ff" "base0D";
         selectedText = alpha "ff" "base00";
         accent = alpha "ff" "base0C";
-        frontApp = alpha "a6" "base00";
-        caltrain = alpha "a6" "base00";
-        wifi = alpha "a6" "base00";
-        volume = alpha "a6" "base00";
-        battery = alpha "a6" "base00";
-        time = alpha "a6" "base00";
+        # The former border accents now provide translucent Powerline segment fills.
+        frontApp = alpha "cc" "base08";
+        caltrain = alpha "cc" "base0D";
+        wifi = alpha "cc" "base0B";
+        volume = alpha "cc" "base0C";
+        battery = alpha "cc" "base0A";
+        time = alpha "cc" "base0E";
         frontAppBorder = alpha "ff" "base08";
         caltrainBorder = alpha "ff" "base0D";
         wifiBorder = alpha "ff" "base0B";
@@ -37,6 +38,7 @@
         wifiAccent = alpha "ff" "base0B";
       };
       iconDir = self.assetPaths.programIcons;
+      powerlineFont = "${pkgs.nerd-fonts.symbols-only}/share/fonts/truetype/NerdFonts/Symbols/SymbolsNerdFont-Regular.ttf";
       caltrainPlugin = pkgs.replaceVarsWith {
         src = ./plugins/caltrain.js;
         isExecutable = true;
@@ -56,6 +58,7 @@
           --replace "@sketchybar@" "${pkgs.sketchybar}" \
           --replace "@aerospace@" "${pkgs.aerospace}" \
           --replace "@iconDir@" "${iconDir}" \
+          --replace "@powerlineFont@" "${powerlineFont}" \
           --replace "@surface@" "${colors.surface}" \
           --replace "@text@" "${colors.text}" \
           --replace "@border@" "${colors.border}" \

@@ -14,13 +14,15 @@
         config.home-manager.users.${config.system.primaryUser}.programs.kitty.font.name or "Iosevka";
       alpha = opacity: base: "0x${opacity}${palette.${base}}";
       colors = {
+        barBackground = alpha "40" "base00";
+        barBorder = alpha "66" "base03";
         surface = alpha "a6" "base00";
         text = alpha "ff" "base07";
         border = alpha "dd" "base03";
         selected = alpha "ff" "base0D";
-        selectedText = alpha "ff" "base00";
+        selectedText = alpha "ff" "base07";
         accent = alpha "ff" "base0C";
-        # The former border accents now provide translucent Powerline segment fills.
+        # The former border accents now provide translucent neon baseline rails.
         frontApp = alpha "cc" "base08";
         caltrain = alpha "cc" "base0D";
         wifi = alpha "cc" "base0B";
@@ -59,6 +61,8 @@
           --replace "@aerospace@" "${pkgs.aerospace}" \
           --replace "@iconDir@" "${iconDir}" \
           --replace "@powerlineFont@" "${powerlineFont}" \
+          --replace "@barBackground@" "${colors.barBackground}" \
+          --replace "@barBorder@" "${colors.barBorder}" \
           --replace "@surface@" "${colors.surface}" \
           --replace "@text@" "${colors.text}" \
           --replace "@border@" "${colors.border}" \

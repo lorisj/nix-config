@@ -36,8 +36,8 @@
             bold_font = "auto";
             bold_italic_font = "auto";
             # force bc stylix will try to overwrite this
-            background_opacity = lib.mkForce 0.75;
-            background_blur = 40;
+            background_opacity = lib.mkForce 0.80;
+            background_blur = 30;
             background_image = "${wallPattern}/wall-pattern.png";
             background_image_layout = "tiled";
 

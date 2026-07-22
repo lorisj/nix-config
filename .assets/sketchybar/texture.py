@@ -6,7 +6,7 @@ from PIL import Image, ImageOps
 
 WIDTH = 4096
 HEIGHT = 38
-ALPHA_MULTIPLIER = 4.0
+ALPHA_MULTIPLIER = 5.0
 SEED = 8675
 
 

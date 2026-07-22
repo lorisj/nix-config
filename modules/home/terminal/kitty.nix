@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.homeModules.terminal.kitty =
     {
@@ -7,6 +7,12 @@
       lib,
       ...
     }:
+    let
+      wallPattern = import ../../../.assets/kitty/star-specks.nix {
+        inherit inputs lib pkgs;
+        palette = config.colorScheme.palette;
+      };
+    in
     {
       # Dock / Spotlight / Finder: Launch Services does not pass argv; this file
       # supplies CLI flags (see kitty --help --start-as).
@@ -31,7 +37,9 @@
             bold_italic_font = "auto";
             # force bc stylix will try to overwrite this
             background_opacity = lib.mkForce 0.75;
-            background_blur = 20;
+            background_blur = 40;
+            background_image = "${wallPattern}/wall-pattern.png";
+            background_image_layout = "tiled";
 
             cursor_shape = "block";
             cursor_blink_interval = 0.5;

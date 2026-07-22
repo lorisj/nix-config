@@ -5,6 +5,7 @@ export PATH
 
 PLUGIN_DIR="@pluginDir@"
 POWERLINE_FONT="@powerlineFont@"
+BAR_TEXTURE="@barTexture@"
 
 sketchybar --load-font "$POWERLINE_FONT"
 
@@ -253,6 +254,17 @@ sketchybar --add item date right \
 
 sketchybar --add item rhs.gap.battery_time right \
   --set rhs.gap.battery_time "${segment_gap[@]}"
+
+sketchybar --add bracket bar.texture \
+  front_app caltrain "${space_items[@]}" wifi volume battery date clock \
+  --set bar.texture \
+    background.drawing=on \
+    background.color=0x00000000 \
+    background.height=38 \
+    background.corner_radius=0 \
+    background.image="$BAR_TEXTURE" \
+    background.image.drawing=on \
+    background.image.scale=1.0
 
 rm -f "${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.state"
 sketchybar --trigger aerospace_workspace_change

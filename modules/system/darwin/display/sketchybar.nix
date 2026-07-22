@@ -1,4 +1,4 @@
-{ self, ... }:
+{ inputs, self, ... }:
 {
   flake.darwinModules.display.sketchybar =
     {
@@ -48,6 +48,18 @@
           node = "${pkgs.nodejs}/bin/node";
         };
       };
+      textureSource = import ../../../../.assets/kitty/star-specks.nix {
+        inherit
+          inputs
+          lib
+          pkgs
+          palette
+          ;
+      };
+      barTexture = import ../../../../.assets/sketchybar/texture.nix {
+        inherit pkgs;
+        source = "${textureSource}/wall-pattern.png";
+      };
       configDir = pkgs.runCommand "sketchybar-pill-config" { } ''
         mkdir -p $out/plugins
 
@@ -60,6 +72,7 @@
           --replace "@sketchybar@" "${pkgs.sketchybar}" \
           --replace "@aerospace@" "${pkgs.aerospace}" \
           --replace "@iconDir@" "${iconDir}" \
+          --replace "@barTexture@" "${barTexture}/texture.png" \
           --replace "@powerlineFont@" "${powerlineFont}" \
           --replace "@barBackground@" "${colors.barBackground}" \
           --replace "@barBorder@" "${colors.barBorder}" \

@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   flake.userConfig.loris.module =
     { ... }:
@@ -15,6 +15,6 @@
       #colorScheme = inputs.nix-colors.colorSchemes.catppuccin-mocha;
       #colorScheme = inputs.nix-colors.colorSchemes.atelier-sulphurpool;
       #colorScheme = inputs.nix-colors.colorSchemes.chalk;
-      wallpaperPath = ../.assets/round-hill.jpg;
+      wallpaperPath = self.assets.images.roundHill;
     };
 }

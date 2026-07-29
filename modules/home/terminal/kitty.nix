@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ self, ... }:
 {
   flake.homeModules.terminal.kitty =
     {
@@ -8,8 +8,8 @@
       ...
     }:
     let
-      wallPattern = import ../../../.assets/kitty/star-specks.nix {
-        inherit inputs lib pkgs;
+      assetGenerators = self.assetGenerators.${pkgs.stdenv.hostPlatform.system};
+      wallPattern = assetGenerators.starSpecks {
         palette = config.colorScheme.palette;
       };
     in

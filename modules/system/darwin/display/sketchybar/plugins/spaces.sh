@@ -2,6 +2,27 @@
 PATH="@sketchybar@/bin:@aerospace@/bin:/usr/bin:/bin"
 export PATH
 
+if [ "${1:-}" = wake ]; then
+  # Reloading recreates the system_woke subscription. SketchyBar can deliver
+  # the same wake notification to the new listener, so suppress repeats.
+  stamp_file="${TMPDIR:-/tmp}/sketchybar-wake-reload.stamp"
+  now="$(date +%s)"
+  last=0
+
+  if [ -r "$stamp_file" ]; then
+    last="$(cat "$stamp_file")"
+  fi
+  case "$last" in
+    "" | *[!0-9]*) last=0 ;;
+  esac
+
+  if [ $((now - last)) -ge 10 ]; then
+    printf '%s\n' "$now" > "$stamp_file"
+    sketchybar --reload
+  fi
+  exit 0
+fi
+
 focused="$FOCUSED_WORKSPACE"
 if [ -z "$focused" ]; then
   focused="$(aerospace list-workspaces --focused 2>/dev/null)"
@@ -26,22 +47,11 @@ cleanup() {
 trap cleanup EXIT
 
 acquire_render_lock() {
-  while ! mkdir "$lock_dir" 2>/dev/null; do
-    if [ -r "$lock_dir/pid" ]; then
-      lock_pid="$(cat "$lock_dir/pid")"
-      case "$lock_pid" in
-        "" | *[!0-9]* ) ;;
-        * )
-          if ! kill -0 "$lock_pid" 2>/dev/null; then
-            rm -rf "$lock_dir"
-            continue
-          fi
-          ;;
-      esac
-    fi
-    sleep 0.02
-  done
-  printf '%s\n' "$$" > "$lock_dir/pid"
+  # Wake and window discovery can emit a burst of identical events. Keep the
+  # first renderer and let the periodic update handle anything it coalesces.
+  # Waiting here makes every contender fork mkdir/sleep/cat processes and can
+  # overwhelm WindowServer immediately after wake.
+  mkdir "$lock_dir" 2>/dev/null || return 1
   locked=1
 }
 
@@ -174,7 +184,7 @@ if [ -n "$FOCUSED_WORKSPACE" ]; then
   if [ "$(latest_requested_focus)" != "$FOCUSED_WORKSPACE" ]; then
     exit 0
   fi
-  acquire_render_lock
+  acquire_render_lock || exit 0
   if [ "$(latest_requested_focus)" != "$FOCUSED_WORKSPACE" ]; then
     exit 0
   fi
@@ -232,7 +242,7 @@ if [ -n "$cached_focused" ] && [ "$cached_focused" != "$focused" ]; then
   exit 0
 fi
 
-acquire_render_lock
+acquire_render_lock || exit 0
 
 latest_focused="$(aerospace list-workspaces --focused 2>/dev/null)"
 if [ -n "$latest_focused" ] && [ "$latest_focused" != "$focused" ]; then

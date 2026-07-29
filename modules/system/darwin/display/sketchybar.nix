@@ -1,4 +1,4 @@
-{ inputs, self, ... }:
+{ self, ... }:
 {
   flake.darwinModules.display.sketchybar =
     {
@@ -39,7 +39,7 @@
         batteryAccent = alpha "ff" "base0A";
         wifiAccent = alpha "ff" "base0B";
       };
-      iconDir = self.assetPaths.programIcons;
+      iconDir = self.assets.directories.programIcons;
       powerlineFont = "${pkgs.nerd-fonts.symbols-only}/share/fonts/truetype/NerdFonts/Symbols/SymbolsNerdFont-Regular.ttf";
       caltrainPlugin = pkgs.replaceVarsWith {
         src = ./plugins/caltrain.js;
@@ -48,16 +48,11 @@
           node = "${pkgs.nodejs}/bin/node";
         };
       };
-      textureSource = import ../../../../.assets/kitty/star-specks.nix {
-        inherit
-          inputs
-          lib
-          pkgs
-          palette
-          ;
+      assetGenerators = self.assetGenerators.${pkgs.stdenv.hostPlatform.system};
+      textureSource = assetGenerators.starSpecks {
+        inherit palette;
       };
-      barTexture = import ../../../../.assets/sketchybar/texture.nix {
-        inherit pkgs;
+      barTexture = assetGenerators.sketchybarTexture {
         source = "${textureSource}/wall-pattern.png";
       };
       configDir = pkgs.runCommand "sketchybar-pill-config" { } ''

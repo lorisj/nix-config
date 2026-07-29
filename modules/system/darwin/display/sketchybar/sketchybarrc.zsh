@@ -200,7 +200,7 @@ sketchybar --add item spaces.listener center \
 # Recreate the bar after macOS wakes. The SketchyBar process can remain alive
 # across sleep while its windows fail to return, so KeepAlive alone is not enough.
 sketchybar --add item wake.listener left \
-  --set wake.listener drawing=off script="sketchybar --reload" \
+  --set wake.listener drawing=off script="$PLUGIN_DIR/spaces.sh wake" \
   --subscribe wake.listener system_woke
 
 sketchybar --add item wifi right \
@@ -267,5 +267,6 @@ sketchybar --add bracket bar.texture \
     background.image.scale=1.0
 
 rm -f "${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.state"
+rm -rf "${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.lock"
 sketchybar --trigger aerospace_workspace_change
 sketchybar --update

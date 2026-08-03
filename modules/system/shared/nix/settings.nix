@@ -21,6 +21,8 @@
         "flakes"
       ];
 
+      nix.settings.fallback = true;
+
       # Allow unfree packages
       nixpkgs.config.allowUnfree = true;
     };

@@ -195,7 +195,7 @@ done
 sketchybar --add event aerospace_workspace_change
 sketchybar --add item spaces.listener center \
   --set spaces.listener drawing=off updates=on update_freq=3 script="$PLUGIN_DIR/spaces.sh" \
-  --subscribe spaces.listener aerospace_workspace_change
+  --subscribe spaces.listener aerospace_workspace_change space_windows_change
 
 # Recreate the bar after macOS wakes. The SketchyBar process can remain alive
 # across sleep while its windows fail to return, so KeepAlive alone is not enough.
@@ -266,7 +266,6 @@ sketchybar --add bracket bar.texture \
     background.image.drawing=on \
     background.image.scale=1.0
 
-rm -f "${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.state"
 rm -rf "${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.lock"
 sketchybar --trigger aerospace_workspace_change
 sketchybar --update

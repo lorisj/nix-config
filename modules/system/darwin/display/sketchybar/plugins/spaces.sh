@@ -41,8 +41,6 @@ render_focus() {
     --set "space.$sid.gap" drawing=on
 }
 
-focused="$(aerospace list-workspaces --focused 2>/dev/null)"
-
 lock_dir="${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.lock"
 # Snapshot each workspace once so the complete repaint uses one coherent view.
 work_dir="${TMPDIR:-/tmp}/sketchybar-aerospace-spaces.$$"
@@ -62,11 +60,16 @@ trap cleanup EXIT
 acquire_render_lock() {
   # Wake and window discovery can emit a burst of identical events. Keep the
   # first renderer and let the periodic update handle anything it coalesces.
-  # Waiting here makes every contender fork mkdir/sleep/cat processes and can
-  # overwhelm WindowServer immediately after wake.
+  # Acquire this before querying AeroSpace: those queries are the expensive
+  # part, and allowing every contender to take its own snapshot creates an
+  # unbounded process pile-up when a render takes longer than update_freq.
   mkdir "$lock_dir" 2>/dev/null || return 1
   locked=1
 }
+
+acquire_render_lock || exit 0
+
+focused="$(aerospace list-workspaces --focused 2>/dev/null)"
 
 image_for_app() {
   case "$1" in
@@ -114,8 +117,6 @@ latest_focused="$(aerospace list-workspaces --focused 2>/dev/null)"
 if [ -n "$latest_focused" ] && [ "$latest_focused" != "$focused" ]; then
   exit 0
 fi
-
-acquire_render_lock || exit 0
 
 latest_focused="$(aerospace list-workspaces --focused 2>/dev/null)"
 if [ -n "$latest_focused" ] && [ "$latest_focused" != "$focused" ]; then

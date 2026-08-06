@@ -1,30 +1,29 @@
 { ... }:
 {
-  flake.sharedModules.nix.settings = { ... }:
-  {
-    config = {
-      nix.settings.substituters = [
-        "https://cache.nixos.org"
-        "https://nix-community.cachix.org"
-        "https://cuda-maintainers.cachix.org"
-        "https://cache.garnix.io"
-      ];
+  flake.sharedModules.nix.settings =
+    { ... }:
+    {
+      config = {
+        nix.settings.substituters = [
+          "https://cache.nixos.org"
+          "https://nix-community.cachix.org"
+          "https://cuda-maintainers.cachix.org"
+        ];
 
-      nix.settings.trusted-public-keys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-      ];
+        nix.settings.trusted-public-keys = [
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+        ];
 
-      nix.settings.experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
+        nix.settings.experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
 
-      nix.settings.fallback = true;
+        nix.settings.fallback = true;
 
-      # Allow unfree packages
-      nixpkgs.config.allowUnfree = true;
+        # Allow unfree packages
+        nixpkgs.config.allowUnfree = true;
+      };
     };
-  };
 }

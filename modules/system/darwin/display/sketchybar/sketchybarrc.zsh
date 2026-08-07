@@ -7,6 +7,11 @@ PLUGIN_DIR="@pluginDir@"
 POWERLINE_FONT="@powerlineFont@"
 BAR_TEXTURE="@barTexture@"
 
+# Login wakes the display while this configuration is still being built. Mark
+# the process as freshly started so that system_woke cannot reload it midway
+# through setup and run two copies of this file concurrently.
+printf '%s\n' "$(date +%s)" > "${TMPDIR:-/tmp}/sketchybar-wake-reload.stamp"
+
 sketchybar --load-font "$POWERLINE_FONT"
 
 SURFACE=@surface@

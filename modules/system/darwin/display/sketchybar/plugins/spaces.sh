@@ -16,7 +16,10 @@ if [ "${1:-}" = wake ]; then
     "" | *[!0-9]*) last=0 ;;
   esac
 
-  if [ $((now - last)) -ge 10 ]; then
+  # A login/display wake can arrive while sketchybarrc is still constructing
+  # the bar. Reload only after the current process has been stable long enough
+  # that this is a genuine wake of an already-running SketchyBar instance.
+  if [ $((now - last)) -ge 30 ]; then
     printf '%s\n' "$now" > "$stamp_file"
     sketchybar --reload
   fi

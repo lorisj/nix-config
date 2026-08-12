@@ -8,7 +8,7 @@
         keymaps = [
           {
             mode = "n";
-            key = "<leader>tc";
+            key = "<leader>f";
             action = "<cmd>TSContext toggle<cr>";
             options.desc = "Toggle treesitter context";
             options.silent = true;

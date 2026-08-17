@@ -36,6 +36,20 @@
             options.desc = "Toggle Claude Code";
           }
           {
+            mode = [
+              "n"
+              "i"
+              "t"
+            ];
+            key = "${navigationPrefix}C";
+            action.__raw = ''
+              function()
+                require("claudecode.terminal").close()
+              end
+            '';
+            options.desc = "Close Claude Code";
+          }
+          {
             mode = "v";
             key = "${navigationPrefix}c";
             action = "<cmd>ClaudeCodeSend<cr>";

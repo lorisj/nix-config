@@ -29,6 +29,19 @@
             options.silent = true;
             options.desc = "Toggle file browser";
           }
+          {
+            mode = [
+              "n"
+              "i"
+              "t"
+            ];
+            key = "${navigationPrefix}B";
+            action = "<cmd>Neotree close<cr>";
+            options = {
+              desc = "Close file browser";
+              silent = true;
+            };
+          }
         ];
         plugins.neo-tree = {
           enable = true;

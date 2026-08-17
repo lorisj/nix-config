@@ -62,6 +62,26 @@ in
             action = toggleLazyGit;
             options.desc = "LazyGit toggle";
           }
+          {
+            mode = [
+              "n"
+              "i"
+              "t"
+            ];
+            key = "${navigationPrefix}G";
+            action.__raw = ''
+              function()
+                for _, win in ipairs(vim.api.nvim_list_wins()) do
+                  local buf = vim.api.nvim_win_get_buf(win)
+                  if vim.bo[buf].filetype == "lazygit" then
+                    vim.api.nvim_win_close(win, true)
+                    return
+                  end
+                end
+              end
+            '';
+            options.desc = "Close LazyGit";
+          }
         ];
       };
     };

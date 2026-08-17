@@ -46,6 +46,19 @@
             };
           }
           {
+            mode = [
+              "n"
+              "i"
+              "t"
+            ];
+            key = "${navigationPrefix}D";
+            action = "<cmd>Trouble close<cr>";
+            options = {
+              desc = "Close trouble diagnostics";
+              silent = true;
+            };
+          }
+          {
             mode = "n";
             key = "gd";
             action = "<cmd>Trouble lsp_definitions toggle<cr>";

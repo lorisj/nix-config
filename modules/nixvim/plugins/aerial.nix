@@ -58,6 +58,19 @@
             options.silent = true;
             options.desc = "Toggle aerial";
           }
+          {
+            mode = [
+              "n"
+              "i"
+              "t"
+            ];
+            key = "${navigationPrefix}A";
+            action = "<cmd>AerialClose<cr>";
+            options = {
+              desc = "Close aerial";
+              silent = true;
+            };
+          }
         ];
 
       };

@@ -32,6 +32,16 @@
             action = "<cmd>FloatermToggle<cr>";
             options.desc = "Toggle terminal";
           }
+          {
+            mode = [
+              "n"
+              "i"
+              "t"
+            ];
+            key = "${navigationPrefix}T";
+            action = "<cmd>FloatermHide<cr>";
+            options.desc = "Close terminal";
+          }
         ];
       };
     };

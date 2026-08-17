@@ -119,6 +119,20 @@
             '';
             options.desc = "Toggle Codex";
           }
+          {
+            mode = [
+              "n"
+              "i"
+              "t"
+            ];
+            key = "${navigationPrefix}C";
+            action.__raw = ''
+              function()
+                require("codex").close()
+              end
+            '';
+            options.desc = "Close Codex";
+          }
         ];
       };
     };

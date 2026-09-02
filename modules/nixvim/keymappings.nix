@@ -28,6 +28,19 @@
               "i"
               "t"
             ];
+            key = "${navigationPrefix}n";
+            action = "<C-\\><C-n>";
+            options = {
+              desc = "enter normal mode";
+              silent = true;
+            };
+          }
+          {
+            mode = [
+              "n"
+              "i"
+              "t"
+            ];
             key = "${navigationPrefix}h";
             action = "<C-\\><C-n><C-w>h";
             options = {

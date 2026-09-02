@@ -295,7 +295,7 @@
         keymaps = [
           {
             mode = "n";
-            key = "<leader>j";
+            key = "<leader>;;";
             action = "<cmd>lua line_bookmarks.pick()<cr>";
             options = {
               desc = "Pick line bookmark";
@@ -304,7 +304,7 @@
           }
           {
             mode = "n";
-            key = "<leader>b";
+            key = "<leader>;a";
             action = "<cmd>lua line_bookmarks.toggle()<cr>";
             options = {
               desc = "Toggle line bookmark";
@@ -313,7 +313,7 @@
           }
           {
             mode = "n";
-            key = "${navigationPrefix};k";
+            key = "${navigationPrefix};N";
             action = "<cmd>lua line_bookmarks.previous()<cr>";
             options = {
               desc = "Previous line bookmark";
@@ -322,7 +322,7 @@
           }
           {
             mode = "n";
-            key = "${navigationPrefix};j";
+            key = "${navigationPrefix};n";
             action = "<cmd>lua line_bookmarks.next()<cr>";
             options = {
               desc = "Next line bookmark";

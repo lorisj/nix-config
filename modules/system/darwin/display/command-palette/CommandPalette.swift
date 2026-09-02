@@ -144,11 +144,18 @@ private final class PaletteController: NSObject,
         backing: .buffered,
         defer: false
     )
+    private let prompt = NSTextField(labelWithString: "❯")
     private let input = NSTextField()
     private let table = NSTableView()
     private let scroll = NSScrollView()
+    private let outputStatus = NSTextField(labelWithString: "")
+    private let outputText = NSTextView()
+    private let outputScroll = NSScrollView()
     private var suggestions: [Suggestion] = []
     private var completionVisible = false
+    private var outputVisible = false
+    private var outputHeight: CGFloat = 0
+    private var runningProcess: Process?
     private var previousApplication: NSRunningApplication?
 
     override init() {
@@ -156,6 +163,7 @@ private final class PaletteController: NSObject,
         configurePanel()
         configureInput()
         configureTable()
+        configureOutput()
         layout()
     }
 
@@ -168,6 +176,10 @@ private final class PaletteController: NSObject,
             previousApplication = frontmost
         }
         completionVisible = false
+        outputVisible = false
+        outputStatus.isHidden = true
+        outputScroll.isHidden = true
+        scroll.isHidden = false
         suggestions = []
         table.reloadData()
         resize()
@@ -210,13 +222,17 @@ private final class PaletteController: NSObject,
     }
 
     private func configureInput() {
+        prompt.font = NSFont.monospacedSystemFont(ofSize: 18, weight: .regular)
+        prompt.textColor = .placeholderTextColor
+        panel.contentView?.addSubview(prompt)
+
         input.delegate = self
         input.isBordered = false
         input.drawsBackground = false
         input.focusRingType = .none
         input.font = NSFont.monospacedSystemFont(ofSize: 18, weight: .regular)
         input.textColor = .labelColor
-        input.placeholderString = "❯  Run a command…"
+        input.placeholderString = "Run a command…"
         input.cell?.usesSingleLineMode = true
         panel.contentView?.addSubview(input)
     }
@@ -240,14 +256,52 @@ private final class PaletteController: NSObject,
         panel.contentView?.addSubview(scroll)
     }
 
+    private func configureOutput() {
+        outputStatus.font = NSFont.systemFont(ofSize: 12, weight: .semibold)
+        outputStatus.isHidden = true
+        panel.contentView?.addSubview(outputStatus)
+
+        outputText.isEditable = false
+        outputText.isSelectable = true
+        outputText.drawsBackground = false
+        outputText.font = NSFont.monospacedSystemFont(ofSize: 13, weight: .regular)
+        outputText.textColor = .labelColor
+        outputText.textContainerInset = NSSize(width: 6, height: 6)
+        outputText.isHorizontallyResizable = false
+        outputText.autoresizingMask = [.width]
+        outputText.textContainer?.widthTracksTextView = true
+
+        outputScroll.documentView = outputText
+        outputScroll.drawsBackground = false
+        outputScroll.hasVerticalScroller = true
+        outputScroll.autohidesScrollers = true
+        outputScroll.isHidden = true
+        panel.contentView?.addSubview(outputScroll)
+    }
+
     private func layout() {
-        input.frame = NSRect(x: 20, y: panel.frame.height - 49, width: 640, height: 36)
+        prompt.frame = NSRect(x: 20, y: panel.frame.height - 49, width: 18, height: 36)
+        input.frame = NSRect(x: 44, y: panel.frame.height - 49, width: 616, height: 36)
         scroll.frame = NSRect(x: 12, y: 10, width: 656, height: panel.frame.height - 68)
+        outputStatus.frame = NSRect(
+            x: 18, y: panel.frame.height - 82, width: 644, height: 18
+        )
+        outputScroll.frame = NSRect(
+            x: 12, y: 10, width: 656, height: max(0, outputHeight - 38)
+        )
+        outputText.frame = NSRect(
+            x: 0, y: 0, width: outputScroll.contentSize.width,
+            height: max(outputScroll.contentSize.height, outputText.layoutManager?.usedRect(
+                for: outputText.textContainer!
+            ).height ?? 0)
+        )
     }
 
     private func resize() {
         let tableHeight = CGFloat(suggestions.count) * 32
-        let visibleHeight = CGFloat(min(suggestions.count, 6)) * 32
+        let visibleHeight = outputVisible
+            ? outputHeight
+            : CGFloat(min(suggestions.count, 6)) * 32
         panel.setContentSize(NSSize(width: 680, height: 58 + visibleHeight))
         layout()
         table.frame = NSRect(x: 0, y: 0, width: scroll.frame.width, height: tableHeight)
@@ -262,6 +316,10 @@ private final class PaletteController: NSObject,
 
     func controlTextDidChange(_ notification: Notification) {
         completionVisible = false
+        outputVisible = false
+        outputStatus.isHidden = true
+        outputScroll.isHidden = true
+        scroll.isHidden = false
         suggestions = []
         table.reloadData()
         resize()
@@ -381,9 +439,14 @@ private final class PaletteController: NSObject,
 
     private func execute() {
         let command = input.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !command.isEmpty else { return }
-        input.stringValue = ""
-        hide(restoreFocus: false)
+        guard !command.isEmpty, runningProcess == nil else { return }
+
+        completionVisible = false
+        suggestions = []
+        table.reloadData()
+        scroll.isHidden = true
+        showOutput(status: "Running…", output: "", isError: false)
+        input.isEditable = false
 
         let process = Process()
         let pipe = Pipe()
@@ -394,26 +457,47 @@ private final class PaletteController: NSObject,
         process.standardError = pipe
         do {
             try process.run()
+            runningProcess = process
             DispatchQueue.global(qos: .utility).async {
                 let data = pipe.fileHandleForReading.readDataToEndOfFile()
                 process.waitUntilExit()
                 let status = process.terminationStatus
                 let output = String(decoding: data, as: UTF8.self)
                     .trimmingCharacters(in: .whitespacesAndNewlines)
-                guard status != 0 || !output.isEmpty else { return }
                 DispatchQueue.main.async {
-                    NSApp.activate(ignoringOtherApps: true)
-                    let alert = NSAlert()
-                    alert.alertStyle = status == 0 ? .informational : .warning
-                    alert.messageText = status == 0
-                        ? "Command finished" : "Command failed (\(status))"
-                    alert.informativeText = output.isEmpty ? command : String(output.prefix(4000))
-                    alert.runModal()
+                    self.runningProcess = nil
+                    self.input.isEditable = true
+                    guard status != 0 || !output.isEmpty else {
+                        self.input.stringValue = ""
+                        self.hide()
+                        return
+                    }
+                    self.showOutput(
+                        status: status == 0 ? "Finished" : "Failed (exit \(status))",
+                        output: output.isEmpty ? "No output" : String(output.prefix(100_000)),
+                        isError: status != 0
+                    )
                 }
             }
         } catch {
-            NSAlert(error: error).runModal()
+            runningProcess = nil
+            input.isEditable = true
+            showOutput(status: "Could not run command", output: error.localizedDescription, isError: true)
         }
+    }
+
+    private func showOutput(status: String, output: String, isError: Bool) {
+        outputVisible = true
+        scroll.isHidden = true
+        outputStatus.stringValue = status
+        outputStatus.textColor = isError ? .systemRed : .secondaryLabelColor
+        outputText.string = output
+        let lineCount = max(1, output.split(separator: "\n", omittingEmptySubsequences: false).count)
+        outputHeight = min(240, max(70, CGFloat(lineCount) * 18 + 44))
+        outputStatus.isHidden = false
+        outputScroll.isHidden = output.isEmpty
+        resize()
+        outputText.scrollToBeginningOfDocument(nil)
     }
 }
 

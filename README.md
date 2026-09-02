@@ -5,7 +5,8 @@ Modular config for setting up
 TODO: write docs
 
 ### macos(nix-darwin)
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/1deeb73b-f707-428f-a548-d59df9f3bdb7" />
+<img width="1921" height="1105" alt="image" src="https://github.com/user-attachments/assets/78414256-0a6f-4c0d-a345-9bafe391fa13" />
+
 TODO: write docs
 
 ### windows (NixOS-wsl)

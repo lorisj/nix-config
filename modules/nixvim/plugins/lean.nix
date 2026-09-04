@@ -5,7 +5,9 @@
     {
       config = {
         extraPackages = [
-          pkgs.lean4
+          # Use elan's lean/lake proxies so each project's lean-toolchain is
+          # respected instead of forcing the version currently in nixpkgs.
+          pkgs.elan
         ];
 
         extraPlugins = with pkgs.vimPlugins; [

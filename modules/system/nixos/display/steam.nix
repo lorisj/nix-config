@@ -55,7 +55,7 @@
             user = cfg.user;
           };
           settings.default_session = {
-            command = "${lib.getExe pkgs.greetd.tuigreet} --time --remember";
+            command = "${lib.getExe pkgs.tuigreet} --time --remember";
             user = "greeter";
           };
         };

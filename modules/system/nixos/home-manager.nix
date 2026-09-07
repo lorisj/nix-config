@@ -1,10 +1,10 @@
-{ inputs, lib, self, ... }:
-let
-  userNames = lib.sort lib.lessThan (lib.attrNames self.userConfig);
-in
+{ inputs, self, ... }:
 {
   flake.osModules.home-manager =
-    { lib, ... }:
+    { config, lib, ... }:
+    let
+      userNames = lib.sort lib.lessThan (lib.attrNames config.os.users);
+    in
     {
       imports = [
         inputs.home-manager.nixosModules.default
@@ -16,11 +16,14 @@ in
             value = {
               isNormalUser = true;
               home = "/home/${userName}";
-              extraGroups = [
-                "docker"
-                "networkmanager"
-                "wheel"
-              ];
+              extraGroups = lib.unique (
+                self.userConfig.${userName}.nixos.extraGroups
+                ++ lib.optionals config.os.users.${userName}.isAdmin [
+                  "docker"
+                  "networkmanager"
+                  "wheel"
+                ]
+              );
             };
           }) userNames
         );

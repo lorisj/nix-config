@@ -1,7 +1,5 @@
-{ lib, self, ... }:
+{ ... }:
 let
-  userNames = lib.sort lib.lessThan (lib.attrNames self.userConfig);
-
   defaultKeys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICeZI2pBSxv1fs6V8hAe5DDyHSUT4UCcQZTXK9sLPxwt"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOgykMePA2aCBXm2uktQSnI4p4f0++eWZ5hYF80vtrMo"
@@ -21,7 +19,7 @@ in
 
         os.networking.ssh.allowedUsers = lib.mkOption {
           type = lib.types.listOf lib.types.str;
-          default = userNames;
+          default = lib.sort lib.lessThan (lib.attrNames config.os.users);
           description = "Users allowed to SSH into this host.";
         };
       };

@@ -1,9 +1,9 @@
-{ lib, self, ... }:
+{ self, ... }:
 {
   flake.sharedModules.nix.home-manager =
-    { ... }:
+    { config, lib, ... }:
     let
-      userNames = lib.sort lib.lessThan (lib.attrNames self.userConfig);
+      userNames = lib.sort lib.lessThan (lib.attrNames config.os.users);
     in
     {
       config = {

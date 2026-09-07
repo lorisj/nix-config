@@ -16,9 +16,17 @@ let
     moduleOrAttrs 3;
 
   userConfigEntry = types.submodule {
-    options.module = lib.mkOption {
-      type = types.deferredModule;
-      description = "Home Manager module for this user (imported from home-manager.users.<name>).";
+    options = {
+      module = lib.mkOption {
+        type = types.deferredModule;
+        description = "Home Manager module for this user (imported from home-manager.users.<name>).";
+      };
+
+      nixos.extraGroups = lib.mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "NixOS groups this user always belongs to, independent of host admin access.";
+      };
     };
   };
 in
@@ -52,6 +60,6 @@ in
   options.flake.userConfig = lib.mkOption {
     type = types.attrsOf userConfigEntry;
     default = { };
-    description = "Per-username Home Manager user modules. Add a file under users/ to define a new account profile.";
+    description = "Per-username account profiles. Add a file under users/ to define a new profile.";
   };
 }

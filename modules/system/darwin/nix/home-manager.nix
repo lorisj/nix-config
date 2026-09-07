@@ -1,10 +1,11 @@
-{ lib, self, inputs, ... }:
-let
-  userNames = lib.sort lib.lessThan (lib.attrNames self.userConfig);
-in
+{ inputs, ... }:
 {
   flake.darwinModules.nix.home-manager =
-    { ... }:
+    { config, lib, ... }:
+    let
+      userNames = lib.sort lib.lessThan (lib.attrNames config.os.users);
+      adminUserNames = builtins.filter (userName: config.os.users.${userName}.isAdmin) userNames;
+    in
     {
       imports = [
         inputs.home-manager.darwinModules.home-manager
@@ -24,6 +25,10 @@ in
             };
           }) userNames
         );
+
+        security.sudo.extraConfig = lib.concatMapStringsSep "\n" (
+          userName: "${userName} ALL = (ALL) ALL"
+        ) adminUserNames;
       };
     };
 }

@@ -41,9 +41,9 @@
         }) workspaces
       );
       refresh-bindings = {
-        "${m}-shift-h" = withRefresh "move up";
-        "${m}-shift-k" = withRefresh "move right";
-        "${m}-shift-j" = withRefresh "move left";
+        "${m}-shift-h" = withRefresh "move left";
+        "${m}-shift-j" = withRefresh "move up";
+        "${m}-shift-k" = withRefresh "move down";
         "${m}-shift-l" = withRefresh "move right";
       };
     in
@@ -101,10 +101,10 @@
 
               # i3-style: focus, move, workspaces — based on AeroSpace default-config.toml
               mode.main.binding = {
-                "${m}-j" = "focus left";
-                "${m}-l" = "focus down";
-                "${m}-h" = "focus up";
-                "${m}-k" = "focus right";
+                "${m}-h" = "focus left";
+                "${m}-j" = "focus up";
+                "${m}-k" = "focus down";
+                "${m}-l" = "focus right";
                 "${m}-minus" = "resize smart -50";
                 "${m}-equal" = "resize smart +50";
                 # "${m}-tab" = "workspace-back-and-forth";

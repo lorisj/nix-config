@@ -1,50 +1,60 @@
 { ... }:
 {
   flake.darwinModules.display.command-palette =
-    { pkgs, ... }:
+    { lib, pkgs, ... }:
     let
-      infoPlist = pkgs.writeText "command-palette-info.plist" ''
-        <?xml version="1.0" encoding="UTF-8"?>
-        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-        <plist version="1.0"><dict>
-          <key>CFBundleExecutable</key><string>CommandPalette</string>
-          <key>CFBundleIdentifier</key><string>dev.loris.command-palette</string>
-          <key>CFBundleName</key><string>Command Palette</string>
-          <key>CFBundlePackageType</key><string>APPL</string>
-          <key>CFBundleShortVersionString</key><string>0.1.0</string>
-          <key>LSMinimumSystemVersion</key><string>13.0</string>
-          <key>LSUIElement</key><true/>
-          <key>NSHighResolutionCapable</key><true/>
-        </dict></plist>
+      quickAccessConfig = pkgs.writeText "command-palette.conf" ''
+        edge center-sized
+        columns 680px
+        lines 340px
+        layer overlay
+        background_opacity 0.8
+        hide_on_focus_loss yes
+
+        kitty_override background_blur=0
+        kitty_override background_image=none
+        kitty_override cursor_trail=0
+        kitty_override input_delay=1
+        kitty_override repaint_delay=2
+        kitty_override sync_to_monitor=yes
       '';
-      commandPalette = pkgs.stdenv.mkDerivation {
-        pname = "command-palette";
-        version = "0.1.0";
-        dontUnpack = true;
-        nativeBuildInputs = [ pkgs.swift ];
-        buildPhase = ''
-          swiftc -O -framework AppKit -framework Carbon \
-            ${./CommandPalette.swift} -o CommandPalette
-        '';
-        installPhase = ''
-          app="$out/Applications/Command Palette.app"
-          mkdir -p "$app/Contents/MacOS"
-          cp CommandPalette "$app/Contents/MacOS/CommandPalette"
-          cp ${infoPlist} "$app/Contents/Info.plist"
+
+      paletteZshConfig = pkgs.writeTextDir ".zshrc" ''
+        PATH="$HOME/.nix-profile/bin:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        cd "$HOME"
+        HISTFILE="$HOME/.zsh_history"
+        HISTSIZE=10000
+        SAVEHIST=10000
+        PROMPT='%F{cyan}❯%f '
+        RPROMPT='%F{8}%~%f'
+        setopt append_history
+
+        command-palette-exit() {
+          exit
+        }
+
+        zle -N command-palette-exit
+        bindkey '^[' command-palette-exit
+      '';
+
+      commandPalette = pkgs.writeShellApplication {
+        name = "command-palette";
+        runtimeInputs = [ pkgs.kitty ];
+        text = ''
+          exec kitten quick-access-terminal \
+            --config ${quickAccessConfig} \
+            --instance-group command-palette \
+            ${pkgs.coreutils}/bin/env ZDOTDIR=${paletteZshConfig} \
+              ${pkgs.zsh}/bin/zsh -i
         '';
       };
     in
     {
       config = {
         environment.systemPackages = [ commandPalette ];
-        launchd.user.agents.command-palette.serviceConfig = {
-          ProgramArguments = [
-            "${commandPalette}/Applications/Command Palette.app/Contents/MacOS/CommandPalette"
-          ];
-          KeepAlive = true;
-          RunAtLoad = true;
-          ProcessType = "Interactive";
-        };
+
+        services.aerospace.settings.mode.main.binding.cmd-e =
+          "exec-and-forget ${lib.getExe commandPalette}";
       };
     };
 }

@@ -23,13 +23,6 @@
       };
 
       config = lib.mkIf cfg.enabled {
-        users.users.${cfg.user} = {
-          isNormalUser = true;
-          home = "/home/${cfg.user}";
-          description = "Steam Big Picture";
-          extraGroups = [ "audio" "video" "input" "gamemode" ];
-        };
-
         nixpkgs.config.allowUnfree = true;
 
         programs.steam = {

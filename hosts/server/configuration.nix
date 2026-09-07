@@ -12,6 +12,9 @@
       {
         system.stateVersion = "25.11";
         os.users.loris.isAdmin = true;
+        os.users.steam.isAdmin = false;
+        os.display.steam.enabled = true;
+        os.networking.ssh.allowedUsers = [ "loris" ];
 
         os.display.hyprland.enabled = false;
         # os.display.hyprland.displayScaling = 2;
@@ -25,7 +28,6 @@
         networking.hostName = "nixos-server";
         os.hardware.nvidia.enabled = true;
         os.networking.ssh.enabled = true;
-        os.display.steam.enabled = true;
       }
     ];
   };

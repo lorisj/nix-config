@@ -12,6 +12,8 @@
       {
         system.stateVersion = "25.11";
         os.users.loris.isAdmin = true;
+        os.users.steam.isAdmin = false;
+        os.display.steam.enabled = true;
 
         os.display.hyprland.enabled = false;
         # os.display.hyprland.displayScaling = 2;

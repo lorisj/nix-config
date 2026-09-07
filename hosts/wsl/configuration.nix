@@ -18,6 +18,7 @@
         };
 
         networking.hostName = "nixos-wsl";
+        os.users.loris.isAdmin = true;
         system.stateVersion = "25.11";
         os.boot.loader.enabled = false;
         os.hardware.nvidia.enabled = true;

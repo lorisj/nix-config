@@ -11,6 +11,7 @@
         ids.gids.nixbld = 350;
         system.stateVersion = 4;
         displayModKey = "cmd";
+        os.users.loris.isAdmin = true;
       }
       self.darwinModules.default
     ];

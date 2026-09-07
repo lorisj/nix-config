@@ -11,6 +11,7 @@
       self.osModules.default
       {
         system.stateVersion = "25.11";
+        os.users.loris.isAdmin = true;
 
         os.display.hyprland.enabled = true;
         # os.display.hyprland.displayScaling = 2;

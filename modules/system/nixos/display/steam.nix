@@ -6,7 +6,7 @@
       cfg = config.os.display.steam;
       bigPicture = pkgs.writeShellScript "steam-bigpicture" ''
         exec ${lib.getExe pkgs.gamescope} --steam -e \
-          -W ${toString cfg.width} -H ${toString cfg.height} \
+          -W ${toString cfg.width} -H ${toString cfg.height} --force-composite \
           -- steam -tenfoot -pipewire-dmabuf
       '';
     in

@@ -21,6 +21,7 @@
         os.networking.tailscale.enabled = true;
         os.networking.tailscale.allowedTCPPorts = [ 3001 ];
         networking.hostName = "nixos-laptop";
+        os.hardware.bluetooth.enabled = true;
       }
     ];
   };

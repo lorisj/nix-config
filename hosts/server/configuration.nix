@@ -25,6 +25,7 @@
           22
         ];
         networking.hostName = "nixos-server";
+        os.hardware.bluetooth.enabled = true;
         os.hardware.nvidia.enabled = true;
         os.networking.ssh.enabled = true;
       }

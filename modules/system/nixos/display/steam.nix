@@ -18,8 +18,8 @@
           default = "steam";
           description = "Kiosk account auto-logged into the gamescope Steam session.";
         };
-        os.display.steam.width = lib.mkOption { type = lib.types.int; default = 1920; };
-        os.display.steam.height = lib.mkOption { type = lib.types.int; default = 1080; };
+        os.display.steam.width = lib.mkOption { type = lib.types.int; default = 3840; };
+        os.display.steam.height = lib.mkOption { type = lib.types.int; default = 2160; };
       };
 
       config = lib.mkIf cfg.enabled {

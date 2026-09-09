@@ -9,8 +9,6 @@
     }:
     let
       cfg = config.os.display.steam;
-      nestedGamescope = cfg.session == "hyprland-gamescope";
-      useHyprland = cfg.session != "gamescope";
       nestedSteam = pkgs.writeShellScript "steam-nested-gamescope" ''
         exec ${lib.getExe pkgs.gamescope} --backend wayland --steam -e -f \
           --hide-cursor-delay 1000 \
@@ -24,31 +22,17 @@
           inactive_timeout = 1
           hide_on_key_press = true
         }
-        exec-once = ${if nestedGamescope then nestedSteam else "steam -tenfoot"}
+        exec-once = ${nestedSteam}
         bind = SUPER, F, fullscreen
         bind = SUPER SHIFT, E, exit
       '';
-      bigPicture = pkgs.writeShellScript "steam-bigpicture" (
-        if useHyprland then
-          ''
-            exec ${lib.getExe config.programs.hyprland.package} --config ${hyprlandConfig}
-          ''
-        else
-          ''
-            exec ${lib.getExe pkgs.gamescope} --steam -e \
-              -W ${toString cfg.width} -H ${toString cfg.height} \
-              -- steam -tenfoot -pipewire-dmabuf
-          ''
-      );
+      bigPicture = pkgs.writeShellScript "steam-bigpicture" ''
+        exec ${lib.getExe config.programs.hyprland.package} --config ${hyprlandConfig}
+      '';
     in
     {
       options = {
         os.display.steam.enabled = lib.mkEnableOption "steam big picture session";
-        os.display.steam.session = lib.mkOption {
-          type = lib.types.enum [ "gamescope" "hyprland" "hyprland-gamescope" ];
-          default = "gamescope";
-          description = "Steam kiosk session: standalone Gamescope, Hyprland, or Gamescope nested inside Hyprland. Hyprland sessions use 60 Hz output.";
-        };
         os.display.steam.user = lib.mkOption {
           type = lib.types.str;
           default = "steam";
@@ -69,15 +53,15 @@
 
         programs.steam = {
           enable = true;
-          gamescopeSession.enable = cfg.session == "gamescope";
+          gamescopeSession.enable = false;
           remotePlay.openFirewall = true;
           localNetworkGameTransfers.openFirewall = true;
         };
         programs.gamescope = {
-          enable = cfg.session == "gamescope" || nestedGamescope;
-          capSysNice = cfg.session == "gamescope";
+          enable = true;
+          capSysNice = false;
         };
-        programs.hyprland = lib.mkIf useHyprland {
+        programs.hyprland = {
           enable = true;
           xwayland.enable = true;
         };

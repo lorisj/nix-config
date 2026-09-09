@@ -13,7 +13,9 @@
         system.stateVersion = "25.11";
         os.users.loris.isAdmin = true;
         os.users.steam.isAdmin = false;
-        os.display.steam.enabled = true;
+        specialisation.steam.configuration = {
+          config.os.display.steam.enabled = true;
+        };
         os.display.steam.width = 3840;
         os.display.steam.height = 2160;
 

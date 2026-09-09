@@ -13,12 +13,17 @@
       useHyprland = cfg.session != "gamescope";
       nestedSteam = pkgs.writeShellScript "steam-nested-gamescope" ''
         exec ${lib.getExe pkgs.gamescope} --backend wayland --steam -e -f \
+          --hide-cursor-delay 1000 \
           -w ${toString cfg.width} -h ${toString cfg.height} \
           -W ${toString cfg.width} -H ${toString cfg.height} -r 60 \
           -- steam -tenfoot -pipewire-dmabuf
       '';
       hyprlandConfig = pkgs.writeText "steam-hyprland.conf" ''
         monitor = ,${toString cfg.width}x${toString cfg.height}@60,auto,1
+        cursor {
+          inactive_timeout = 1
+          hide_on_key_press = true
+        }
         exec-once = ${if nestedGamescope then nestedSteam else "steam -tenfoot"}
         bind = SUPER, F, fullscreen
         bind = SUPER SHIFT, E, exit

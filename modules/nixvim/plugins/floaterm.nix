@@ -29,7 +29,7 @@
           {
             mode = "t";
             key = "${navigationPrefix}t";
-            action = "<cmd>FloatermToggle<cr>";
+            action = "<cmd>FloatermToggle<cr><cmd>startinsert<cr>";
             options.desc = "Toggle terminal";
           }
           {

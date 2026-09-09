@@ -14,7 +14,7 @@
         os.users.loris.isAdmin = true;
         os.users.steam.isAdmin = false;
         os.display.steam.enabled = true;
-        os.display.steam.session = "hyprland";
+        os.display.steam.session = "hyprland-gamescope";
         os.display.steam.width = 3840;
         os.display.steam.height = 2160;
 

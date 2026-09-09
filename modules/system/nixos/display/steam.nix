@@ -9,14 +9,22 @@
     }:
     let
       cfg = config.os.display.steam;
+      nestedGamescope = cfg.session == "hyprland-gamescope";
+      useHyprland = cfg.session != "gamescope";
+      nestedSteam = pkgs.writeShellScript "steam-nested-gamescope" ''
+        exec ${lib.getExe pkgs.gamescope} --backend wayland --steam -e -f \
+          -w ${toString cfg.width} -h ${toString cfg.height} \
+          -W ${toString cfg.width} -H ${toString cfg.height} -r 60 \
+          -- steam -tenfoot -pipewire-dmabuf
+      '';
       hyprlandConfig = pkgs.writeText "steam-hyprland.conf" ''
         monitor = ,${toString cfg.width}x${toString cfg.height}@60,auto,1
-        exec-once = steam -tenfoot
+        exec-once = ${if nestedGamescope then nestedSteam else "steam -tenfoot"}
         bind = SUPER, F, fullscreen
         bind = SUPER SHIFT, E, exit
       '';
       bigPicture = pkgs.writeShellScript "steam-bigpicture" (
-        if cfg.session == "hyprland" then
+        if useHyprland then
           ''
             exec ${lib.getExe config.programs.hyprland.package} --config ${hyprlandConfig}
           ''
@@ -32,9 +40,9 @@
       options = {
         os.display.steam.enabled = lib.mkEnableOption "steam big picture session";
         os.display.steam.session = lib.mkOption {
-          type = lib.types.enum [ "gamescope" "hyprland" ];
+          type = lib.types.enum [ "gamescope" "hyprland" "hyprland-gamescope" ];
           default = "gamescope";
-          description = "Compositor for the Steam kiosk; Hyprland tests native output at 60 Hz.";
+          description = "Steam kiosk session: standalone Gamescope, Hyprland, or Gamescope nested inside Hyprland. Hyprland sessions use 60 Hz output.";
         };
         os.display.steam.user = lib.mkOption {
           type = lib.types.str;
@@ -61,10 +69,10 @@
           localNetworkGameTransfers.openFirewall = true;
         };
         programs.gamescope = {
-          enable = cfg.session == "gamescope";
+          enable = cfg.session == "gamescope" || nestedGamescope;
           capSysNice = cfg.session == "gamescope";
         };
-        programs.hyprland = lib.mkIf (cfg.session == "hyprland") {
+        programs.hyprland = lib.mkIf useHyprland {
           enable = true;
           xwayland.enable = true;
         };

@@ -16,18 +16,8 @@
           -W ${toString cfg.width} -H ${toString cfg.height} -r 60 \
           -- steam -tenfoot -pipewire-dmabuf
       '';
-      hyprlandConfig = pkgs.writeText "steam-hyprland.conf" ''
-        monitor = ,${toString cfg.width}x${toString cfg.height}@60,auto,1
-        cursor {
-          inactive_timeout = 1
-          hide_on_key_press = true
-        }
-        exec-once = ${nestedSteam}
-        bind = SUPER, F, fullscreen
-        bind = SUPER SHIFT, E, exit
-      '';
       bigPicture = pkgs.writeShellScript "steam-bigpicture" ''
-        exec ${lib.getExe config.programs.hyprland.package} --config ${hyprlandConfig}
+        exec ${lib.getExe config.programs.hyprland.package}
       '';
     in
     {
@@ -64,6 +54,28 @@
         programs.hyprland = {
           enable = true;
           xwayland.enable = true;
+        };
+        home-manager.users.${cfg.user} = {
+          config.wayland.windowManager.hyprland = {
+            enable = true;
+            configType = "hyprlang";
+            package = null;
+            portalPackage = null;
+            settings = {
+              monitor = [
+                ",${toString cfg.width}x${toString cfg.height}@60,auto,1"
+              ];
+              cursor = {
+                inactive_timeout = 1;
+                hide_on_key_press = true;
+              };
+              exec-once = [ "${nestedSteam}" ];
+              bind = [
+                "SUPER, F, fullscreen"
+                "SUPER SHIFT, E, exit"
+              ];
+            };
+          };
         };
         programs.gamemode.enable = true;
         hardware.steam-hardware.enable = true;

@@ -14,6 +14,9 @@
         os.users.loris.isAdmin = true;
         os.users.steam.isAdmin = false;
         os.display.steam.enabled = true;
+        os.display.steam.session = "hyprland";
+        os.display.steam.width = 3840;
+        os.display.steam.height = 2160;
 
         os.display.hyprland.enabled = false;
         # os.display.hyprland.displayScaling = 2;

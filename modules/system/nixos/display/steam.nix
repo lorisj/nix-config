@@ -9,19 +9,37 @@
     }:
     let
       cfg = config.os.display.steam;
-      bigPicture = pkgs.writeShellScript "steam-bigpicture" ''
-        exec ${lib.getExe pkgs.gamescope} --steam -e \
-          -W ${toString cfg.width} -H ${toString cfg.height} \
-          -- steam -tenfoot -pipewire-dmabuf
+      hyprlandConfig = pkgs.writeText "steam-hyprland.conf" ''
+        monitor = ,${toString cfg.width}x${toString cfg.height}@60,auto,1
+        exec-once = steam -tenfoot
+        bind = SUPER, F, fullscreen
+        bind = SUPER SHIFT, E, exit
       '';
+      bigPicture = pkgs.writeShellScript "steam-bigpicture" (
+        if cfg.session == "hyprland" then
+          ''
+            exec ${lib.getExe config.programs.hyprland.package} --config ${hyprlandConfig}
+          ''
+        else
+          ''
+            exec ${lib.getExe pkgs.gamescope} --steam -e \
+              -W ${toString cfg.width} -H ${toString cfg.height} \
+              -- steam -tenfoot -pipewire-dmabuf
+          ''
+      );
     in
     {
       options = {
         os.display.steam.enabled = lib.mkEnableOption "steam big picture session";
+        os.display.steam.session = lib.mkOption {
+          type = lib.types.enum [ "gamescope" "hyprland" ];
+          default = "gamescope";
+          description = "Compositor for the Steam kiosk; Hyprland tests native output at 60 Hz.";
+        };
         os.display.steam.user = lib.mkOption {
           type = lib.types.str;
           default = "steam";
-          description = "Kiosk account auto-logged into the gamescope Steam session.";
+          description = "Kiosk account auto-logged into the Steam session.";
         };
         os.display.steam.width = lib.mkOption {
           type = lib.types.int;
@@ -38,13 +56,17 @@
 
         programs.steam = {
           enable = true;
-          gamescopeSession.enable = true;
+          gamescopeSession.enable = cfg.session == "gamescope";
           remotePlay.openFirewall = true;
           localNetworkGameTransfers.openFirewall = true;
         };
         programs.gamescope = {
+          enable = cfg.session == "gamescope";
+          capSysNice = cfg.session == "gamescope";
+        };
+        programs.hyprland = lib.mkIf (cfg.session == "hyprland") {
           enable = true;
-          capSysNice = true;
+          xwayland.enable = true;
         };
         programs.gamemode.enable = true;
         hardware.steam-hardware.enable = true;

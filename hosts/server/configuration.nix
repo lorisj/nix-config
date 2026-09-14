@@ -10,6 +10,17 @@
       self.osModules.hardwareConfigurations.server
       self.osModules.default
       {
+        config.services.minecraft-server.serverProperties = {
+          # Settings from the SteamPunk v19 server pack.
+          allow-flight = true;
+          enable-command-block = true;
+          difficulty = "normal";
+          max-players = 10;
+          max-tick-time = 120000;
+          motd = "A SteamPunk Server";
+        };
+      }
+      {
         system.stateVersion = "25.11";
         os.users.loris.isAdmin = true;
         os.users.steam.isAdmin = false;

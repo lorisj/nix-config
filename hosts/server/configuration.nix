@@ -22,6 +22,10 @@
         };
 
         os.display.hyprland.enabled = false;
+        os.games.minecraft = {
+          enabled = true;
+          port = 32151;
+        };
         # os.display.hyprland.displayScaling = 2;
         os.networking.firewall.enabled = true;
         os.networking.wpaSupplicant.enabled = true;

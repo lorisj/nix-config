@@ -10,10 +10,10 @@
       plugins.telescope = {
         enable = true;
         keymaps = {
-          "<leader>lg" = "live_grep";
+          "<leader>g" = "live_grep";
           "<leader>fh" = "help_tags";
 
-          "<leader>gf" = "git_files";
+          "<leader>p" = "git_files";
           "<leader>af" = "find_files"; # all files
         };
 

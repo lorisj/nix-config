@@ -186,6 +186,15 @@
 
         programs.claude-code = {
           enable = true;
+          # Pin independently of nixpkgs; update the release URL and manifest hash together.
+          package = pkgs.claude-code.override {
+            manifest = lib.importJSON (
+              builtins.fetchurl {
+                url = "https://downloads.claude.ai/claude-code-releases/2.1.282/manifest.zst.json";
+                sha256 = "817eb937c59b7283bf4b5f314aff24f7edc085e71a0c3443bb5d11a3cefc11ee";
+              }
+            );
+          };
           settings = {
             statusLine = {
               type = "command";

@@ -64,6 +64,11 @@
 
       config = lib.mkMerge [
         {
+          # Keep app activation on the focused AeroSpace workspace. Without
+          # this, macOS jumps to a Space that already has a window for the app
+          # before opening another window (notably with Chrome).
+          system.defaults.NSGlobalDomain.AppleSpacesSwitchOnActivate = false;
+
           services.aerospace = {
             enable = true;
             settings = {

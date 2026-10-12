@@ -46,6 +46,60 @@
         "${m}-shift-k" = withRefresh "move down";
         "${m}-shift-l" = withRefresh "move right";
       };
+      appOnFocusedWorkspaceLauncher = pkgs.writeShellApplication {
+        name = "open-app-on-focused-workspace";
+        runtimeInputs = [ pkgs.aerospace ];
+        text = ''
+          if [[ "$#" -ne 2 ]]; then
+            echo "usage: open-app-on-focused-workspace APP_NAME BUNDLE_ID" >&2
+            exit 64
+          fi
+
+          app_name="$1"
+          bundle_id="$2"
+          target_workspace="$(aerospace list-workspaces --focused)"
+
+          declare -A existing_windows=()
+          while IFS= read -r window_id; do
+            if [[ -n "$window_id" ]]; then
+              existing_windows["$window_id"]=1
+            fi
+          done < <(aerospace list-windows --all \
+            --app-bundle-id "$bundle_id" \
+            --format '%{window-id}')
+
+          # Avoid activating an existing app window on another workspace
+          # before the requested new window has been created.
+          /usr/bin/open -g -n -a "$app_name"
+
+          for _ in {1..100}; do
+            while IFS= read -r window_id; do
+              if [[ -n "$window_id" && -z "''${existing_windows[$window_id]+x}" ]]; then
+                aerospace move-node-to-workspace \
+                  --window-id "$window_id" \
+                  --focus-follows-window \
+                  "$target_workspace"
+                exit 0
+              fi
+            done < <(aerospace list-windows --all \
+              --app-bundle-id "$bundle_id" \
+              --format '%{window-id}')
+
+            sleep 0.05
+          done
+
+          exit 1
+        '';
+      };
+      # Fixes apps opening on their previous workspace when launched from an empty workspace.
+      # Apps currently known to need this workaround: Google Chrome.
+      openAppOnFocusedWorkspace =
+        { appName, bundleId }:
+        "exec-and-forget ${appOnFocusedWorkspaceLauncher}/bin/open-app-on-focused-workspace "
+        + lib.escapeShellArgs [
+          appName
+          bundleId
+        ];
     in
     {
       options.displayModKey = lib.mkOption {
@@ -64,6 +118,11 @@
 
       config = lib.mkMerge [
         {
+          # Keep app activation on the focused AeroSpace workspace. Without
+          # this, macOS jumps to a Space that already has a window for the app
+          # before opening another window (notably with Chrome).
+          system.defaults.NSGlobalDomain.AppleSpacesSwitchOnActivate = false;
+
           services.aerospace = {
             enable = true;
             settings = {
@@ -113,7 +172,10 @@
                 # -na => open new instance if already running
                 "${m}-enter" = "exec-and-forget open -na kitty";
 
-                "${m}-b" = ''exec-and-forget open -na "Google Chrome"'';
+                "${m}-b" = openAppOnFocusedWorkspace {
+                  appName = "Google Chrome";
+                  bundleId = "com.google.Chrome";
+                };
                 #"${m}-leftSquareBracket" = "workspace --wrap-around prev";
                 #"${m}-rightSquareBracket" = "workspace --wrap-around next";
               }

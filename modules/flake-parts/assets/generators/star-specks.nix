@@ -21,8 +21,11 @@
           };
         in
         pkgs.runCommand "kitty-star-specks" { nativeBuildInputs = [ python ]; } ''
-          mkdir -p "$out"
-          python ${generator} ${densityMask} "$out/wall-pattern.png"
+          mkdir -p "$out/frames/terminal"
+          python ${generator} \
+            ${densityMask} \
+            "$out/wall-pattern.png" \
+            "$out/frames/terminal"
         '';
     };
 }

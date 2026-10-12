@@ -38,7 +38,11 @@
             # force bc stylix will try to overwrite this
             background_opacity = lib.mkForce 0.80;
             background_blur = 30;
-            background_image = "${wallPattern}/wall-pattern.png";
+            background_image =
+              if pkgs.stdenv.hostPlatform.isDarwin then
+                "${wallPattern}/frames/terminal/frame-*.png"
+              else
+                "${wallPattern}/wall-pattern.png";
             background_image_layout = "tiled";
 
             cursor_shape = "block";
@@ -75,6 +79,10 @@
             hide_window_decorations = "titlebar-only";
             macos_titlebar_color = "background";
             macos_traditional_fullscreen = true;
+          }
+          // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+            allow_remote_control = "socket-only";
+            listen_on = "unix:/tmp/kitty-background-{kitty_pid}";
           };
         };
       };

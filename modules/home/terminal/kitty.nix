@@ -14,12 +14,13 @@
       };
     in
     {
-      # Dock / Spotlight / Finder: Launch Services does not pass argv; this file
-      # supplies CLI flags (see kitty --help --start-as).
-      # xdg.configFile."kitty/macos-launch-services-cmdline" = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
-      #   text = "--start-as=maximized\n";
-      # };
       config = {
+        # Share the preloaded animation frames between macOS windows instead of
+        # decoding them again for every `open -na kitty` invocation.
+        xdg.configFile."kitty/macos-launch-services-cmdline" = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+          text = "--single-instance --directory ${lib.escapeShellArg config.home.homeDirectory}\n";
+        };
+
         programs.kitty = {
           enable = true;
 

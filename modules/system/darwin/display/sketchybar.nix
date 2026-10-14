@@ -64,9 +64,8 @@
         import time
 
 
-        FRAME_COUNT = 80
         FRAME_INTERVAL_SECONDS = 0.05
-        BAR_FRAME_DIRECTORY = "${barTexture}/frames"
+        BAR_FRAMES = sorted(glob.glob("${barTexture}/frames/frame-*.png"))
 
 
         def run(command):
@@ -87,7 +86,7 @@
                     "sketchybar",
                     "--set",
                     "bar.texture",
-                    f"background.image={BAR_FRAME_DIRECTORY}/frame-{frame:02d}.png",
+                    f"background.image={BAR_FRAMES[frame]}",
                     "background.image.drawing=on",
                 ]
             )
@@ -114,7 +113,7 @@
                     ]
                 )
 
-            frame = (frame + 1) % FRAME_COUNT
+            frame = (frame + 1) % len(BAR_FRAMES)
             next_frame_at += FRAME_INTERVAL_SECONDS
             now = time.monotonic()
             if next_frame_at <= now:

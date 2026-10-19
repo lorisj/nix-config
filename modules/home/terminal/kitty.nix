@@ -84,6 +84,15 @@
           // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
             allow_remote_control = "socket-only";
             listen_on = "unix:/tmp/kitty-background-{kitty_pid}";
+            # Keep the single instance (and its decoded background frames) alive
+            # after its last OS window is closed.
+            macos_quit_when_last_window_closed = false;
+          };
+
+          keybindings = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+            # A single-instance kitty shares one process, so the default `quit`
+            # action would close every OS window. Close only the focused one.
+            "cmd+q" = "close_os_window";
           };
         };
       };

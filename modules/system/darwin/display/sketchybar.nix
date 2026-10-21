@@ -54,6 +54,82 @@
       };
       barTexture = assetGenerators.sketchybarTexture {
         source = "${textureSource}/wall-pattern.png";
+        frameSource = "${textureSource}/frames/terminal";
+      };
+      textureAnimationController = pkgs.writeText "animate-terminal-textures.py" ''
+        import glob
+        import os
+        import stat
+        import subprocess
+        import time
+
+
+        FRAME_INTERVAL_SECONDS = 0.05
+        BAR_FRAMES = sorted(glob.glob("${barTexture}/frames/frame-*.png"))
+
+
+        def run(command):
+            subprocess.run(
+                command,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                check=False,
+            )
+
+
+        frame = 0
+        next_frame_at = time.monotonic()
+
+        while True:
+            run(
+                [
+                    "sketchybar",
+                    "--set",
+                    "bar.texture",
+                    f"background.image={BAR_FRAMES[frame]}",
+                    "background.image.drawing=on",
+                ]
+            )
+
+            for socket in glob.glob("/tmp/kitty-background-*"):
+                try:
+                    if not stat.S_ISSOCK(os.stat(socket).st_mode):
+                        continue
+                except FileNotFoundError:
+                    continue
+
+                run(
+                    [
+                        "kitten",
+                        "@",
+                        "--to",
+                        f"unix:{socket}",
+                        "set-background-image",
+                        "--no-response",
+                        "--all",
+                        "--layout",
+                        "tiled",
+                        str(frame),
+                    ]
+                )
+
+            frame = (frame + 1) % len(BAR_FRAMES)
+            next_frame_at += FRAME_INTERVAL_SECONDS
+            now = time.monotonic()
+            if next_frame_at <= now:
+                # Do not skip visual states after a scheduling stall. Re-anchor
+                # the clock and continue with the next adjacent frame.
+                next_frame_at = now + FRAME_INTERVAL_SECONDS
+            time.sleep(next_frame_at - now)
+      '';
+      textureAnimation = pkgs.writeShellApplication {
+        name = "animate-terminal-textures";
+        runtimeInputs = [
+          pkgs.kitty
+          pkgs.python3
+          pkgs.sketchybar
+        ];
+        text = "exec python ${textureAnimationController}";
       };
       configDir = pkgs.runCommand "sketchybar-pill-config" { } ''
         mkdir -p $out/plugins
@@ -67,7 +143,7 @@
           --replace "@sketchybar@" "${pkgs.sketchybar}" \
           --replace "@aerospace@" "${pkgs.aerospace}" \
           --replace "@iconDir@" "${iconDir}" \
-          --replace "@barTexture@" "${barTexture}/texture.png" \
+          --replace "@barTexture@" "${barTexture}/frames/frame-00.png" \
           --replace "@powerlineFont@" "${powerlineFont}" \
           --replace "@barBackground@" "${colors.barBackground}" \
           --replace "@barBorder@" "${colors.barBorder}" \
@@ -143,6 +219,19 @@
             RunAtLoad = true;
             StandardOutPath = "/tmp/sketchybar.out.log";
             StandardErrorPath = "/tmp/sketchybar.err.log";
+          };
+        };
+
+        launchd.user.agents.terminal-texture-animation = {
+          serviceConfig = {
+            ProgramArguments = [
+              "${textureAnimation}/bin/animate-terminal-textures"
+            ];
+            KeepAlive = true;
+            RunAtLoad = true;
+            ProcessType = "Interactive";
+            StandardOutPath = "/tmp/terminal-texture-animation.out.log";
+            StandardErrorPath = "/tmp/terminal-texture-animation.err.log";
           };
         };
       };

@@ -14,12 +14,13 @@
       };
     in
     {
-      # Dock / Spotlight / Finder: Launch Services does not pass argv; this file
-      # supplies CLI flags (see kitty --help --start-as).
-      # xdg.configFile."kitty/macos-launch-services-cmdline" = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
-      #   text = "--start-as=maximized\n";
-      # };
       config = {
+        # Share the preloaded animation frames between macOS windows instead of
+        # decoding them again for every `open -na kitty` invocation.
+        xdg.configFile."kitty/macos-launch-services-cmdline" = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+          text = "--single-instance --directory ${lib.escapeShellArg config.home.homeDirectory}\n";
+        };
+
         programs.kitty = {
           enable = true;
 
@@ -38,7 +39,11 @@
             # force bc stylix will try to overwrite this
             background_opacity = lib.mkForce 0.80;
             background_blur = 30;
-            background_image = "${wallPattern}/wall-pattern.png";
+            background_image =
+              if pkgs.stdenv.hostPlatform.isDarwin then
+                "${wallPattern}/frames/terminal/frame-*.png"
+              else
+                "${wallPattern}/wall-pattern.png";
             background_image_layout = "tiled";
 
             cursor_shape = "block";
@@ -75,6 +80,19 @@
             hide_window_decorations = "titlebar-only";
             macos_titlebar_color = "background";
             macos_traditional_fullscreen = true;
+          }
+          // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+            allow_remote_control = "socket-only";
+            listen_on = "unix:/tmp/kitty-background-{kitty_pid}";
+            # Keep the single instance (and its decoded background frames) alive
+            # after its last OS window is closed.
+            macos_quit_when_last_window_closed = false;
+          };
+
+          keybindings = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+            # A single-instance kitty shares one process, so the default `quit`
+            # action would close every OS window. Close only the focused one.
+            "cmd+q" = "close_os_window";
           };
         };
       };

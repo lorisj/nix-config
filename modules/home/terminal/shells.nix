@@ -4,6 +4,8 @@
     { ... }:
     {
       config = {
+        home.shellAliases.flake-init = "nix flake init -t github:lorisj/nix-config";
+
         programs.bash = {
           enable = true;
           initExtra = ''

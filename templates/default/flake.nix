@@ -13,15 +13,28 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [
-        inputs.devshell.flakeModule
-        ./modules/dev-shell.nix
-      ];
+      imports = [ inputs.devshell.flakeModule ];
       systems = [
         "aarch64-darwin"
         "aarch64-linux"
         "x86_64-darwin"
         "x86_64-linux"
       ];
+
+      perSystem =
+        { ... }:
+        {
+          devshells.default = {
+            packages = [ ];
+
+            env = [
+              # { name = "EXAMPLE"; value = "example"; }
+            ];
+
+            devshell.startup.startupScriptName.text = ''
+              echo "❄️devshell started"
+            '';
+          };
+        };
     };
 }

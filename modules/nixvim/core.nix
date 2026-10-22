@@ -17,6 +17,7 @@
 
         plugins.web-devicons.enable = true;
         opts = {
+          confirm = true;
           updatetime = 100; # faster completion
           timeoutlen = 400;
           swapfile = false;

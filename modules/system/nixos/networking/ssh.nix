@@ -1,6 +1,6 @@
-{ ... }:
-let
-  defaultKeys = [
+{ self, ... }:
+{
+  flake.sshKeys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICeZI2pBSxv1fs6V8hAe5DDyHSUT4UCcQZTXK9sLPxwt"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOgykMePA2aCBXm2uktQSnI4p4f0++eWZ5hYF80vtrMo"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFZU98KS18bZSgmD7xsKozlldpneJW8zlgzi5HvxWog0"
@@ -8,8 +8,7 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL2RTDsJaDSTq7YFlz21IgLUUcJzuQejfkNjDAcp7YWE"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMrSmI3BrKrOR9r402C+ka+91lC5bHu5UuJaLZGR3UoZ"
   ];
-in
-{
+
   flake.osModules.networking.ssh =
     { config, lib, ... }:
     let
@@ -40,7 +39,7 @@ in
         users.users = builtins.listToAttrs (
           builtins.map (userName: {
             name = userName;
-            value.openssh.authorizedKeys.keys = defaultKeys;
+            value.openssh.authorizedKeys.keys = self.sshKeys;
           }) cfg.allowedUsers
         );
       };

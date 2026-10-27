@@ -5,6 +5,8 @@
 }:
 {
   imports = [ ./hardware-configuration.nix ];
+  # TODO: paste the output of `cat /etc/ssh/ssh_host_ed25519_key.pub` from the server.
+  flake.hostConfig.server.sshHostKey = "";
   flake.nixosConfigurations.server = inputs.nixpkgs.lib.nixosSystem {
     modules = [
       self.osModules.hardwareConfigurations.server
@@ -50,6 +52,7 @@
           os.hardware.bluetooth.enabled = true;
           os.hardware.nvidia.enabled = true;
           os.networking.ssh.enabled = true;
+          os.services.storyteller.enabled = true;
         };
       }
     ];

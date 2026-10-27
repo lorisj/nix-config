@@ -27,6 +27,15 @@
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    storyteller = {
+      url = "github:dmpribak/storyteller";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

@@ -29,6 +29,14 @@ let
       };
     };
   };
+  hostConfigEntry = types.submodule {
+    options = {
+      sshHostKey = lib.mkOption {
+        type = types.str;
+        description = "Public SSH host key (/etc/ssh/ssh_host_ed25519_key.pub); agenix encrypts this host's secrets to it.";
+      };
+    };
+  };
 in
 {
   options.flake.osModules = lib.mkOption {
@@ -61,5 +69,17 @@ in
     type = types.attrsOf userConfigEntry;
     default = { };
     description = "Per-username account profiles. Add a file under users/ to define a new profile.";
+  };
+
+  options.flake.sshKeys = lib.mkOption {
+    type = types.listOf types.str;
+    default = [ ];
+    description = "SSH public keys authorized on every host; also the agenix recipients that can edit secrets/.";
+  };
+
+  options.flake.hostConfig = lib.mkOption {
+    type = types.attrsOf hostConfigEntry;
+    default = { };
+    description = "Per-host facts read outside the NixOS evaluation, such as by secrets/secrets.nix.";
   };
 }

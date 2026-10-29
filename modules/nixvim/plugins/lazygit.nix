@@ -57,6 +57,7 @@ in
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}g";
             action = toggleLazyGit;
@@ -67,6 +68,7 @@ in
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}G";
             action.__raw = ''

@@ -21,6 +21,7 @@
             mode = [
               "n"
               "i"
+              "v"
             ];
             key = "${navigationPrefix}t";
             action = "<cmd>FloatermToggle<cr><cmd>startinsert<cr>";
@@ -37,6 +38,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}T";
             action = "<cmd>FloatermHide<cr>";

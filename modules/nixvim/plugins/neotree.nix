@@ -14,6 +14,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}b";
             # if focused close, else focus/open if needed
@@ -34,6 +35,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}B";
             action = "<cmd>Neotree close<cr>";

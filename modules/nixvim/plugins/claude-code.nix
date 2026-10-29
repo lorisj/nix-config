@@ -25,6 +25,7 @@
         '';
         keymaps = [
           {
+            # Visual mode uses the send-selection mapping below.
             mode = [
               "n"
               "i"
@@ -40,6 +41,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}C";
             action.__raw = ''

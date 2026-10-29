@@ -32,6 +32,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}a";
             # if focused close, else focus/open if needed
@@ -63,6 +64,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}A";
             action = "<cmd>AerialClose<cr>";

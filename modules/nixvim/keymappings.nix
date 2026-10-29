@@ -27,6 +27,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}n";
             action = "<C-\\><C-n>";
@@ -40,6 +41,21 @@
               "n"
               "i"
               "t"
+              "v"
+            ];
+            key = "${navigationPrefix}v";
+            action = "<C-\\><C-n>v";
+            options = {
+              desc = "enter visual mode";
+              silent = true;
+            };
+          }
+          {
+            mode = [
+              "n"
+              "i"
+              "t"
+              "v"
             ];
             key = "${navigationPrefix}h";
             action = "<C-\\><C-n><C-w>h";
@@ -53,6 +69,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}j";
             action = "<C-\\><C-n><C-w>j";
@@ -66,6 +83,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}k";
             action = "<C-\\><C-n><C-w>k";
@@ -79,6 +97,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}l";
             action = "<C-\\><C-n><C-w>l";
@@ -93,6 +112,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}m";
             action.__raw = ''

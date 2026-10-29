@@ -45,6 +45,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}c";
             action.__raw = ''
@@ -124,6 +125,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}C";
             action.__raw = ''

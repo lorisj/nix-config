@@ -26,6 +26,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}d";
             # if focused close, else focus/open if needed
@@ -50,6 +51,7 @@
               "n"
               "i"
               "t"
+              "v"
             ];
             key = "${navigationPrefix}D";
             action = "<cmd>Trouble close<cr>";

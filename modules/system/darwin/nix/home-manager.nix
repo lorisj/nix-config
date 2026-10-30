@@ -18,7 +18,7 @@
             builtins.head userNames;
 
         users.users = builtins.listToAttrs (
-          builtins.map (userName: {
+          map (userName: {
             name = userName;
             value = {
               home = "/Users/${userName}";

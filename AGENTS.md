@@ -17,8 +17,8 @@ module: a Nix file imported by flake-parts (for example, under `modules/`,
 
 Leaf modules define
 `flake.{osModules,sharedModules,darwinModules,homeModules,nixvimModules}` and
-`flake.userConfig.*.module`. These definitions contain inner NixOS-style module
-functions.
+`flake.userConfig.*.module` (Home Manager user profiles). These definitions
+contain inner NixOS-style module functions.
 
 In an inner module body, only module structure may appear at the top level:
 

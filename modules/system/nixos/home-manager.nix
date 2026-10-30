@@ -11,7 +11,7 @@
       ];
       config = {
         users.users = builtins.listToAttrs (
-          builtins.map (userName: {
+          map (userName: {
             name = userName;
             value = {
               isNormalUser = true;

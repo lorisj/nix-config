@@ -14,6 +14,7 @@
           system.stateVersion = "25.11";
           os.users.loris.isAdmin = true;
           os.users.steam.isAdmin = false;
+          os.users.dmpribak.isAdmin = false;
           specialisation.game.configuration = {
             config = {
               os.display.steam = {

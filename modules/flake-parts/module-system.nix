@@ -27,6 +27,12 @@ let
         default = [ ];
         description = "NixOS groups this user always belongs to, independent of host admin access.";
       };
+
+      nixos.sshKeys = lib.mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "SSH public keys allowed to log in as this user on hosts with os.networking.ssh enabled.";
+      };
     };
   };
 in

@@ -7,6 +7,8 @@
       "input"
       "gamemode"
     ];
+    # No keys of its own; Loris administers this account over SSH.
+    nixos.sshKeys = self.userConfig.loris.nixos.sshKeys;
     module =
       { ... }:
       {

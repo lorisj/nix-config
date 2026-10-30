@@ -1,0 +1,54 @@
+name: Build hosts
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-hosts-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    name: Discover hosts
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.hosts.outputs.matrix }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Read host matrix from flake
+        id: hosts
+        run: |
+          matrix="$(nix eval --json .#ci.matrix --no-update-lock-file)"
+          printf 'matrix=%s\n' "$matrix" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build ${{ matrix.host }} (${{ matrix.system }})
+    needs: discover
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build configuration
+        env:
+          TARGET: ${{ matrix.target }}
+        run: nix build ".#$TARGET" --no-link --print-build-logs --no-update-lock-file
